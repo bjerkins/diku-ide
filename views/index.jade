@@ -1,5 +1,34 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+
+  h2 Assignments
+  
+  table.table.table-bordered
+    thead
+      tr
+        th #
+        th Name
+        th Status
+    tbody 
+      tr
+        td 1
+        td: a(href="/assignments/1") Assignment 1
+        td Active
+      tr
+        td 2
+        td Assignment 2
+        td: i Coming soon
+      tr
+        td 3
+        td Assignment 3
+        td: i Coming soon
+      tr
+        td 4
+        td Assignment 4
+        td: i Coming soon
+      tr
+        td 5
+        td Assignment 5
+        td: i Coming soon
+            

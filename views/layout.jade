@@ -4,4 +4,16 @@ html
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
-    block content
+    .container
+        .header.clearfix
+            ul.nav.nav-pills.pull-right
+                li(class=(current === 'home' ? 'active' : ''))
+                    a(href="/") Home
+
+            h3.text-muted Interactive Data Exploration
+                small  5100-B2-2E15
+
+        block content
+
+        footer.footer
+            p Bjarki Madsen - Thomas Jensen - Sokratis Siozos-Drosos
