@@ -4,4 +4,30 @@ block content
 
   h2 Assignment 1
 
+  p Here below you'll find our answers to the questions in Assignment 1. 
+
+  h3 1. Webserver
+
+  p We are using #[a(href="https://heroku.com") Heroku] to host our web server. In order to publish changes to the page, one has to request access to the Heroku application. Once that is done, download and install the #[a(href="https://toolbelt.heroku.com/") Heroku toolbelt]. Then login to your Heroku account using the toolbelt as such:
+
+  pre $ heroku login
+
+  p Publishing the application to Heroku is then just like pushing code to your repository. Start by cloning the project:
+
+  pre $ git clone git@github.com:bjerkins/diku-ide.git
+
+  p and then add a new repository (within the project) using the toolbelt:
   
+  pre $ heroku git:remote -a diku-ide
+
+  p Now you can make changes to the website and push them to both #[code origin] and #[code heroku]:
+
+  pre $ git add .
+    | $ git commit -m 'made some changes'
+    | $ git push origin master
+    | $ git push heroku master
+
+
+  script(type='text/javascript').
+
+    // put script here
