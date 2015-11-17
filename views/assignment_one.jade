@@ -4,7 +4,7 @@ block content
 
   h2 Assignment 1
 
-  p Here below you'll find our answers to the questions in Assignment 1. 
+  p Here below you'll find our answers to the questions in #[code Assignment 1]. 
 
   h3 1. Webserver
 
@@ -26,6 +26,18 @@ block content
     | $ git commit -m 'made some changes'
     | $ git push origin master
     | $ git push heroku master
+
+  h4 Limitations
+
+  p As to limitations, we are using Heroku's basic plan which includes a single dyno (512 MB RAM), which is not a lot. However, the web-visualizations all run on the client which takes the load of the server drastically. The only purpose of the server is to serve data and do some minimal page rendering. It is not until we get a lot of traffic that we need to think about scaling up to handle all the request to our data. 
+
+  h3 2. Appended image
+
+  p See the image on top of this page
+
+  h3 3. Interesting links
+
+  h3 4. Individual parts
 
 
   script(type='text/javascript').
