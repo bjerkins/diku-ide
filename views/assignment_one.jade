@@ -12,7 +12,7 @@ block content
 
   pre $ heroku login
 
-  p Publishing the application to Heroku is then just like pushing code to your repository. Start by cloning the project:
+  p Publishing the application to Heroku is just like pushing code to your repository. Start by cloning the project:
 
   pre $ git clone git@github.com:bjerkins/diku-ide.git
 
@@ -29,7 +29,7 @@ block content
 
   h4 Limitations
 
-  p As to limitations, we are using Heroku's basic plan which includes a single dyno (512 MB RAM), which is not a lot. However, the web-visualizations all run on the client which takes the load of the server drastically. The only purpose of the server is to serve data and do some minimal page rendering. It is not until we get a lot of traffic that we need to think about scaling up to handle all the request to our data. 
+  p As for limitations, we are using Heroku's basic plan which includes a single dyno (512 MB RAM), which is not a lot. However, the web-visualizations all run on the client which takes the load of the server drastically. The only purpose of the server is to serve data and do some minimal page rendering. It is not until we get a lot of traffic that we need to think about scaling up to handle all the request to our data. 
 
   h3 2. Appended image
 
@@ -39,7 +39,11 @@ block content
 
   h3 4. Individual parts
 
+  h4 Bjarki
 
-  script(type='text/javascript').
+  p As I'm currently doing a project on architectural evolutions, e.g how an software architecture evolves over time, it would be nice to create a visualization of this evolution over time. Adding interactivity (panning, scrolling) through time and seeing changes in the architecture, for example added or removed dependencies (the dataset) would help describe and understand the evolution, and perhaps find patterns that could be identified and used to predict future evolution of other architectures. This visualization could then be used by software architects and help them to make design decisions.   
 
-    // put script here
+  h4 Thomas
+
+  h4 Sokratis
+
