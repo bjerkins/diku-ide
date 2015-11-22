@@ -2,58 +2,62 @@ extends layout
 
 block content
 
-  h2 Assignment 1
+  #assignment_one
+    h2 Assignment 1
 
-  p Here below you'll find our answers to the questions in #[code Assignment 1]. 
+    p Here below you'll find our answers to the questions in #[code Assignment 1]. 
 
-  h3 1. Webserver
+    h3 1. Webserver
 
-  p We are using #[a(href="https://heroku.com") Heroku] to host our web server. In order to publish changes to the page, one has to request access to the Heroku application. Once that is done, download and install the #[a(href="https://toolbelt.heroku.com/") Heroku toolbelt]. Then login to your Heroku account using the toolbelt as such:
+    p We are using #[a(href="https://heroku.com") Heroku] to host our web server. In order to publish changes to the page, one has to request access to the Heroku application. Once that is done, download and install the #[a(href="https://toolbelt.heroku.com/") Heroku toolbelt]. Then login to your Heroku account using the toolbelt as such:
 
-  pre $ heroku login
+    pre $ heroku login
 
-  p Publishing the application to Heroku is just like pushing code to your repository. Start by cloning the project:
+    p Publishing the application to Heroku is just like pushing code to your repository. Start by cloning the project:
 
-  pre $ git clone git@github.com:bjerkins/diku-ide.git
+    pre $ git clone git@github.com:bjerkins/diku-ide.git
 
-  p and then add a new repository (within the project) using the toolbelt:
-  
-  pre $ heroku git:remote -a diku-ide
+    p and then add a new repository (within the project) using the toolbelt:
+    
+    pre $ heroku git:remote -a diku-ide
 
-  p Now you can make changes to the website and push them to both #[code origin] and #[code heroku]:
+    p Now you can make changes to the website and push them to both #[code origin] and #[code heroku]:
 
-  pre $ git add .
-    | $ git commit -m 'made some changes'
-    | $ git push origin master
-    | $ git push heroku master
+    pre $ git add .
+      | $ git commit -m 'made some changes'
+      | $ git push origin master
+      | $ git push heroku master
 
-  h4 Limitations
+    h4 Limitations
 
-  p As for limitations, we are using Heroku's basic plan which includes a single dyno (512 MB RAM), which is not a lot. However, the web-visualizations all run on the client which takes the load of the server drastically. The only purpose of the server is to serve data and do some minimal page rendering. It is not until we get a lot of traffic that we need to think about scaling up to handle all the request to our data. 
+    p As for limitations, we are using Heroku's basic plan which includes a single dyno (512 MB RAM), which is not a lot. However, the web-visualizations all run on the client which takes the load of the server drastically. The only purpose of the server is to serve data and do some minimal page rendering. It is not until we get a lot of traffic that we need to think about scaling up to handle all the request to our data. 
 
-  h3 2. Appended image
+    h3 2. Appended image
 
-  p See the image at the bottom of this page. The JavaScript code used to display the image can be seen below:
+    p See the image at the bottom of this page. The JavaScript code used to display the image can be seen below:
 
-  pre var image = new Image();
-    | image.src = '/images/image_01.jpg';
-    | 
-    | image.onload = function()
-    | {
-    |   document.body.appendChild(image);
-    | }
+    pre var image = new Image();
+      | image.src = '/images/image_01.jpg';
+      | 
+      | image.onload = function()
+      | {
+      |   document.body.appendChild(image);
+      | }
 
-  p Source: #[a(href="http://heltnormalt.dk/wulffmorgenthaler/2010/08/02") Helt Normalt]
+    p Source: #[a(href="http://heltnormalt.dk/wulffmorgenthaler/2010/08/02") Helt Normalt]
 
 
-  h3 3. Interesting links
+    h3 3. Interesting links
 
-  h3 4. Individual parts
+    h3 4. Individual parts
 
-  h4 Bjarki
+    h4 Bjarki
 
-  p As I'm currently doing a project on architectural evolutions, e.g how an software architecture evolves over time, it would be nice to create a visualization of this evolution over time. Adding interactivity (panning, scrolling) through time and seeing changes in the architecture, for example added or removed dependencies (the dataset) would help describe and understand the evolution, and perhaps find patterns that could be identified and used to predict future evolution of other architectures. This visualization could then be used by software architects and help them to make design decisions.   
+    p As I'm currently doing a project on architectural evolutions, e.g how an software architecture evolves over time, it would be nice to create a visualization of this evolution over time. Adding interactivity (panning, scrolling) through time and seeing changes in the architecture, for example added or removed dependencies (the dataset) would help describe and understand the evolution, and perhaps find patterns that could be identified and used to predict future evolution of other architectures. This visualization could then be used by software architects and help them to make design decisions.   
 
-  h4 Thomas
+    h4 Thomas
 
-  h4 Sokratis
+    h4 Sokratis
+
+    //- load script
+    script(src='/javascripts/assignment_one.js')
