@@ -5,5 +5,5 @@ image.src = '/images/image_01.jpg';
 
 image.onload = function()
 {
-	document.body.appendChild(image);
+	document.getElementById("assignment_one").appendChild(image);
 }
