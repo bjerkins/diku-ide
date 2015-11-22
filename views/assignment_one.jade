@@ -33,7 +33,18 @@ block content
 
   h3 2. Appended image
 
-  p See the image at the bottom of this page.#[br]Source: #[a(href="http://heltnormalt.dk/wulffmorgenthaler/2010/08/02") Helt Normalt]
+  p See the image at the bottom of this page. The JavaScript code used to display the image can be seen below:
+
+  pre var image = new Image();
+    | image.src = '/images/image_01.jpg';
+    | 
+    | image.onload = function()
+    | {
+    |   document.body.appendChild(image);
+    | }
+
+  p Source: #[a(href="http://heltnormalt.dk/wulffmorgenthaler/2010/08/02") Helt Normalt]
+
 
   h3 3. Interesting links
 
