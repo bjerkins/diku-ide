@@ -5,7 +5,22 @@ block content
   #assignment_two
     h2 Assignment 2
 
-    p.lead Yay!
+    h3 1. Two visualizations
+
+    h4 Radar chart
+
+    p The following Radar Chart shows the change in degree from 1902 to 2015 in Thessaloniki, Greece.
+    
+    #radar-chart
+
+    .row
+      .col-md-6
+        p Here on the right you can multi-pick years that you want to compare together.
+      .col-md-6
+        select(id="year-picker" class="form-control" multiple)
+
+    p Source: #[a(href="http://bl.ocks.org/nbremer/6506614") D3.js - Radar Chart or Spider Chart - Adjusted from radar-chart-d3]
 
   //- load script
-  script(src='/javascripts/assignment_two.js')
+  script(src='/javascripts/assignment_two/assignment_two.js')
+  script(src='/javascripts/assignment_two/radar-chart.js')
