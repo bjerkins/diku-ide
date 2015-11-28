@@ -171,3 +171,190 @@ function filterData(years) {
     }
     return result;
 }
+
+// Boxplot
+
+var box_data;
+d3.csv('/javascripts/assignment_two/akureyri.csv', function (d) {
+    box_data = parse_data(d);
+
+    boxplot_init();
+});
+
+function boxplot_init() {
+    var w = 700,
+        h = 600;
+
+    var label_height = 100;
+
+    var n = box_data.length;
+    var space = 2; // 1px between each box
+    var box_width = w / n - space;
+
+    if (box_width <= 0) {
+        console.log('Error: Too many data points')
+    }
+
+    var max_temp = d3.max(box_data, function (d) {
+        return d3.max(d.value)
+    });
+    var min_temp = d3.min(box_data, function (d) {
+        return d3.min(d.value)
+    });
+
+    var scale = d3.scale.linear()
+               .range([0, h - label_height])
+               .domain([max_temp, min_temp]);
+
+    var svg = d3.select('#boxplot')
+                .append('svg')
+                .attr('width', w)
+                .attr('height', h);
+
+    var boxes = svg.selectAll('g')
+                   .data(box_data)
+                   .enter()
+                   .append('g');
+
+    // Line for min value           
+    boxes.append('line')
+         .attr('class', 'line')
+         .attr('x1', function(d, i) {
+            return box_pos(i);
+         })
+         .attr('x2', function(d, i) {
+            return box_pos(i) + box_width;
+         })
+         .attr('y1', function(d) {
+            return scale(d.value[0]);
+         })
+         .attr('y2', function(d) {
+            return scale(d.value[0]);
+         });
+
+    // Median line           
+    boxes.append('line')
+         .attr('class', 'median line')
+         .attr('x1', function(d, i) {
+            return box_pos(i);
+         })
+         .attr('x2', function(d, i) {
+            return box_pos(i) + box_width;
+         })
+         .attr('y1', function(d) {
+            return scale(d3.quantile(d.value, .5));
+         })
+         .attr('y2', function(d) {
+            return scale(d3.quantile(d.value, .5));
+         });
+
+    // Line for max value           
+    boxes.append('line')
+         .attr('class', 'line')
+         .attr('x1', function(d, i) {
+            return box_pos(i);
+         })
+         .attr('x2', function(d, i) {
+            return box_pos(i) + box_width;
+         })
+         .attr('y1', function(d) {
+            return scale(d.value[d.value.length-1]);
+         })
+         .attr('y2', function(d) {
+            return scale(d.value[d.value.length-1]);
+         });
+
+    // Line from max value down to box         
+    boxes.append('line')
+         .attr('class', 'line')
+         .attr('x1', function(d, i) {
+            return box_pos(i) + box_width / 2;
+         })
+         .attr('x2', function(d, i) {
+            return box_pos(i) + box_width / 2;
+         })
+         .attr('y1', function(d) {
+            return scale(d.value[d.value.length-1]);
+         })
+         .attr('y2', function(d) {
+            return scale(d3.quantile(d.value, .75));
+         });
+
+    // Line from min value up to box         
+    boxes.append('line')
+         .attr('class', 'line')
+         .attr('x1', function(d, i) {
+            return box_pos(i) + box_width / 2;
+         })
+         .attr('x2', function(d, i) {
+            return box_pos(i) + box_width / 2;
+         })
+         .attr('y1', function(d) {
+            return scale(d3.quantile(d.value, .25));
+         })
+         .attr('y2', function(d) {
+            return scale(d.value[0]);
+         });
+
+    // Rectangle as the quantile box thingy
+    boxes.append('rect')
+         .attr('class', 'line rectangle')
+         .attr('x', function(d, i) {
+            return box_pos(i);
+         })
+         .attr('width', function(d, i) {
+            return box_width;
+         })
+         .attr('y', function(d) {
+            return scale(d3.quantile(d.value, .75));
+         })
+         .attr('height', function(d) {
+            return scale(d3.quantile(d.value, .25)) - scale(d3.quantile(d.value, .75));
+         });
+
+    boxes.append('text')
+         .attr('class', 'year-label')
+         .attr('style', 'font-size:' + box_width)
+         .text(function(d) { return d.key; })
+         .attr('x', function(d, i) {
+            return box_pos(i) + box_width / 2;
+         })
+         .attr('y', h - label_height + 20);
+
+
+    console.log(max_temp);
+    console.log(min_temp);
+
+
+    function box_pos(i) {
+        return i * box_width + i * space;
+    }
+}
+
+
+function parse_data(d) {
+    var result = [];
+    for (var i = 0; i < d.length; i++) {
+        var measure = d[i];
+        if (legitData(measure)) {
+            var y = {
+                key : measure.YEAR,
+                value : [
+                    parseFloat(measure.JAN),
+                    parseFloat(measure.FEB),
+                    parseFloat(measure.MAR),
+                    parseFloat(measure.APR),
+                    parseFloat(measure.MAY),
+                    parseFloat(measure.JUN),
+                    parseFloat(measure.JUL),
+                    parseFloat(measure.AUG),
+                    parseFloat(measure.SEP),
+                    parseFloat(measure.OCT),
+                    parseFloat(measure.NOV),
+                    parseFloat(measure.DEC)].sort(d3.ascending)
+            };
+            result.push(y);
+        }
+    }
+    return result;
+}

@@ -3,3 +3,21 @@ img {
   position: absolute;
   right: 0;
 }
+
+.line {
+	stroke: #999;
+	stroke-width: 1px;
+}
+
+.median {
+	stroke: #F00;
+	stroke-width: 2px;
+}
+
+.rectangle {
+	fill: none;
+}
+
+.year-label {
+	writing-mode: tb-rl;
+}
