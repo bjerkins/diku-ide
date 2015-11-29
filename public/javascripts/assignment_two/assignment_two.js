@@ -188,7 +188,7 @@ function boxplot_init() {
     var label_height = 100;
 
     var n = box_data.length;
-    var space = 2; // 1px between each box
+    var space = 2; // space between each box in pixels
     var box_width = w / n - space;
 
     if (box_width <= 0) {
@@ -202,15 +202,34 @@ function boxplot_init() {
         return d3.min(d.value)
     });
 
+    // This is very important!
+    // Used to scale coordinates according to the data input
     var scale = d3.scale.linear()
                .range([0, h - label_height])
                .domain([max_temp, min_temp]);
+
+    // Define the y axis according to our scale
+    var y_axis = d3.svg.axis()
+                       .scale(scale)
+                       .orient("left");
 
     var svg = d3.select('#boxplot')
                 .append('svg')
                 .attr('width', w)
                 .attr('height', h);
+    svg.append("g")
+       .attr("class", "axis")
+       .attr("transform", "translate(" + 40 + ",0)")
+       .call(y_axis);
+   svg.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 0)
+      .attr("x", 0 - ((h-label_height) / 2))
+      .attr("dy", "1em")
+      .style("text-anchor", "middle")
+      .text("Temperature in Celsius");
 
+    // Create a group for each box
     var boxes = svg.selectAll('g')
                    .data(box_data)
                    .enter()

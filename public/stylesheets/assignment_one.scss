@@ -21,3 +21,16 @@ img {
 .year-label {
 	writing-mode: tb-rl;
 }
+
+/* Axis styling; taken from the book */
+.axis path,
+.axis line {
+    fill: none;
+    stroke: black;
+    shape-rendering: crispEdges;
+}
+
+.axis text {
+    font-family: sans-serif;
+    font-size: 11px;
+}
