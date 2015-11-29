@@ -175,7 +175,7 @@ function filterData(years) {
 // Boxplot
 
 var box_data;
-d3.csv('/javascripts/assignment_two/akureyri.csv', function (d) {
+d3.csv('/javascripts/assignment_two/thessaloniki.csv', function (d) {
     box_data = parse_data(d);
 
     boxplot_init();
@@ -339,10 +339,6 @@ function boxplot_init() {
             return box_pos(i) + box_width / 2;
          })
          .attr('y', h - label_height + 20);
-
-
-    console.log(max_temp);
-    console.log(min_temp);
 
 
     function box_pos(i) {
