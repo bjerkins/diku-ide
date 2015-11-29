@@ -36,7 +36,7 @@ block content
 
     p As a result, the minimum temperature keeps going up and down again at around the same levels as a few years back. However, as the years pass the deviations become smaller and less noticeable.
 
-    p The same can be observed from the Radar chart, although, in this case we can have a more detailed view of the months for each year. Generally, there is a heart shape if we click various years, because January and February usually have the lowest temperatures. However, as the years pass we see that the shape gradually even out to become a circle, because these months start having higher temperatures. But we mentioned before the temperature "cycle" can also be observed here, thus making the heart shape in the last 20 years reappear.
+    p The same can be observed from the Radar chart, although, in this case we can have a more detailed view of the months for each year. Generally, there is a heart shape if we click various years, because January and February usually have the lowest temperatures. However, as the years pass we see that the shape gradually evens out to become a circle, because these months start having higher temperatures. But we mentioned before the temperature "cycle" can also be observed here, thus making the heart shape in the last 20 years reappear.
 
     h3 3. Individual parts
 
@@ -61,6 +61,18 @@ block content
     img(src= "/images/image_02.png", class="mock-up")
 
     h4 3.3 (Sokratis)
+
+    p Generally D3.js cannot work efficiently with large amounts of data. For example, loading 100MB of data all at once in the browser can be very slow because of the DOM manipulations. In addition, layout algorithms are very heavy to run. In general, force layout algorithms take cubic time to finish. (Source: #[a(href="https://www.quora.com/Does-D3-js-work-efficiently-on-massive-amounts-of-data-200-million-rows-with-at-least-a-dozen-columns") www.quora.com])
+
+    p As a result, if we are to show a large dataset, we need to break it up in smaller pieces by bringing more levels of abstraction (i.e. Radar Chart). A type of visualization that this method excludes is the #[a(href="http://www.wikiwand.com/en/Force-directed_graph_drawing") Force-directed graph drawing], which includes many algorithms for drawing graphs, because we need the whole dataset to have a correct presentation.
+
+    p An example of a big data visualization is illustrated #[a(href="http://www.datasciencecentral.com/profiles/blogs/bigquery-big-data-visualization-with-d3-js") this]. As we can see, the dataset is from New York Taxi and it is over 4GB. As it is explained, we can use Google's BigQuery to run aggregate queries directly on the dataset. Then, we can use the JavaScript client library to query for the dataset on the fly.
+
+    p Another example of big data visualization is the #[a(href="https://hurricanesandy.censusviewer.com/client") Hurricane Sandy visualization]. In this visualization, we can observe the recorded population in United States before, during and after the hurricane Sandy. As we can see the dataset that is used is quite large. In order to deal with this, there are certain levels of abstraction. We can filter the data that we are presented by filtering by age, gender, race, etc. or even by time (120 Hour Cone of Uncertainty Day 10, etc.). This way the visualization is easy to load and read.
+
+    p Another way, to visualize big data is by first filtering it, so we can reduce their size. However, in this way the final result becomes less accurate than using the original dataset.
+
+    p In this assignment we could reduce the size of the data by taking a mean over some years (5-10), this way we could have less data to load. In our case, taking the mean over 5-6 years, would give us a more clear view of the minimum temperature that was discussed above.
 
   //- load script
   script(src='/javascripts/assignment_two/assignment_two.js')
