@@ -340,6 +340,22 @@ function boxplot_init() {
          })
          .attr('y', h - label_height + 20);
 
+    var description = svg.append("text")
+                         .attr("y", h - label_height + 50)
+                         .attr("x", w / 2)
+                         .style("text-anchor", "middle")
+                         .text("Box-plot of temperature changes in Thessaloniki, Greece from 1902 to 2015.");
+    description.append("tspan")
+               .attr("y", h - label_height + 70)
+               .attr("x", w / 2)
+               .text("The upper whisker of a box represents the maximum average temperature of a month that year.");
+
+               description.append("tspan")
+               .attr("y", h - label_height + 90)
+               .attr("x", w / 2)
+               .text("Similarly, the lower whisker indicates the minimum. The mean value is represented by a the red lines.");
+      
+
 
     function box_pos(i) {
         return i * box_width + i * space;
