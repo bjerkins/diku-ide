@@ -15,17 +15,14 @@ function init() {
 
 // initializes the radar chart 
 function drawRadarChart(measures) {
-    var d = measures || prepareData(data);
+    var d = measures || filterData([data[1].YEAR]);
 
     var h = 500,
         w = 500;
         
     var colorscale = d3.scale.category10();
 
-    //Legend titles
-    var LegendOptions = ['Smartphone','Tablet'];
-
-    //Options for the Radar chart, other than default
+    // options for the Radar chart, other than default
     var mycfg = {
       w: w,
       h: h,
@@ -33,54 +30,7 @@ function drawRadarChart(measures) {
       ExtraWidthX: 300
     }
 
-    //Call function to draw the Radar chart
-    //Will expect that data is in %'s
     RadarChart.draw("#radar-chart", d, mycfg);
-
-    // var svg = d3.select('#assignment_two')
-    //             .selectAll('svg')
-    //             .append('svg')
-    //             .attr("width", w+300)
-    //             .attr("height", h)
-
-    // //Create the title for the legend
-    // var text = svg.append("text")
-    //               .attr("class", "title")
-    //               .attr('transform', 'translate(90,0)') 
-    //               .attr("x", w - 70)
-    //               .attr("y", 10)
-    //               .attr("font-size", "12px")
-    //               .attr("fill", "#404040")
-    //               .text("What % of owners use a specific service in a week");
-    
-    // //Initiate Legend 
-    // var legend = svg.append("g")
-    //                 .attr("class", "legend")
-    //                 .attr("height", 100)
-    //                 .attr("width", 200)
-    //                 .attr('transform', 'translate(90,20)');
-
-    // // create colour squares
-    // legend.selectAll('rect')
-    //       .data(LegendOptions)
-    //       .enter()
-    //       .append("rect")
-    //       .attr("x", w - 65)
-    //       .attr("y", function(d, i){ return i * 20;})
-    //       .attr("width", 10)
-    //       .attr("height", 10)
-    //       .style("fill", function(d, i){ return colorscale(i);});
-
-    // //Create text next to squares
-    // legend.selectAll('text')
-    //       .data(LegendOptions)
-    //       .enter()
-    //       .append("text")
-    //       .attr("x", w - 52)
-    //       .attr("y", function(d, i){ return i * 20 + 9;})
-    //       .attr("font-size", "11px")
-    //       .attr("fill", "#737373")
-    //       .text(function(d) { return d; }); 
 };
 
 function populatePicker() {
@@ -93,8 +43,10 @@ function populatePicker() {
         picker.appendChild(option);
     }
 
-    // create listening evenet
+    // set selected
+    picker.value = data[1].YEAR;
 
+    // create listening evenet
     picker.onchange = selectUpdated;
 }
 
@@ -120,31 +72,6 @@ function legitData(measure) {
              measure.OCT == 999.9 ||
              measure.NOV == 999.9 ||
              measure.DEC == 999.9)
-}
-
-// returns data in a format that the radar chart understands it
-function prepareData() {
-    var result = [];
-    for (var i = 0; i < 3; i++) {
-        if (legitData(data[i])) {
-            var year = [
-                { axis: 'January',   value: parseFloat(data[i].JAN) },
-                { axis: 'February',  value: parseFloat(data[i].FEB) },
-                { axis: 'March',     value: parseFloat(data[i].MAR) },
-                { axis: 'April',     value: parseFloat(data[i].APR) },
-                { axis: 'May',       value: parseFloat(data[i].MAY) },
-                { axis: 'June',      value: parseFloat(data[i].JUN) },
-                { axis: 'July',      value: parseFloat(data[i].JUL) },
-                { axis: 'August',    value: parseFloat(data[i].AUG) },
-                { axis: 'September', value: parseFloat(data[i].SEP) },
-                { axis: 'October',   value: parseFloat(data[i].OCT) },
-                { axis: 'November',  value: parseFloat(data[i].NOV) },
-                { axis: 'December',  value: parseFloat(data[i].DEC) }
-            ];
-            result.push(year);
-        }
-    }
-    return result;
 }
 
 function filterData(years) {
@@ -345,12 +272,13 @@ function boxplot_init() {
                          .attr("x", w / 2)
                          .style("text-anchor", "middle")
                          .text("Box-plot of temperature changes in Thessaloniki, Greece from 1902 to 2015.");
+
     description.append("tspan")
                .attr("y", h - label_height + 70)
                .attr("x", w / 2)
                .text("The upper whisker of a box represents the maximum average temperature of a month that year.");
 
-               description.append("tspan")
+    description.append("tspan")
                .attr("y", h - label_height + 90)
                .attr("x", w / 2)
                .text("Similarly, the lower whisker indicates the minimum. The mean value is represented by a the red lines.");
