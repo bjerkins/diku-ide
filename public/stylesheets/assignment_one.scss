@@ -1,7 +1,16 @@
-
 img {
   position: absolute;
   right: 0;
+}
+
+/* Everything below belongs to assignment 2 */
+img.mock-up {
+	display: block;
+	margin: 0 auto;
+	height: 400px;
+
+  	position: relative;
+  	right: unset;
 }
 
 .line {
