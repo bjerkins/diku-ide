@@ -19,7 +19,9 @@ d3.text('/javascripts/assignment_three/hands.csv', function (text) {
 function init() {
   var maxX = d3.max(data, function(d) { return d3.max(d, function (obj) { return obj.x; }) }),
       maxY = d3.max(data, function(d) { return d3.max(d, function (obj) { return obj.y; }) });
+
   handGraph = Hand('#panel-one', { x: maxX, y: maxY });
+  handGraph.init();
   drawPCA();
 }
 

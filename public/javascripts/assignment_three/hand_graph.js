@@ -38,20 +38,14 @@ var Hand = function (id, maxValues) {
     .attr("width", width)
     .attr("height", height);
 
+  var hand = container.append("path")
+                      .attr("stroke", d3.scale.category10(1))
+                      .attr("stroke-width", 2)
+                      .attr("fill", "none");
+
   return {
-    /**
-     * Draws the graph
-     */
-    draw: function (handData) {
 
-      // draw lines
-
-      container.append("path")
-        .attr("d", lineFn(handData))
-        .attr("stroke", d3.scale.category10(1))
-        .attr("stroke-width", 2)
-        .attr("fill", "none");
-
+    init: function () {      
       // append axis
 
       container.append("g")
@@ -63,6 +57,16 @@ var Hand = function (id, maxValues) {
         .attr("class", "axis")
         .attr("transform", "translate(" + padding + ",0)")
         .call(yAxis);
+    },
+    /**
+     * Draws the graph
+     */
+    draw: function (handData) {
+
+      // draw lines
+
+      hand.transition().attr("d", lineFn(handData));
+
     }
   };
 };
