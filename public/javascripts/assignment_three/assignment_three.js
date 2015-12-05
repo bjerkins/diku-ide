@@ -2,7 +2,8 @@
 
 var NO_X_COORDS = 56,
     data,
-    data_pca;
+    data_pca,
+    handGraph;
 
 d3.text('/javascripts/assignment_three/hands.csv', function (text) {
   // map a function to each row
@@ -16,17 +17,16 @@ d3.text('/javascripts/assignment_three/hands.csv', function (text) {
 
 // call this when data is ready
 function init() {
-  //drawHands();
+  var maxX = d3.max(data, function(d) { return d3.max(d, function (obj) { return obj.x; }) }),
+      maxY = d3.max(data, function(d) { return d3.max(d, function (obj) { return obj.y; }) });
+  handGraph = Hand('#panel-one', { x: maxX, y: maxY });
   drawPCA();
 }
 
 function drawHands(index) {
-  var maxX = d3.max(data, function(d) { return d3.max(d, function (obj) { return obj.x; }) }),
-      maxY = d3.max(data, function(d) { return d3.max(d, function (obj) { return obj.y; }) });
-      
-  DrawHands.draw('#panel-one', data[index], { x: maxX, y: maxY });
+  handGraph.draw(data[index]);
 }
 
 function drawPCA() {
-  DrawPCA.draw('#panel-two', data_pca);
+  PCAScatter.draw('#panel-two', data_pca);
 }
