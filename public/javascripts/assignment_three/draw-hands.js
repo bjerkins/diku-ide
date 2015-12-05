@@ -15,9 +15,9 @@ var DrawHands = {
     
     hand.append("path")
       .attr("d", lineFn(data))
-      .attr("stroke", "#B000B5")
+      .attr("stroke", d3.scale.category10(1))
       .attr("stroke-width", 2)
       .attr("fill", "none");
-
   }
+  
 };
