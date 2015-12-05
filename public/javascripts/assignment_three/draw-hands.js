@@ -21,3 +21,16 @@ var DrawHands = {
   }
   
 };
+
+var DrawPCA = {
+  draw: function(id, data) {
+    var w = 500;
+    var h = 500;
+
+    var chart = d3.select(id)
+      .attr("width", w)
+      .attr("height", h);
+
+    console.log(data);
+  }
+}

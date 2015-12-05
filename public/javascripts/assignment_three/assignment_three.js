@@ -17,8 +17,13 @@ d3.text('/javascripts/assignment_three/hands.csv', function (text) {
 // call this when data is ready
 function init() {
   drawHands();
+  drawPCA();
 }
 
 function drawHands() {
   DrawHands.draw('#panel-one', data[0]);
+}
+
+function drawPCA() {
+  DrawPCA.draw('#panel-two', data_pca);
 }

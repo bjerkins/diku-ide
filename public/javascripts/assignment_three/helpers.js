@@ -16,6 +16,9 @@ function convertToCoords(text) {
 
 function convertToNumbers(text) {
   return d3.csv.parseRows(text).map(function (row) {
+    // We only need the first two PCA
+    row = row.slice(0,2);
+
     // map a function to each value within row
     return row.map(function (value) {
       // convert value to number
