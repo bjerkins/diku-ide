@@ -19,10 +19,12 @@ function convertToCoords(text) {
     var result = [];
     // map a function to each value within row
     row.map(function (value, i) {
-      result.push({
-        x: +row[i],
-        y: +row[NO_X_COORDS + i]
-      });
+      if (i < NO_X_COORDS) {
+        result.push({
+          x: +row[i],
+          y: +row[NO_X_COORDS + i]
+        });
+      }
     });
     return result;
   });
@@ -41,10 +43,9 @@ function convertToNumbers(text) {
 
 // call this when data is ready
 function init() {
-  console.log(data);
-  // drawHands();
+  drawHands();
 }
 
 function drawHands() {
-  DrawHands.draw('#panel-one', data);
+  DrawHands.draw('#panel-one', data[0]);
 }
