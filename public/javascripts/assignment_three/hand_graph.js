@@ -1,9 +1,9 @@
 
 var Hand = function (id, maxValues) {
 
-  var scale = 500,
-      height = 500,
-      width = 500,
+  var scale = 400,
+      height = 400,
+      width = 400,
       padding = 30;
 
   // scale functions
@@ -35,7 +35,7 @@ var Hand = function (id, maxValues) {
 
   // create our hand container
   var container = d3.select(id)
-    .attr("width", width)
+    .attr("width", '100%')
     .attr("height", height);
 
   var hand = container

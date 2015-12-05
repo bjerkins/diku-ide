@@ -1,7 +1,7 @@
 var PCAScatter = {
   draw: function(id, data) {
-    var w = 500;
-    var h = 500;
+    var w = 400;
+    var h = 400;
     var margin = {top: 20, right: 20, bottom: 40, left: 40};
 
     var radius = 5;
@@ -22,7 +22,7 @@ var PCAScatter = {
                     .domain([max_y, min_y]);
 
     var chart = d3.select(id)
-      .attr("width", w + margin.left + margin.right)
+      .attr("width", '100%')
       .attr("height", h + margin.top + margin.bottom)
       .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
