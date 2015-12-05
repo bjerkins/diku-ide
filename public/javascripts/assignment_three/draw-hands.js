@@ -9,7 +9,7 @@ var DrawHands = {
       .y(function(d) { return d.y * scale; })
       .interpolate("basis");
 
-    var hand = d3.select(id).append("svg")
+    var hand = d3.select(id)
       .attr("width", scale)
       .attr("height", scale);
     
