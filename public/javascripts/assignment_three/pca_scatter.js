@@ -24,7 +24,11 @@ var PCAScatter = {
       .attr("height", h + margin.top + margin.bottom)
       .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
+    
+    // Define the div for the tooltip
+    var div = d3.select("body").append("div") 
+      .attr("class", "tooltip")       
+      .style("opacity", 0);
 
     var y_axis = d3.svg.axis()
                    .scale(scale_y)
@@ -54,6 +58,19 @@ var PCAScatter = {
          .attr("cy", function (d,i) { return scale_y(d[1]); })
          .attr("r", radius)
          .attr("fill", "black")
-         .on("click", function (d, i){ drawHands(i) });
+         .on("click", function (d, i){ drawHands(i) })
+         .on("mouseover", function (d, i) {   
+            div.transition()    
+                .duration(200)    
+                .style("opacity", .9);    
+            div .html(i)  
+                .style("left", (d3.event.pageX) + "px")   
+                .style("top", (d3.event.pageY - 28) + "px");  
+            })          
+          .on("mouseout", function(d) {   
+            div.transition()    
+                .duration(500)    
+                .style("opacity", 0); 
+          });
   }
 };
