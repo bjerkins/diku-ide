@@ -1,8 +1,8 @@
 var PCAScatter = {
   draw: function(id, data) {
-    var w = 400;
-    var h = 400;
-    var margin = {top: 20, right: 20, bottom: 40, left: 40};
+    var w = 310;
+    var h = 360;
+    var margin = {top: 20, right: 10, bottom: 20, left: 30};
 
     var radius = 5;
 
@@ -10,8 +10,6 @@ var PCAScatter = {
     var min_x = d3.min(data, function (d) { return d[0] });
     var max_y = d3.max(data, function (d) { return d[1] });
     var min_y = d3.min(data, function (d) { return d[1] });
-
-    console.log(max_x);
 
     var scale_x = d3.scale.linear()
                     .range([radius, w - radius])
@@ -22,7 +20,7 @@ var PCAScatter = {
                     .domain([max_y, min_y]);
 
     var chart = d3.select(id)
-      .attr("width", '100%')
+      .attr("width",  h + margin.left + margin.right)
       .attr("height", h + margin.top + margin.bottom)
       .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -30,11 +28,13 @@ var PCAScatter = {
 
     var y_axis = d3.svg.axis()
                    .scale(scale_y)
-                   .orient("left");
+                   .orient("left")
+                   .ticks(5);
 
     var x_axis = d3.svg.axis()
                    .scale(scale_x)
-                   .orient("bottom");
+                   .orient("bottom")
+                   .ticks(5);
                    
     chart.append("g")
        .attr("class", "axis")

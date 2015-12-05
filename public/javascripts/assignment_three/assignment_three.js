@@ -1,13 +1,13 @@
 // script for assignment three
 
-var NO_X_COORDS = 56,
-    data,
+var data,
     data_pca,
     handGraph;
 
 d3.text('/javascripts/assignment_three/hands.csv', function (text) {
   // map a function to each row
   data = convertToCoords(text);
+
   // read in pca file
   d3.text('/javascripts/assignment_three/hands_pca.csv', function (text) {
     data_pca = convertToNumbers(text);
@@ -17,8 +17,8 @@ d3.text('/javascripts/assignment_three/hands.csv', function (text) {
 
 // call this when data is ready
 function init() {
-  var maxX = d3.max(data, function(d) { return d3.max(d, function (obj) { return obj.x; }) }),
-      maxY = d3.max(data, function(d) { return d3.max(d, function (obj) { return obj.y; }) });
+  var maxX = d3.max(data, function(d) { return d3.max(d, function (obj) { return obj[0]; }) }),
+      maxY = d3.max(data, function(d) { return d3.max(d, function (obj) { return obj[1]; }) });
 
   handGraph = Hand('#panel-one', { x: maxX, y: maxY });
   handGraph.init();

@@ -1,16 +1,11 @@
 function convertToCoords(text) {
   return d3.csv.parseRows(text).map(function (row) {
     var result = [];
-    // map a function to each value within row
-    row.map(function (value, i) {
-      if (i < NO_X_COORDS) {
-        result.push({
-          x: +row[i],
-          y: +row[NO_X_COORDS + i]
-        });
-      }
-    });
-    return result;
+
+    var xx = row.slice(0, row.length/2);
+    var yy = row.slice(row.length/2, row.length);
+
+    return d3.zip(xx,yy);
   });
 }
 
