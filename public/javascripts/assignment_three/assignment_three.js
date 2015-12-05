@@ -17,6 +17,7 @@ d3.text('/javascripts/assignment_three/hands.csv', function (text) {
 // call this when data is ready
 function init() {
   drawHands();
+  drawPCA();
 }
 
 function drawHands() {
@@ -24,4 +25,8 @@ function drawHands() {
       maxY = d3.max(data, function(d) { return d3.max(d, function (obj) { return obj.y; }) });
       
   DrawHands.draw('#panel-one', data[0], { x: maxX, y: maxY });
+}
+
+function drawPCA() {
+  DrawPCA.draw('#panel-two', data_pca);
 }
