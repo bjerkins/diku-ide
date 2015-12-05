@@ -2,15 +2,17 @@ var DrawHands = {
 
   draw: function (id, data) {
 
+    var scale = 500;
+
     var lineFunction = d3.svg.line()
-      .x(function(d) { return d.x * 100; })
-      .y(function(d) { return d.y * 100; })
+      .x(function(d) { return d.x * scale; })
+      .y(function(d) { return d.y * scale; })
       .interpolate("linear");
 
     //The SVG Container
     var hand = d3.select(id).append("svg")
-      .attr("width", 200)
-      .attr("height", 200);
+      .attr("width", scale)
+      .attr("height", scale);
     
     hand.append("path")
       .attr("d", lineFunction(data))
