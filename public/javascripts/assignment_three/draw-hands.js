@@ -1,6 +1,11 @@
 var DrawHands = {
 
-  draw: function (id, handData) {
+  /**
+   * id: the id of the element
+   * handData: the data of the hand
+   * maxValues: object `{x: MAX_X, y: MAX_Y}` containing max values
+   */
+  draw: function (id, handData, maxValues) {
 
     var scale = 500,
         height = 500,
@@ -9,11 +14,11 @@ var DrawHands = {
 
     // scale functions
     var xScale = d3.scale.linear()
-      .domain([0, d3.max(handData, function(d) { return scale * d.x; })])
+      .domain([0, maxValues.x * scale])
       .range([padding, width - padding * 2]);
 
     var yScale = d3.scale.linear()
-      .domain([0, d3.max(handData, function(d) { return scale * d.y; })])
+      .domain([0, maxValues.y * scale])
       .range([height - padding, padding]);
 
     // create x axis

@@ -21,7 +21,10 @@ function init() {
 }
 
 function drawHands(index) {
-  DrawHands.draw('#panel-one', data[index]);
+  var maxX = d3.max(data, function(d) { return d3.max(d, function (obj) { return obj.x; }) }),
+      maxY = d3.max(data, function(d) { return d3.max(d, function (obj) { return obj.y; }) });
+      
+  DrawHands.draw('#panel-one', data[index], { x: maxX, y: maxY });
 }
 
 function drawPCA() {
