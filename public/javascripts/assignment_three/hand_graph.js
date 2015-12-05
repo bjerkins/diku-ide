@@ -38,36 +38,36 @@ var Hand = function (id, maxValues) {
     .attr("width", width)
     .attr("height", height);
 
-  // append axis
+  var hand = container
+    .append("path")
+    .attr("stroke", d3.scale.category10(1))
+    .attr("stroke-width", 2)
+    .attr("fill", "none");
 
-  container.append("g")
-    .attr("class", "axis")
-    .attr("transform", "translate(0," + (height - padding) + ")")
-    .call(xAxis);
-    
-  container.append("g")
-    .attr("class", "axis")
-    .attr("transform", "translate(" + padding + ",0)")
-    .call(yAxis);
-    
   return {
+
+    /**
+     * Initializes the graph by drawing the axis.
+     */
+    init: function () {      
+      // append axis
+
+      container.append("g")
+        .attr("class", "axis")
+        .attr("transform", "translate(0," + (height - padding) + ")")
+        .call(xAxis);
+        
+      container.append("g")
+        .attr("class", "axis")
+        .attr("transform", "translate(" + padding + ",0)")
+        .call(yAxis);
+    },
+
     /**
      * Draws the graph
      */
     draw: function (handData) {
-
-      // draw lines
-      var lines = container.selectAll("lines")
-        .data(handData, function(d) { return d; });
-
-      lines.enter()
-        .append("path")
-        .attr("d", lineFn(handData))
-        .attr("stroke", d3.scale.category10(1))
-        .attr("stroke-width", 2)
-        .attr("fill", "none");
-
-      lines.exit().remove();
+      hand.transition().attr("d", lineFn(handData));
     }
   };
 };
