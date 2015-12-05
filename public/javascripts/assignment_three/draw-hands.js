@@ -9,11 +9,11 @@ var DrawHands = {
 
     // scale functions
     var xScale = d3.scale.linear()
-      .domain([0, d3.max(handData, function(d) { return d.x; })])
+      .domain([0, d3.max(handData, function(d) { return scale * d.x; })])
       .range([padding, width - padding * 2]);
 
     var yScale = d3.scale.linear()
-      .domain([0, d3.max(handData, function(d) { return d.y; })])
+      .domain([0, d3.max(handData, function(d) { return scale * d.y; })])
       .range([height - padding, padding]);
 
     // create x axis
@@ -30,8 +30,8 @@ var DrawHands = {
 
     // create our line function
     var lineFn = d3.svg.line()
-      .x(function(d) { return xScale(d.x) * scale; })
-      .y(function(d) { return yScale(d.y) * scale; })
+      .x(function(d) { return xScale(d.x * scale); })
+      .y(function(d) { return yScale(d.y * scale); })
       .interpolate("basis");
 
     // create our hand container
