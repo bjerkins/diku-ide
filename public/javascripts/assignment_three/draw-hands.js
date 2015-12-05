@@ -9,7 +9,6 @@ var DrawHands = {
       .y(function(d) { return d.y * scale; })
       .interpolate("linear");
 
-    //The SVG Container
     var hand = d3.select(id).append("svg")
       .attr("width", scale)
       .attr("height", scale);
