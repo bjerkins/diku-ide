@@ -6,13 +6,27 @@ var NO_X_COORDS = 56,
 
 d3.text('/javascripts/assignment_three/hands.csv', function (text) {
   // map a function to each row
-  data = convertToNumbers(text);
+  data = convertToCoords(text);
   // read in pca file
   d3.text('/javascripts/assignment_three/hands_pca.csv', function (text) {
     data_pca = convertToNumbers(text);
     init();
   });
 });
+
+function convertToCoords(text) {
+  return d3.csv.parseRows(text).map(function (row) {
+    var result = [];
+    // map a function to each value within row
+    row.map(function (value, i) {
+      result.push({
+        x: +row[i],
+        y: +row[NO_X_COORDS + i]
+      });
+    });
+    return result;
+  });
+}
 
 function convertToNumbers(text) {
   return d3.csv.parseRows(text).map(function (row) {
@@ -24,7 +38,13 @@ function convertToNumbers(text) {
   });
 }
 
+
 // call this when data is ready
 function init() {
-  console.log(data, data_pca);
+  console.log(data);
+  // drawHands();
+}
+
+function drawHands() {
+  DrawHands.draw('#panel-one', data);
 }
