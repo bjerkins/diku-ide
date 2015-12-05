@@ -120,6 +120,7 @@ var DrawPCA = {
          .attr("cx", function (d,i) { return scale_x(d[0]); })
          .attr("cy", function (d,i) { return scale_y(d[1]); })
          .attr("r", radius)
-         .attr("fill", "black");
+         .attr("fill", "black")
+         .on("click", function (d, i){ drawHands(i) });
   }
 }
