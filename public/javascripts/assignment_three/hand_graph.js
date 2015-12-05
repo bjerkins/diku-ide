@@ -1,18 +1,17 @@
 
 var Hand = function (id, maxValues) {
 
-  var scale = 400,
-      height = 400,
+  var height = 400,
       width = 400,
       padding = 30;
 
   // scale functions
   var xScale = d3.scale.linear()
-    .domain([0, maxValues.x * scale])
+    .domain([0, maxValues.x])
     .range([padding, width - padding * 2]);
 
   var yScale = d3.scale.linear()
-    .domain([0, maxValues.y * scale])
+    .domain([0, maxValues.y])
     .range([height - padding, padding]);
 
   // create x axis
@@ -29,8 +28,8 @@ var Hand = function (id, maxValues) {
 
   // create our line function
   var lineFn = d3.svg.line()
-    .x(function(d) { return xScale(d.x * scale); })
-    .y(function(d) { return yScale(d.y * scale); })
+    .x(function(d) { return xScale(d.x); })
+    .y(function(d) { return yScale(d.y); })
     .interpolate("basis");
 
   // create our hand container
