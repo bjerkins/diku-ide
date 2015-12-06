@@ -26,7 +26,7 @@ block content
 
     h4 Thomas
 
-    p I created the rectangular selection functionality as well as the ability to draw multiple hands in the first panel. The rectangle functionality is mainly stolen from http://bl.ocks.org/lgersman/5311083 with some modifications. 
+    p I created the rectangular selection functionality as well as the ability to draw multiple hands in the first panel. The rectangle functionality is mainly stolen from #[a(href="http://bl.ocks.org/lgersman/5311083", target="_blank") improved version of my d3.js selection frame...] with some modifications. 
 
     p #[i Additional explanation:] #[br] I used the solution from the blog to know what circles are selected by the user. All the rest is made from scratch. The functionality of drawing multiple hands is a bit of a "hack". That is, the hand you see when hovering a dot and the one(s) you see when selecting using the rectangle are created differently. The single hand is just updating the 'd' attribute of a path (this enables us to use the nice transition animation) whereas the multiple hands are created using the ENTER, UPDATE, and EXIT methodology of D3.
 
