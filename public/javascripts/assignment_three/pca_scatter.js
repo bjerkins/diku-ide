@@ -26,7 +26,7 @@ var PCAScatter = {
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
     
     // Define the div for the tooltip
-    var div = d3.select("body").append("div") 
+    var tooltip = d3.select("body").append("div") 
       .attr("class", "tooltip")       
       .style("opacity", 0);
 
@@ -59,18 +59,35 @@ var PCAScatter = {
       .attr("r", radius)
       .attr("fill", "black")
       .on("mouseover", function (d, i) { 
+        
+        // highlight the selected circle
+        d3.select(this)
+          .transition()
+          .attr("fill", "blue")
+          .attr("r", radius + 5);
+
+        // draw the requested hand
         drawHands(i);
-        div.transition()    
+
+        // show tooltip
+        tooltip.transition()    
           .duration(200)    
-          .style("opacity", .9);    
-        div.html(i)  
+          .style("opacity", .9);
+        tooltip.html(i)  
           .style("left", (d3.event.pageX) + "px")   
           .style("top", (d3.event.pageY - 28) + "px");  
       })
-      .on("mouseout", function(d) {   
-        div.transition()    
+      .on("mouseout", function(d) {
+        // remove tooltip
+        tooltip.transition()    
           .duration(500)    
           .style("opacity", 0); 
+
+        // de-highlight (normal) the circle
+        d3.select(this)
+          .transition()
+          .attr("fill", "black")
+          .attr("r", radius);
       });
   }
 };
