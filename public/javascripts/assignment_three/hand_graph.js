@@ -41,7 +41,6 @@ var Hand = function (id, maxValues) {
 
   var hand = container
     .append("path")
-    .attr("stroke", d3.scale.category10(1))
     .attr("stroke-width", 2)
     .attr("fill", "none");
 
@@ -68,8 +67,9 @@ var Hand = function (id, maxValues) {
     /**
      * Draws the graph
      */
-    draw: function (handData) {
-      hand.transition().attr("d", lineFn(handData));
+    draw: function (handData, index) {
+      hand.transition().attr("d", lineFn(handData))
+                       .attr("stroke", colors(index));
     },
 
     update_hands: function() {

@@ -19,7 +19,7 @@ var PCAScatter = function() {
                   .selectAll("circle")[0][index];
 
       d3.select(dot).transition()
-            .attr("fill", "red")
+            .attr("fill", colors(index))
             .attr("r", radius + 5);
     },
     unhighlight_dot: function(id, index) {
@@ -99,7 +99,7 @@ var PCAScatter = function() {
           // highlight the selected circle
           d3.select(this)
             .transition()
-            .attr("fill", "red")
+            .attr("fill", colors(i))
             .attr("r", radius + 5);
 
           // draw the requested hand
