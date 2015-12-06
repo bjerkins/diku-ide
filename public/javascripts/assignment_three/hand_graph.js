@@ -92,6 +92,7 @@ var Hand = function (id, maxValues) {
           .append("path")
           .attr("class", "hej")              
           .attr("stroke", function(d,i) { return colors(d.key); })
+          .attr("stroke-opacity", 0.5)
           .attr("stroke-width", 2)
           .attr("fill", "none")
           .attr("d", function(d,i) { return lineFn(d.value); });
