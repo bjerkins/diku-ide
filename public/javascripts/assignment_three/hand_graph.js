@@ -1,7 +1,7 @@
 var Hand = function (id, maxValues) {
 
   var height = 400,
-      width = 350,
+      width = 450,
       padding = 30;
 
   // scale functions

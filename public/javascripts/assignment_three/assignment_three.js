@@ -19,6 +19,7 @@ function init() {
       maxY = d3.max(data, function(d) { return d3.max(d, function (obj) { return obj[1]; }) });
 
   handGraph = Hand('#panel-one', { x: maxX, y: maxY });
+  pcaScatter = PCAScatter();
   handGraph.init();
   drawPCA();
 
@@ -27,6 +28,11 @@ function init() {
     .on('mouseover', function (d) {
       var index = d3.select(this).attr('index');
       drawHands(index);
+      pcaScatter.highlight_dot('#panel-two', index);
+    })
+    .on('mouseout', function (d) {
+      var index = d3.select(this).attr('index');
+      pcaScatter.unhighlight_dot('#panel-two', index);
     });
 
 }
@@ -36,5 +42,5 @@ function drawHands(index) {
 }
 
 function drawPCA() {
-  PCAScatter.draw('#panel-two', data_pca);
+  pcaScatter.draw('#panel-two', data_pca);
 }
