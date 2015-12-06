@@ -5,9 +5,7 @@ var data,
     handGraph;
 
 d3.text('/javascripts/assignment_three/hands.csv', function (text) {
-  // map a function to each row
   data = convertToCoords(text);
-
   // read in pca file
   d3.text('/javascripts/assignment_three/hands_pca.csv', function (text) {
     data_pca = convertToNumbers(text);
