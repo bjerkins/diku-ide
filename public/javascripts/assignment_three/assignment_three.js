@@ -34,15 +34,6 @@ function init() {
       var index = d3.select(this).attr('index');
       pcaScatter.unhighlight_dot('#panel-two', index);
     });
-
-  // setup update button
-  d3.select('.update')
-    .on('mousedown', function (d){
-      var att1 = d3.select(this).attr('a1');
-      var att2 = d3.select(this).attr('a2');
-      drawPCA(5, 6);
-    });
-
 }
 
 function drawHands(index) {
