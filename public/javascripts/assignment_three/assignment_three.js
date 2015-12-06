@@ -21,6 +21,14 @@ function init() {
   handGraph = Hand('#panel-one', { x: maxX, y: maxY });
   handGraph.init();
   drawPCA();
+
+  // setup extra information hover
+  d3.select('.extra-information')
+    .on('mouseover', function (d) {
+      var index = d3.select(this).attr('index');
+      drawHands(index);
+    });
+
 }
 
 function drawHands(index) {

@@ -43,7 +43,6 @@ var Hand = function (id, maxValues) {
     .attr("fill", "none");
 
   return {
-
     /**
      * Initializes the graph by drawing the axis.
      */
