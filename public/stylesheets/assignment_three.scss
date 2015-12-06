@@ -1,5 +1,27 @@
 /* Everything below belongs to assignment 3 */
 
+/* disable text selection */
+#panel-two *::selection {
+    background : transparent;
+}
+
+#panel-two *::-moz-selection {
+    background:transparent;
+}
+
+#panel-two *::-webkit-selection {
+    background:transparent;
+}
+
+#panel-two {
+    cursor: pointer;
+}
+
+rect.selection {
+    stroke          : black;
+    fill            : transparent;
+}
+
 circle {
 	cursor: pointer;
 }

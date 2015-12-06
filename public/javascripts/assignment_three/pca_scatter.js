@@ -1,9 +1,16 @@
+var radius = 5;
+
+var on_hover = function(d, i) {
+  d3.select(d).transition()
+              .attr("fill", "blue")
+              .attr("r", radius + 5);
+}
+
 var PCAScatter = function() {
   var w = 410;
   var h = 360;
   var margin = {top: 20, right: 10, bottom: 20, left: 30};
 
-  var radius = 5;
 
   return {
     highlight_dot: function(id, index) {
@@ -13,7 +20,7 @@ var PCAScatter = function() {
 
       d3.select(dot).transition()
             .attr("fill", "blue")
-            .attr("r", radius + 5);
+            .attr("r", radius + 5);;
     },
     unhighlight_dot: function(id, index) {
       var dot = d3.select(id)
@@ -110,6 +117,96 @@ var PCAScatter = function() {
             .attr("fill", "black")
             .attr("r", radius);
         });
+
+
+      // Thomas' part about rectangular selection
+      // Inspiration from http://bl.ocks.org/lgersman/5311083
+      var svg = d3.select(id);
+      svg.on( "mousedown", function() {
+
+          var p = d3.mouse(this);
+
+          svg.append( "rect")
+          .attr({
+              class   : "selection",
+              x       : p[0],
+              y       : p[1],
+              width   : 0,
+              height  : 0
+          });
+      })
+      .on( "mousemove", function() {
+          var s = svg.select( "rect.selection");
+
+          if (!s.empty()) {
+              var p = d3.mouse( this),
+                  d = {
+                      x       : parseInt( s.attr( "x"), 10),
+                      y       : parseInt( s.attr( "y"), 10),
+                      width   : parseInt( s.attr( "width")),
+                      height  : parseInt( s.attr( "height"))
+                  },
+                  move = {
+                      x : p[0] - d.x - 0.5, // -0.5 is a hotfix. Don't know why it doesn't parse the int correctly
+                      y : p[1] - d.y
+                  }
+              ;
+
+              if( move.x < 1 || (move.x*2<d.width)) {
+                  d.x = p[0];
+                  d.width -= move.x;
+                  if (d.width < 0)
+                    d.width = move.x;
+              } else {
+                  d.width = move.x;       
+              }
+
+              if( move.y < 1 || (move.y*2<d.height)) {
+                  d.y = p[1];
+                  d.height -= move.y;
+              } else {
+                  d.height = move.y;       
+              }
+             
+              s.attr(d);
+
+              // deselect all temporary selected state objects
+              d3.selectAll( 'circle').classed( "selected", false)
+                .each(function (d,i) { removeHand(i); })
+                .transition()
+                .attr("fill", "black")
+                .attr("r", radius);
+
+              svg.selectAll('circle').each( function( cd, i) {
+                var circle = d3.select(this);
+                var cx = parseInt(circle.attr('cx')) + margin.left,
+                    cy = parseInt(circle.attr('cy')) + margin.top
+
+                  if( !circle.classed( "selected") &&
+                          // inner circle inside selection frame
+                      cx >= d.x && cx <= d.x + d.width && 
+                      cy >= d.y && cy <= d.y + d.height
+                  ) {
+                      d3.select( this)
+                      .attr( "class", "selected")
+                      .attr("fill", colors(i))
+                      .transition()
+                      .attr("r", radius+5);
+
+                      addHand(i);
+                  }
+              });
+          }
+      })
+      .on( "mouseup", function() {
+          // remove selection rect
+          svg.selectAll("rect.selection").remove();
+          d3.selectAll( 'circle').classed( "selected", false)
+                .each(function (d,i) { removeHand(i); })
+                .transition()
+                .attr("fill", "black")
+                .attr("r", radius);
+      });
     }
   };
 };

@@ -4,6 +4,8 @@ var data,
     data_pca,
     handGraph;
 
+var colors = d3.scale.linear().domain([0,20,40]).range(["blue","green","red"]);
+
 d3.text('/javascripts/assignment_three/hands.csv', function (text) {
   data = convertToCoords(text);
   // read in pca file
@@ -39,6 +41,15 @@ function init() {
 
 function drawHands(index) {
   handGraph.draw(data[index]);
+}
+
+function addHand(index) {
+  handGraph.add_hand(data[index], index);
+
+}
+
+function removeHand(index) {
+  handGraph.remove_hand(index);
 }
 
 function drawPCA() {
