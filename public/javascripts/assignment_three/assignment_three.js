@@ -24,7 +24,7 @@ function init() {
   drawPCA();
 
   // setup extra information hover
-  d3.select('.extra-information')
+  d3.selectAll('.extra-information')
     .on('mouseover', function (d) {
       var index = d3.select(this).attr('index');
       drawHands(index);
