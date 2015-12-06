@@ -13,14 +13,14 @@ var PCAScatter = function() {
 
 
   return {
-    highlight_dot: function(id, index) {
+    highlight_dot: function(id, index, attribute1, attribute2) {
       var dot = d3.select(id)
                   .select('g')
                   .selectAll("circle")[0][index];
 
       d3.select(dot).transition()
-            .attr("fill", "blue")
-            .attr("r", radius + 5);;
+            .attr("fill", "red")
+            .attr("r", radius + 5);
     },
     unhighlight_dot: function(id, index) {
       var dot = d3.select(id)
@@ -31,13 +31,13 @@ var PCAScatter = function() {
             .attr("fill", "black")
             .attr("r", radius);
     },
-    draw: function(id, data) {
+    draw: function(id, data, attribute1, attribute2) {
 
 
-      var max_x = d3.max(data, function (d) { return d[0] });
-      var min_x = d3.min(data, function (d) { return d[0] });
-      var max_y = d3.max(data, function (d) { return d[1] });
-      var min_y = d3.min(data, function (d) { return d[1] });
+      var max_x = d3.max(data, function (d) { return d[attribute1] });
+      var min_x = d3.min(data, function (d) { return d[attribute1] });
+      var max_y = d3.max(data, function (d) { return d[attribute2] });
+      var min_y = d3.min(data, function (d) { return d[attribute2] });
 
       var scale_x = d3.scale.linear()
                       .range([radius, w - radius])
@@ -82,8 +82,8 @@ var PCAScatter = function() {
         .data(data)
         .enter()
         .append("circle")
-        .attr("cx", function (d,i) { return scale_x(d[0]); })
-        .attr("cy", function (d,i) { return scale_y(d[1]); })
+        .attr("cx", function (d,i) { return scale_x(d[attribute1]); })
+        .attr("cy", function (d,i) { return scale_y(d[attribute2]); })
         .attr("r", radius)
         .attr("fill", "black")
         .on("mouseover", function (d, i) { 
@@ -91,7 +91,7 @@ var PCAScatter = function() {
           // highlight the selected circle
           d3.select(this)
             .transition()
-            .attr("fill", "blue")
+            .attr("fill", "red")
             .attr("r", radius + 5);
 
           // draw the requested hand

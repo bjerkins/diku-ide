@@ -23,10 +23,10 @@ function init() {
   handGraph = Hand('#panel-one', { x: maxX, y: maxY });
   pcaScatter = PCAScatter();
   handGraph.init();
-  drawPCA();
+  drawPCA(0, 1);
 
   // setup extra information hover
-  d3.select('.extra-information')
+  d3.selectAll('.extra-information')
     .on('mouseover', function (d) {
       var index = d3.select(this).attr('index');
       drawHands(index);
@@ -36,7 +36,6 @@ function init() {
       var index = d3.select(this).attr('index');
       pcaScatter.unhighlight_dot('#panel-two', index);
     });
-
 }
 
 function drawHands(index) {
@@ -52,6 +51,6 @@ function removeHand(index) {
   handGraph.remove_hand(index);
 }
 
-function drawPCA() {
-  pcaScatter.draw('#panel-two', data_pca);
+function drawPCA(a1, a2) {
+  pcaScatter.draw('#panel-two', data_pca, a1, a2);
 }
