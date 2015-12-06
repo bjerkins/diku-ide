@@ -77,9 +77,11 @@ var Hand = function (id, maxValues) {
       hand.transition().attr("d", "");
 
       var hands_data = new Array();
+
       for (h in hands) {
         hands_data.push(hands[h]);
       }
+
       var paths = hands_container.selectAll("path")
           .data(hands_data);
 
@@ -98,10 +100,11 @@ var Hand = function (id, maxValues) {
           .attr("d", function(d,i) { return lineFn(d.value); });
 
       // EXIT
+
       //Remove old elements as needed.
-      paths.exit()
-          .remove();
+      paths.exit().remove();
     },
+    
     add_hand: function(handData, index) {
       hands[index] = {key : index, value : handData};
       this.update_hands();
