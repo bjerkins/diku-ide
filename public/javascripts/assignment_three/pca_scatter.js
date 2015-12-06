@@ -1,15 +1,15 @@
 var PCAScatter = {
-  draw: function(id, data) {
+  draw: function(id, data, attribute1, attribute2) {
     var w = 310;
     var h = 360;
     var margin = {top: 20, right: 10, bottom: 20, left: 30};
 
-    var radius = 5;
+    var radius = 4;
 
-    var max_x = d3.max(data, function (d) { return d[0] });
-    var min_x = d3.min(data, function (d) { return d[0] });
-    var max_y = d3.max(data, function (d) { return d[1] });
-    var min_y = d3.min(data, function (d) { return d[1] });
+    var max_x = d3.max(data, function (d) { return d[attribute1] });
+    var min_x = d3.min(data, function (d) { return d[attribute1] });
+    var max_y = d3.max(data, function (d) { return d[attribute2] });
+    var min_y = d3.min(data, function (d) { return d[attribute2] });
 
     var scale_x = d3.scale.linear()
                     .range([radius, w - radius])
@@ -54,8 +54,8 @@ var PCAScatter = {
       .data(data)
       .enter()
       .append("circle")
-      .attr("cx", function (d,i) { return scale_x(d[0]); })
-      .attr("cy", function (d,i) { return scale_y(d[1]); })
+      .attr("cx", function (d,i) { return scale_x(d[attribute1]); })
+      .attr("cy", function (d,i) { return scale_y(d[attribute2]); })
       .attr("r", radius)
       .attr("fill", "black")
       .on("mouseover", function (d, i) { 
@@ -63,7 +63,7 @@ var PCAScatter = {
         // highlight the selected circle
         d3.select(this)
           .transition()
-          .attr("fill", "blue")
+          .attr("fill", "red")
           .attr("r", radius + 5);
 
         // draw the requested hand

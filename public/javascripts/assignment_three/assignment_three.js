@@ -20,7 +20,7 @@ function init() {
 
   handGraph = Hand('#panel-one', { x: maxX, y: maxY });
   handGraph.init();
-  drawPCA();
+  drawPCA(0, 1);
 
   // setup extra information hover
   d3.select('.extra-information')
@@ -29,12 +29,21 @@ function init() {
       drawHands(index);
     });
 
+  // setup update button
+  d3.select('.update')
+    .on('mousedown', function (d){
+      var att1 = d3.select(this).attr('a1');
+      var att2 = d3.select(this).attr('a2');
+      drawPCA(5, 6);
+    });
+
 }
 
 function drawHands(index) {
   handGraph.draw(data[index]);
 }
 
-function drawPCA() {
-  PCAScatter.draw('#panel-two', data_pca);
+function drawPCA(a1, a2) {
+  PCAScatter.draw('#panel-two', data_pca, a1, a2);
 }
+
