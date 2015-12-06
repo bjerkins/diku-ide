@@ -83,7 +83,7 @@ var PCAScatter = {
           .duration(500)    
           .style("opacity", 0); 
 
-        // de-highlight (normal) the circle
+        // de-highlight (normalize) the circle
         d3.select(this)
           .transition()
           .attr("fill", "black")
