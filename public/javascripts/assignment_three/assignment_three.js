@@ -19,14 +19,20 @@ function init() {
       maxY = d3.max(data, function(d) { return d3.max(d, function (obj) { return obj[1]; }) });
 
   handGraph = Hand('#panel-one', { x: maxX, y: maxY });
+  pcaScatter = PCAScatter();
   handGraph.init();
   drawPCA(0, 1);
 
   // setup extra information hover
-  d3.select('.extra-information')
+  d3.selectAll('.extra-information')
     .on('mouseover', function (d) {
       var index = d3.select(this).attr('index');
       drawHands(index);
+      pcaScatter.highlight_dot('#panel-two', index);
+    })
+    .on('mouseout', function (d) {
+      var index = d3.select(this).attr('index');
+      pcaScatter.unhighlight_dot('#panel-two', index);
     });
 
   // setup update button
@@ -44,6 +50,5 @@ function drawHands(index) {
 }
 
 function drawPCA(a1, a2) {
-  PCAScatter.draw('#panel-two', data_pca, a1, a2);
+  pcaScatter.draw('#panel-two', data_pca, a1, a2);
 }
-
