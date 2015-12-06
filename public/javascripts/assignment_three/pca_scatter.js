@@ -87,7 +87,15 @@ var PCAScatter = function() {
         .attr("r", radius)
         .attr("fill", "black")
         .on("mouseover", function (d, i) { 
-          
+          // Reset everything from the multiselect
+          d3.selectAll( 'circle')
+                .each(function (d,i) { removeHand(i); });
+          d3.selectAll( 'circle.selected')   
+            .classed( "selected", false)   
+            .transition()
+            .attr("fill", "black")
+            .attr("r", radius);
+
           // highlight the selected circle
           d3.select(this)
             .transition()
@@ -103,7 +111,9 @@ var PCAScatter = function() {
             .style("opacity", .9);
           tooltip.html(i)  
             .style("left", (d3.event.pageX) + "px")   
-            .style("top", (d3.event.pageY - 28) + "px");  
+            .style("top", (d3.event.pageY - 28) + "px"); 
+
+
         })
         .on("mouseout", function(d) {
           // remove tooltip
@@ -170,7 +180,7 @@ var PCAScatter = function() {
              
               s.attr(d);
 
-              // deselect all temporary selected state objects
+              // deselect all circles!
               d3.selectAll( 'circle').classed( "selected", false)
                 .each(function (d,i) { removeHand(i); })
                 .transition()
@@ -183,7 +193,7 @@ var PCAScatter = function() {
                     cy = parseInt(circle.attr('cy')) + margin.top
 
                   if( !circle.classed( "selected") &&
-                          // inner circle inside selection frame
+                      // circles inside selection
                       cx >= d.x && cx <= d.x + d.width && 
                       cy >= d.y && cy <= d.y + d.height
                   ) {
@@ -201,11 +211,6 @@ var PCAScatter = function() {
       .on( "mouseup", function() {
           // remove selection rect
           svg.selectAll("rect.selection").remove();
-          d3.selectAll( 'circle').classed( "selected", false)
-                .each(function (d,i) { removeHand(i); })
-                .transition()
-                .attr("fill", "black")
-                .attr("r", radius);
       });
     }
   };

@@ -7,7 +7,7 @@ block content
 
     h3 1. Two panel visualization
     
-    p Please start by hovering some of the points in the graph on the right to see the outline of the corresponding hand. This #[p(class="extra-information" index="39") point] and this #[p(class="extra-information" index="10") point] are crazy!
+    p Please start by hovering some of the points in the graph on the right to see the outline of the corresponding hand. This #[span(class="extra-information" index="39") point] and this #[span(class="extra-information" index="10") point] are crazy! You can also select multiple points by drawing a rectangle on the scatter plot. 
 
     .row
       .col-md-6
@@ -25,6 +25,10 @@ block content
     p Made the ability to add a custom class and an attribute to any element in our descriptions that , when hovered, highlights a certain point and triggers the corresponding hand to be drawn. This allows us to include triggers within our text that the user can interact with, making our descriptions more readable and our visualizations more intuitive. 
 
     h4 Thomas
+
+    p I created the rectangular selection functionality as well as the ability to draw multiple hands in the first panel. The rectangle functionality is mainly stolen from http://bl.ocks.org/lgersman/5311083 with some modifications. 
+
+    p #[i Additional explanation:] #[br] I used the solution from the blog to know what circles are selected by the user. All the rest is made from scratch. The functionality of drawing multiple hands is a bit of a "hack". That is, the hand you see when hovering a dot and the one(s) you see when selecting using the rectangle are created differently. The single hand is just updating the 'd' attribute of a path (this enables us to use the nice transition animation) whereas the multiple hands are created using the ENTER, UPDATE, and EXIT methodology of D3.
 
     h4 Sokratis
 
