@@ -41,7 +41,6 @@ var Hand = function (id, maxValues) {
 
   var hand = container
     .append("path")
-    .attr("stroke", d3.scale.category10(1))
     .attr("stroke-width", 2)
     .attr("fill", "none");
 
@@ -68,8 +67,9 @@ var Hand = function (id, maxValues) {
     /**
      * Draws the graph
      */
-    draw: function (handData) {
-      hand.transition().attr("d", lineFn(handData));
+    draw: function (handData, index) {
+      hand.transition().attr("d", lineFn(handData))
+                       .attr("stroke", colors(index));
     },
 
     update_hands: function() {
@@ -77,9 +77,11 @@ var Hand = function (id, maxValues) {
       hand.transition().attr("d", "");
 
       var hands_data = new Array();
+
       for (h in hands) {
         hands_data.push(hands[h]);
       }
+
       var paths = hands_container.selectAll("path")
           .data(hands_data);
 
@@ -98,10 +100,11 @@ var Hand = function (id, maxValues) {
           .attr("d", function(d,i) { return lineFn(d.value); });
 
       // EXIT
+
       //Remove old elements as needed.
-      paths.exit()
-          .remove();
+      paths.exit().remove();
     },
+    
     add_hand: function(handData, index) {
       hands[index] = {key : index, value : handData};
       this.update_hands();

@@ -39,7 +39,7 @@ function init() {
 }
 
 function drawHands(index) {
-  handGraph.draw(data[index]);
+  handGraph.draw(data[index], index);
 }
 
 function addHand(index) {
