@@ -15,6 +15,10 @@ router.get('/:id', function(req, res, next) {
     res.render('assignment_three', {
       title: 'Assignment 3'
     });
+  } else if (id == 4) {
+    res.render('assignment_four', {
+      title: 'Assignment 4'
+    });
   } else {
     res.render('error', {
       message: 'Coming soon!'
