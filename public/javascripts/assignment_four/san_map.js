@@ -48,7 +48,7 @@ var SanFranMap = function (id) {
             .attr('data-name', function(d) {
                 return d.properties.name;
             })
-            .style('fill', '#FB5B1F')
+            .style('fill', '#222222')
             .style('stroke', '#ffffff');
         svg.selectAll('path')
             .data(crime_data.features)
