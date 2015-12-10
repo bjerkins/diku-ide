@@ -1,11 +1,15 @@
 var SanFranMap = function (id) {
-    var data,
+    var map_data,
+        crime_data,
         width = 600, 
         height = 600;
 
-    d3.json('/javascripts/assignment_four/data/san_fran.geojson', function (d) {
-        data = d;
-        init();
+    d3.json('/javascripts/assignment_four/data/san_fran.geojson', function (d1) {
+        map_data = d1;
+        d3.json('/javascripts/assignment_four/data/sf_crime.geojson', function (d2) {
+            crime_data = d2;
+            init();
+        });
     });
 
     function init() {
@@ -20,21 +24,24 @@ var SanFranMap = function (id) {
             .translate([0, 0])
             .precision(0);
 
-        var path = d3.geo.path().projection(projection);
-        var bounds = path.bounds(data);
+        var map_path = d3.geo.path().projection(projection);
+        var map_bounds = map_path.bounds(map_data);
 
-        var xScale = width / Math.abs(bounds[1][0] - bounds[0][0]);
-        var yScale = height / Math.abs(bounds[1][1] - bounds[0][1]);
+        var crime_path = d3.geo.path().projection(projection);
+        var crime_bounds = crime_path.bounds(map_data);
+
+        var xScale = width / Math.abs(map_bounds[1][0] - map_bounds[0][0]);
+        var yScale = height / Math.abs(map_bounds[1][1] - map_bounds[0][1]);
         var scale = xScale < yScale ? xScale : yScale;
 
-        var transl = [(width - scale * (bounds[1][0] + bounds[0][0])) / 2, (height - scale * (bounds[1][1] + bounds[0][1])) / 2];
+        var transl = [(width - scale * (map_bounds[1][0] + map_bounds[0][0])) / 2, (height - scale * (map_bounds[1][1] + map_bounds[0][1])) / 2];
         projection.scale(scale).translate(transl);
         
         svg.selectAll('path')
-            .data(data.features)
+            .data(map_data.features)
             .enter()
             .append('path')
-            .attr('d', path)
+            .attr('d', map_path)
             .attr('data-id', function(d) {
                 return d.id;
             })
@@ -42,6 +49,19 @@ var SanFranMap = function (id) {
                 return d.properties.name;
             })
             .style('fill', '#FB5B1F')
+            .style('stroke', '#ffffff');
+        svg.selectAll('path')
+            .data(crime_data.features)
+            .enter()
+            .append('path')
+            .attr('d', crime_path)
+            .attr('data-id', function(d) {
+                return d.id;
+            })
+            .attr('data-name', function(d) {
+                return d.properties.name;
+            })
+            .style('fill', '#0066ff')
             .style('stroke', '#ffffff');
     };
 };
