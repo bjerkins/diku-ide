@@ -27,7 +27,10 @@ var SanFranMap = function (id) {
         var yScale = height / Math.abs(bounds[1][1] - bounds[0][1]);
         var scale = xScale < yScale ? xScale : yScale;
 
-        var transl = [(width - scale * (bounds[1][0] + bounds[0][0])) / 2, (height - scale * (bounds[1][1] + bounds[0][1])) / 2];
+        var transl = [
+            (width - scale * (bounds[1][0] + bounds[0][0])) / 2, 
+            (height - scale * (bounds[1][1] + bounds[0][1])) / 2
+        ];
         projection.scale(scale).translate(transl);
         
         svg.selectAll('path')
@@ -41,7 +44,7 @@ var SanFranMap = function (id) {
             .attr('data-name', function(d) {
                 return d.properties.name;
             })
-            .style('fill', '#222222')
+            .style('fill', '#c0362c')
             .style('stroke', '#ffffff');
     };
 };
