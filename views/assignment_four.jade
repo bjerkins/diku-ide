@@ -5,7 +5,7 @@ block content
   #assignment_four
     h1 Assignment 4
 
-    p We chose to use CartoDB for our maps for few reasons. First, the transformation of the data to SQL queryable format is super nice and gives a very powerful entry to query the data. Second, the available maps are extremely flexible and customizable that requires no code at all to implement the default behaviors of the map. Finally, their Javascript SDK is easy to use for embedding the maps in our web application. 
+    p We chose to use CartoDB for our maps for a few reasons. First, the transformation of the data to SQL queryable format is super nice and gives a very powerful entry to query the data. Second, the available maps are extremely flexible and customizable that requires no code at all to implement the default behaviors of the map. Finally, their Javascript SDK is easy to use for embedding the maps in our web application. 
 
     h3 Crimes per Police District
 
@@ -24,6 +24,16 @@ block content
       | GROUP BY district
 
     div#map1.map
+
+    h3 Types of Crime Throughout the Day
+
+    p Using the same datasets, we can look at another interesting aspect of crime in San Fransisco: at what time of day does most crime occur and does the types of crime change throughout the day. To explore this aspect, we created the visualization below where we discarded the day and year of the crimes and solely looked at the time of day and type of crime. The color coding for the crimes are chosen somewhat to differentiate the severeness of the crime (e.g. "suspicous occ", "other offenses", and "non-criminal" are almost indistinguishable whereas "drug/narcotic" sticks out). Hint: you can pause the animation, click on the slider and then use the arrow keys to step through the animation.
+
+    p The first thing you might notice is how it seems that a lot of crimes happen exactly at X O'clock. This could simply be explained by some officers disregarding the minute count and just rounding to the nearest hour. Now, let us look at the number of crimes registered throughout the day. In the time period of ~03 to ~08, few crimes are registered. Hopefully, the bad guys are sleeping. Although, it could also be due to fewer cops on the streets during these hours. The day is busier and during the evening and early night, a lot of crimes are reported.
+
+    p We can also note the type of crime in the different police districts. Most noticeable is drug and narcotic crime (black dots). They seem to take place mostly in and around the Tenderloin district. This is not all that unexpected if you believe that drugs and other crimes go hand in hand. If we look back at the first visualization, Tenderloin has 909 registered felonies - that is quite a large number for such a small area.
+
+    p Lastly, we were surprised that you cannot see a bigger difference in car thefts and burglaries during the night compared to day. Maybe burglaries happen 24/7 or maybe they are just reported at different times of the day.  
 
     div#map2.map
 
