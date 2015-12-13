@@ -13,7 +13,7 @@ block content
 
     p The following map shows the 10 police districts in San Fransisco where each one has been colored depending on the total crimes recorded within it (#[i stronger color = more crimes]). The data consists of 10 thousand recorded crimes in the period of January 2003 to May 2015. As the map clearly shows, the Southern District (South of Market) makes up of nearly 20% of the total crimes (1819 crimes of 10.000 total), while the Richmond District contains the fewest or around 5% (513 crimes).
 
-    p Although it certainly looks like the Southern District is the worst part of San Fransisco, we haven't taken into account the population density of each district. Including that data would give a more correct visualization of which district has the most crime-related problems, since naturally where more people are living more crimes are committed. Our intuition is that the more crimes that are committed per capita the more serios of a problem it has. We tried finding data on the population for each district but were unfortunately unable to find it.
+    p Although it certainly looks like the Southern District is the worst part of San Fransisco, we haven't taken into account the population density of each district. Including that data would give a more correct visualization of which district has the most crime-related problems, since naturally where more people are living more crimes are committed. Our intuition is that the more crimes that are committed per capita the more serious of a problem it has. We tried finding data on the population for each district but were unfortunately unable to find it.
 
     h4 Implementation
 
@@ -37,6 +37,17 @@ block content
 
     div#map2.map
 
+    h3 Crimes per period of the year
+
+    p The following map shows the crimes commited in the state of San Fransisco durin a period of 2003-2015. As it can be observed there are certain period during each year that have a higher number of crimes than the rest of the year. These periods can be primarily identified during Decemer, January, April, May, July, August and October. 
+
+    p During December and January are the christmas holidays, during which period people in the north eastern side of San Fransisco where it is considered to be a high value area, we can notice a lot of thefts (indicated by the green dots). This can happen due to the fact that during this period habitants may leave their home for vacation. As a result, these areas are more probable to be robbed.
+
+    p We can notice the same pattern for the months April and May because during that period is the spring break in San Fransisco in the same area as described above. The same pattern occurs during October because that period is the fall break in San Fransisco.
+
+    p Same goes for the months July and August because during that period is the summer break and so people tend to leave the city for the coast areas, hence there is an increase of thefts (green dots) in the city areas in the north east.
+
+    div#map3.map
     //- load scripts
     script(src='/javascripts/assignment_four/san_map.js')
     script(src='/javascripts/assignment_four/assignment_four.js')
