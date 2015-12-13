@@ -5,6 +5,24 @@ block content
   #assignment_four
     h1 Assignment 4
 
+    p We chose to use CartoDB for our maps for few reasons. First, the transformation of the data to SQL queryable format is super nice and gives a very powerful entry to query the data. Second, the available maps are extremely flexible and customizable that requires no code at all to implement the default behaviors of the map. Finally, their Javascript SDK is easy to use for embedding the maps in our web application. 
+
+    h3 Crimes per Police District
+
+    p.small.all-caps Data used: #[code sf_crime.geojson] and #[code sfpd_districts.geojson]
+
+    p The following map shows the 10 police districts in San Fransisco where each one has been colored depending on the total crimes recorded within it (#[i stronger color = more crimes]). The data consists of 10 thousand recorded crimes in the period of January 2003 to May 2015. As the map clearly shows, the Southern District (South of Market) makes up of nearly 20% of the total crimes (1819 crimes of 10.000 total), while the Richmond District contains the fewest or around 5% (513 crimes).
+
+    p Although it certainly looks like the Southern District is the worst part of San Fransisco, we haven't taken into account the population density of each district. Including that data would give a more correct visualization of which district has the most crime-related problems, since naturally where more people are living more crimes are committed. Our intuition is that the more crimes that are committed per capita the more serios of a problem it has. We tried finding data on the population for each district but were unfortunately unable to find it.
+
+    h4 Implementation
+
+    p We used the merge tool on CartoDB to do a #[i column join merge] of the two datasets used in this visualization where the datasets were merged on the name of the district. After that, we used the following custom SQL statement to count the crimes within each district:
+
+    pre SELECT COUNT(district) as numberofcrimes, district
+      | FROM sf_crime_merge
+      | GROUP BY district
+
     div#map1
 
     //- load scripts
