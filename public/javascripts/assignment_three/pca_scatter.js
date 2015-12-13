@@ -17,7 +17,7 @@ var PCAScatter = function() {
       var dot = d3.select(id)
                   .select('g')
                   .selectAll("circle")[0][index];
-
+                  
       d3.select(dot).transition()
             .attr("fill", colors(index))
             .attr("r", radius + 5);
