@@ -6,10 +6,10 @@ var data,
 
 var colors = d3.scale.linear().domain([0,20,40]).range(["blue","green","red"]);
 
-d3.text('/javascripts/assignment_three/hands.csv', function (text) {
+d3.text('/javascripts/assignment_3/hands.csv', function (text) {
   data = convertToCoords(text);
   // read in pca file
-  d3.text('/javascripts/assignment_three/hands_pca.csv', function (text) {
+  d3.text('/javascripts/assignment_3/hands_pca.csv', function (text) {
     data_pca = convertToNumbers(text);
     init();
   });

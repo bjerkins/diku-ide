@@ -4,9 +4,9 @@ var SanFranMap = function (id) {
         width = 600, 
         height = 600;
 
-    d3.json('/javascripts/assignment_four/data/san_fran.geojson', function (d1) {
+    d3.json('/javascripts/assignment_4/data/san_fran.geojson', function (d1) {
         map_data = d1;
-        d3.json('/javascripts/assignment_four/data/sf_crime.geojson', function (d2) {
+        d3.json('/javascripts/assignment_4/data/sf_crime.geojson', function (d2) {
             crime_data = d2;
             init();
         });

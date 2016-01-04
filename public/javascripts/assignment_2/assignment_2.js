@@ -3,7 +3,7 @@
 
 var data;
 
-d3.csv('/javascripts/assignment_two/thessaloniki.csv', function (d) {
+d3.csv('/javascripts/assignment_2/thessaloniki.csv', function (d) {
     data = d;
     init();
 });
@@ -102,7 +102,7 @@ function filterData(years) {
 // Boxplot
 
 var box_data;
-d3.csv('/javascripts/assignment_two/thessaloniki.csv', function (d) {
+d3.csv('/javascripts/assignment_2/thessaloniki.csv', function (d) {
     box_data = parse_data(d);
 
     boxplot_init();
