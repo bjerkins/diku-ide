@@ -7,7 +7,8 @@
     "underscore": "~1.8.3",
     "datamaps": "~0.4.0",
     "topojson": "~1.6.19",
-    "cartodb.js": "~3.15.8"
+    "cartodb.js": "~3.15.8",
+    "three.js": "threejs#*"
   },
   "resolutions": {
     "d3": "~3.5.9",
