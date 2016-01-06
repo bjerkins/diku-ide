@@ -13,7 +13,7 @@ d3.csv('/javascripts/assignment_5/data/atoms.csv', function(d) {
 }, function(error, rows) {
     data = rows;
     init();
-    animate();
+    // animate();
 });
 
 
@@ -21,21 +21,36 @@ d3.csv('/javascripts/assignment_5/data/atoms.csv', function(d) {
 function init() {
 	scene = new THREE.Scene();
 
-    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
-    camera.position.z = 1000;
+    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 100);
+    camera.position.z = 100;
 
-    geometry = new THREE.BoxGeometry(200, 200, 200);
-    material = new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true });
-
-    mesh = new THREE.Mesh(geometry, material);
-    scene.add(mesh);
+    data.forEach(function (atom) {
+        var material = new THREE.MeshBasicMaterial({
+            color: atomColor(atom.element)
+        });
+        var mesh = new THREE.Mesh(new THREE.SphereGeometry( 2, 5, 5 ), material);
+        mesh.position.set(atom.x, atom.y, atom.z);
+        scene.add(mesh);
+    });
 
     renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
 
     document.body.appendChild(renderer.domElement);
 
+    renderer.render(scene, camera);
+
     findBonds();
+}
+
+function atomColor(type) {
+    return {
+        'C': 'gray',
+        'N': 'blue',
+        'O': 'red',
+        'S': 'yellow',
+        'H': 'white',
+    }[type];
 }
 
 function animate() {
