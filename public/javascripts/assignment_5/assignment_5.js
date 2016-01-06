@@ -1,6 +1,13 @@
 // script for assignment five
 
-var data, camera, scene, renderer, bonds = {};
+var data, 
+    camera, 
+    scene, 
+    renderer,
+    flyControls,
+    clock,
+    bonds = {};
+var CONST = 1;
 
 d3.csv('/javascripts/assignment_5/data/atoms.csv', function(d) {
   return {
@@ -13,34 +20,52 @@ d3.csv('/javascripts/assignment_5/data/atoms.csv', function(d) {
 }, function(error, rows) {
     data = rows;
     init();
-    // animate();
+    renderScene();
 });
 
 
 // expects 'data' to have been initialized
 function init() {
+    // set up clock
+    clock = new THREE.Clock();
+
 	scene = new THREE.Scene();
 
-    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 100);
-    camera.position.z = 100;
+    camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 1, 1000);
+    camera.position.x = -20;
+    camera.position.z = 60;
 
     data.forEach(function (atom) {
         var material = new THREE.MeshBasicMaterial({
             color: atomColor(atom.element)
         });
-        var mesh = new THREE.Mesh(new THREE.SphereGeometry( 2, 5, 5 ), material);
-        mesh.position.set(atom.x, atom.y, atom.z);
+        var mesh = new THREE.Mesh(new THREE.SphereGeometry( 0.5, 5, 5 ), material);
+        mesh.position.set(atom.x * CONST, atom.y * CONST, atom.z * CONST);
         scene.add(mesh);
     });
+
+    // set up camera fly controls (W A S D etc. + arrows)
+    flyControls = new THREE.FlyControls(camera);
+    flyControls.movementSpeed = 20;
+    flyControls.rollSpeed = Math.PI/8;
+    flyControls.yawSpeed = Math.PI/8;
+    flyControls.pitchSpeed = Math.PI/8;
+    flyControls.dragToLook = true;
 
     renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
 
     document.body.appendChild(renderer.domElement);
 
-    renderer.render(scene, camera);
-
     findBonds();
+}
+
+function renderScene() {
+    flyControls.update( clock.getDelta() );
+
+    requestAnimationFrame(renderScene);
+
+    renderer.render(scene, camera);
 }
 
 function atomColor(type) {
@@ -51,15 +76,6 @@ function atomColor(type) {
         'S': 'yellow',
         'H': 'white',
     }[type];
-}
-
-function animate() {
-    requestAnimationFrame(animate);
-
-    mesh.rotation.x += 0.01;
-    mesh.rotation.y += 0.02;
-
-    renderer.render(scene, camera);
 }
 
 function findBonds() {
