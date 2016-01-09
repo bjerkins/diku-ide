@@ -7,7 +7,10 @@ var data,
     flyControls,
     clock,
     bonds = {};
-var CONST = 1;
+
+// constants
+var ATOM_RADIUS = 1.8,
+    PADDING = 3;
 
 d3.csv('/javascripts/assignment_5/data/atoms.csv', function(d) {
   return {
@@ -18,7 +21,7 @@ d3.csv('/javascripts/assignment_5/data/atoms.csv', function(d) {
     element: d.element
   };
 }, function(error, rows) {
-    data = rows.slice(0, 100);
+    data = rows;
     init();
     renderScene();
 });
@@ -33,18 +36,18 @@ function init() {
 	scene = new THREE.Scene();
 
     camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 1, 1000);
-    camera.position.x = -20 * CONST;
-    camera.position.z = 60 * CONST;
+    camera.position.x = -50 * PADDING;
+    camera.position.z = 20 * PADDING;
 
     drawAtoms();
     drawBonds();
 
     // set up camera fly controls (W A S D etc. + arrows)
     flyControls = new THREE.FlyControls(camera);
-    flyControls.movementSpeed = 20;
-    flyControls.rollSpeed = Math.PI/8;
-    flyControls.yawSpeed = Math.PI/8;
-    flyControls.pitchSpeed = Math.PI/8;
+    flyControls.movementSpeed = 20 * PADDING;
+    flyControls.rollSpeed = (Math.PI/8) * PADDING;
+    flyControls.yawSpeed = (Math.PI/8) * PADDING;
+    flyControls.pitchSpeed = (Math.PI/8) * PADDING;
     flyControls.dragToLook = true;
 
     renderer = new THREE.WebGLRenderer();
@@ -54,11 +57,19 @@ function init() {
 }
 
 function drawAtoms() {
+
+    var map = THREE.ImageUtils.loadTexture( '/images/molecule_texture.jpg' );
+    map.wrapS = map.wrapT = THREE.RepeatWrapping;
+    map.anisotropy = 16;
+
     // draw atoms
     data.forEach(function (atom) {
-        var material = new THREE.MeshBasicMaterial({ color: atomColor(atom.element) });
-        var mesh = new THREE.Mesh(new THREE.SphereGeometry( 0.5, 8, 6 ), material);
-        mesh.position.set(atom.x * CONST, atom.y * CONST, atom.z * CONST);
+        var material = new THREE.MeshBasicMaterial({ 
+            color: atomColor(atom.element),
+            map: map
+        });
+        var mesh = new THREE.Mesh(new THREE.SphereGeometry( ATOM_RADIUS, 8, 6 ), material);
+        mesh.position.set(atom.x * PADDING, atom.y * PADDING, atom.z * PADDING);
         scene.add(mesh);
     });
 }
@@ -66,14 +77,19 @@ function drawAtoms() {
 function drawBonds() {
     for (var atom_id in bonds) {
         var origin = bonds[atom_id];
-        origin.bonds.forEach(function (bonded_atom) {
-            var material = new THREE.MeshBasicMaterial( {color: 'green'} );
-            var geometry = new THREE.CylinderGeometry( 0.5, 0.5, 20, 32 );
-            geometry.vertices.push(bonded_atom.vector);
+        for (var i = 0; i < origin.bonds.length; i++) {
+            var vector = origin.bonds[i].vector;
+            var material = new THREE.MeshBasicMaterial({color: 'green'});
+            var geometry = new THREE.CylinderGeometry( 0.2, 0.2, vector.length() + ATOM_RADIUS);
+            
             var cylinder = new THREE.Mesh(geometry, material);
-            cylinder.position.set(origin.x, origin.y, origin.z);
+            var axis = new THREE.Vector3(0, 1, 0);
+
+            cylinder.quaternion.setFromUnitVectors(axis, vector.clone().normalize());
+            cylinder.position.set(origin.atom.x * PADDING, origin.atom.y * PADDING, origin.atom.z * PADDING);
+
             scene.add(cylinder);    
-        });   
+        }
     }
 }
 
@@ -102,7 +118,8 @@ function findBonds() {
             var atom_one = data[i];
             var atom_two = data[j];
             var vector = vectorBetweenAtoms(atom_one, atom_two);
-            if (atom_one.id !== atom_two.id && checkBond(atom_one, atom_two) && contains(bonds[atom_two.id].bonds, atom_one.id)) {
+
+            if (atom_one.id !== atom_two.id && checkBond(atom_one, atom_two)) {
                 bonds[atom_one.id].bonds.push({
                     atomId: atom_two.id,
                     vector: vector
@@ -110,15 +127,6 @@ function findBonds() {
             }
         }
     }
-}
-
-function contains(atoms, atom_id) {
-    var matches = _.filter(atoms, function(atom){ 
-        if (atom.atomId === atom_id) { 
-            return atom;
-        } 
-    });
-    return matches;
 }
 
 function make_map() {
@@ -141,8 +149,8 @@ function checkBond(atom_one, atom_two) {
 
 function vectorBetweenAtoms(atom_one, atom_two) {
     return new THREE.Vector3(
-        atom_one.x - atom_two.x,
-        atom_one.y - atom_two.y,
-        atom_one.z - atom_two.z
-    )
+        (atom_one.x - atom_two.x) * PADDING,
+        (atom_one.y - atom_two.y) * PADDING,
+        (atom_one.z - atom_two.z) * PADDING
+    );
 }
