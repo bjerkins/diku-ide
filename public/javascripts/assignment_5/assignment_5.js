@@ -21,7 +21,8 @@ d3.csv('/javascripts/assignment_5/data/atoms.csv', function(d) {
     element: d.element
   };
 }, function(error, rows) {
-    data = rows;
+    // TODO , remove slice before handin
+    data = rows.slice(0, 100); 
     init();
     renderScene();
 });
@@ -49,6 +50,9 @@ function init() {
     flyControls.yawSpeed = (Math.PI/8) * PADDING;
     flyControls.pitchSpeed = (Math.PI/8) * PADDING;
     flyControls.dragToLook = true;
+
+    // setup a fog
+    scene.fog = new THREE.Fog( 0xeeeee, 10, 100);
 
     renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
