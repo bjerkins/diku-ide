@@ -34,7 +34,7 @@ function init() {
 
     coronal_plane = {mesh:initPlane({x:0, y:0, z:0}), 
                      axis:"coronal_stack",
-                     normal:{x:0, y:0, z:1}};
+                     normal:{x:0, y:0, z:-1}};
     updatePlaneImage(coronal_plane, slice_z);
 
     axial_plane = {mesh:initPlane({x:Math.PI / 2, y:0, z:0}), 
@@ -80,12 +80,12 @@ function init() {
             break;
 
             case 83: // s
-            slice_z = changeSlice(slice_z,1);
+            slice_z = changeSlice(slice_z,-1);
             updatePlaneImage(coronal_plane, slice_z);
             break;
 
             case 87: // w
-            slice_z = changeSlice(slice_z,-1);
+            slice_z = changeSlice(slice_z,1);
             updatePlaneImage(coronal_plane, slice_z);
             break;
 
