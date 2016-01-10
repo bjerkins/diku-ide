@@ -137,10 +137,19 @@ function updatePlaneImage(plane, slice) {
 
         }
     );
-    
+
     plane.mesh.position.x = plane.normal.x * (slice - IMG_WIDTH / 2);
     plane.mesh.position.y = plane.normal.y * (slice - IMG_WIDTH / 2);
     plane.mesh.position.z = plane.normal.z * (slice - IMG_WIDTH / 2);
+
+    updateInfoText()
+}
+
+function updateInfoText() {
+    var str = "Coronal slice = " + slice_z + " <br>" +
+              "Axial slice = " + slice_y + " <br>" +
+              "Sagittal slice = " + slice_x + "";
+    $("#info").html(str);
 }
 
 function changeSlice(slice, inc) {
