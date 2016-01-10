@@ -144,7 +144,6 @@ function findBonds() {
         for (var j = i+1; j < data.length; j++) {
             var atom_one = data[i];
             var atom_two = data[j];
-            var vector = vectorBetweenAtoms(atom_one, atom_two);
 
             if (atom_one.id !== atom_two.id && checkBond(atom_one, atom_two)) {
                 bonds[atom_one.id].bonds.push(atom_two);
@@ -169,12 +168,4 @@ function checkBond(atom_one, atom_two) {
         Math.pow((atom_one.z - atom_two.z), 2)
     );
     return distance < 1.9;
-}
-
-function vectorBetweenAtoms(atom_one, atom_two) {
-    return new THREE.Vector3(
-        (atom_one.x - atom_two.x),
-        (atom_one.y - atom_two.y),
-        (atom_one.z - atom_two.z)
-    );
 }
