@@ -1,9 +1,10 @@
 var express = require('express');
 var router = express.Router();
 
-router.get('/:id/:part', function(req, res, next) {
-  var id = req.params.id,
+router.get('/:id/:part?', function(req, res, next) {
+  var id   = req.params.id,
       part = req.params.part;
+
   if (id == 1) {
     res.render('assignment_1', {
       title: 'Assignment 1'
