@@ -21,13 +21,7 @@ var BOND_DISTANCE   = 1.9,
     SCENE_HEIGHT    = 600,
     FOG_COLOR       = 0xecf0f1,
     FOG_NEAR        = 5,
-    FOG_FAR         = 70,
-    LIGHT_POS_X     = -60,
-    LIGHT_POS_Y     = 5,
-    LIGHT_POS_Z     = 23;
-    LIGHT2_POS_X     = -50,
-    LIGHT2_POS_Y     = 2,
-    LIGHT2_POS_Z     = 13;
+    FOG_FAR         = 70;
 
 
 d3.csv('/javascripts/assignment_5/data/atoms.csv', function(d) {
@@ -40,7 +34,7 @@ d3.csv('/javascripts/assignment_5/data/atoms.csv', function(d) {
   };
 }, function(error, rows) {
     // TODO , remove slice before handin
-    data = rows; 
+    data = rows;//.slice(0, 100); 
     init();
     renderScene();
 });
@@ -65,15 +59,8 @@ function init() {
     flyControls.pitchSpeed    = (Math.PI/2);
     flyControls.dragToLook    = true;
 
-    var sphere = new THREE.SphereGeometry( 0.1, 16, 8 );
-
-    light = new THREE.PointLight( 0xffffff, 5, 20 );
-    light.add( new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: 0xffffff } ) ) );
+    var light = new THREE.AmbientLight( 0xd3d3d3 ); // soft white light
     scene.add( light );
-
-    light2 = new THREE.PointLight( 0xffffff, 5, 20 );
-    light2.add( new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: 0xffffff } ) ) );
-    scene.add( light2 );
 
 
     renderer = new THREE.WebGLRenderer();
@@ -128,14 +115,6 @@ function renderScene() {
     var time = Date.now() * 0.0005;
 
     flyControls.update(clock.getDelta());
-
-    light.position.x = LIGHT_POS_X + Math.sin( time * 0.5 ) * 3;
-    light.position.y = LIGHT_POS_Y + Math.cos( time * 0.5 ) * 4;
-    light.position.z = LIGHT_POS_Z + Math.cos( time * 0.5 ) * 3;
-
-    light2.position.x = LIGHT2_POS_X + Math.sin( time * 0.5 ) * 3;
-    light2.position.y = LIGHT2_POS_Y + Math.cos( time * 0.5 ) * 4;
-    light2.position.z = LIGHT2_POS_Z + Math.cos( time * 0.5 ) * 3;
 
     requestAnimationFrame(renderScene);
     renderer.render(scene, camera);
