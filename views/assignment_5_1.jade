@@ -6,7 +6,18 @@ block content
 
 		h2 Assignment 5 Part 1
 
+		h3 Description
+
+		p Bellow we have implemented a 3D visualization of the 2RH1 molecule by representing the atoms as spheres given coordinates and the atomic bonds between them as cylinders. The colors of the atoms are based on their kind (C=gray, N=blue, O=red, S=yellow, H=white) while the bonds between them have been colored as green. In the scene there are two moving lighting objects that go through the atoms, lighting different angles of the model.
+		h3 Instructions
+		p Use the #[code arrow keys] to rotate the camera accordingly. Use #[code w] and #[code s] to move forward and backwards. 
+
+		p We can also use the #[code mouse] to rotate the camera around with drag&drop.
+
 		#wrapper
 			#scene
 
+		h3 Discussion
+
+		p We added two rotating light sources to light the atoms and their bonds. As they move we can observe the change in their shading and lighting, which also slightly emphasizes the depth of the model.
 		script(src='/javascripts/assignment_5/assignment_5_1.js')

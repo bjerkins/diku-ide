@@ -40,7 +40,7 @@ d3.csv('/javascripts/assignment_5/data/atoms.csv', function(d) {
   };
 }, function(error, rows) {
     // TODO , remove slice before handin
-    data = rows.slice(0, 100); 
+    data = rows; 
     init();
     renderScene();
 });
