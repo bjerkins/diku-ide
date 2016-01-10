@@ -9,8 +9,15 @@ var data,
     bonds = {};
 
 // constants
-var ATOM_RADIUS = 0.5,
-    PADDING = 1;
+var BOND_DISTANCE   = 1.9,
+    ATOM_RADIUS     = 0.5,
+    CYL_RAD_TOP     = 0.1,
+    CYL_RAD_BOTTOM  = 0.1,
+    CAM_POS_X       = -50,
+    CAM_POS_Y       = 0,
+    CAM_POS_Z       = 30,
+    SCENE_WIDTH     = 1024;
+    SCENE_HEIGHT    = 500;
 
 d3.csv('/javascripts/assignment_5/data/atoms.csv', function(d) {
   return {
@@ -27,37 +34,35 @@ d3.csv('/javascripts/assignment_5/data/atoms.csv', function(d) {
     renderScene();
 });
 
-
-// expects 'data' to have been initialized
 function init() {
     findBonds();
     
     clock = new THREE.Clock();
-
 	scene = new THREE.Scene();
 
-    camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 1, 1000);
-    camera.position.x = -50 * PADDING;
-    camera.position.z = 20 * PADDING;
+    camera = new THREE.PerspectiveCamera(100, SCENE_WIDTH / SCENE_HEIGHT, 0.1, 1000);
+    camera.position.set(CAM_POS_X, CAM_POS_Y, CAM_POS_Z);
 
     drawAtoms();
     drawBonds();
 
     // set up camera fly controls (W A S D etc. + arrows)
     flyControls = new THREE.FlyControls(camera);
-    flyControls.movementSpeed = 20 * PADDING;
-    flyControls.rollSpeed = (Math.PI/8) * PADDING;
-    flyControls.yawSpeed = (Math.PI/8) * PADDING;
-    flyControls.pitchSpeed = (Math.PI/8) * PADDING;
-    flyControls.dragToLook = true;
+    flyControls.movementSpeed = 20;
+    flyControls.rollSpeed     = (Math.PI/2);
+    flyControls.yawSpeed      = (Math.PI/2);
+    flyControls.pitchSpeed    = (Math.PI/2);
+    flyControls.dragToLook    = true;
 
     // setup a fog
     scene.fog = new THREE.Fog( 0xeeeee, 10, 100);
 
     renderer = new THREE.WebGLRenderer();
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(SCENE_WIDTH, SCENE_HEIGHT);
 
-    document.body.appendChild(renderer.domElement);
+    var container = document.getElementById('scene');
+    container.style.width = SCENE_WIDTH + 'px';
+    container.appendChild(renderer.domElement);
 }
 
 function drawAtoms() {
@@ -72,59 +77,57 @@ function drawAtoms() {
             color: atomColor(atom.element),
             map: map
         });
-        var mesh = new THREE.Mesh(new THREE.SphereGeometry( ATOM_RADIUS, 8, 6 ), material);
-        mesh.position.set(atom.x * PADDING, atom.y * PADDING, atom.z * PADDING);
+        var mesh = new THREE.Mesh(new THREE.SphereGeometry(ATOM_RADIUS, 8, 8 ), material);
+        mesh.position.set(atom.x, atom.y, atom.z);
         scene.add(mesh);
     });
 }
 
 function drawBonds() {
-    // debugger;
     var material = new THREE.MeshBasicMaterial({color: 'green'});
+
     for (var atom_id in bonds) {
         var origin = bonds[atom_id];
+        
         for (var i = 0; i < origin.bonds.length; i++) {
+            
             var bond_atom = origin.bonds[i];
-
             var fromPoint = new THREE.Vector3(origin.atom.x, origin.atom.y, origin.atom.z);
             var toPoint = new THREE.Vector3(bond_atom.x, bond_atom.y, bond_atom.z);
+            var cylinderBondMesh = cylinderMesh(fromPoint, toPoint, material);
 
-            // var geometry = new THREE.Geometry();
-            // geometry.vertices.push(new THREE.Vector3(fromPoint.x, fromPoint.y, fromPoint.z));
-            // geometry.vertices.push(new THREE.Vector3(toPoint.x, toPoint.y, toPoint.z));
-
-            // var line = new THREE.Line(geometry, material, parameters = { linewidth: 400 });
-            var bond = cylinderMesh(fromPoint, toPoint, material);
-
-            scene.add(bond);
+            scene.add(cylinderBondMesh);
         }
     }
 }
 
 function renderScene() {
     flyControls.update(clock.getDelta());
-
     requestAnimationFrame(renderScene);
-
     renderer.render(scene, camera);
 }
 
-// gladly stolen from here http://stackoverflow.com/a/28459704/1869608
+// taken from here http://stackoverflow.com/a/28459704/1869608
 function cylinderMesh(pointX, pointY, material) {
     var direction = new THREE.Vector3().subVectors(pointY, pointX);
     var orientation = new THREE.Matrix4();
+    
     orientation.lookAt(pointX, pointY, new THREE.Object3D().up);
     orientation.multiply(new THREE.Matrix4().set(1, 0, 0, 0,
         0, 0, 1, 0,
         0, -1, 0, 0,
         0, 0, 0, 1));
-    var edgeGeometry = new THREE.CylinderGeometry(0.1, 0.1, direction.length(), 8, 1);
+
+    var edgeGeometry = new THREE.CylinderGeometry(CYL_RAD_TOP, CYL_RAD_BOTTOM, direction.length());
+
     var edge = new THREE.Mesh(edgeGeometry, material);
     edge.applyMatrix(orientation);
+
     // position based on midpoints - there may be a better solution than this
     edge.position.x = (pointY.x + pointX.x) / 2;
     edge.position.y = (pointY.y + pointX.y) / 2;
     edge.position.z = (pointY.z + pointX.z) / 2;
+
     return edge;
 }
 
@@ -167,5 +170,5 @@ function checkBond(atom_one, atom_two) {
         Math.pow((atom_one.y - atom_two.y), 2) + 
         Math.pow((atom_one.z - atom_two.z), 2)
     );
-    return distance < 1.9;
+    return distance < BOND_DISTANCE;
 }
