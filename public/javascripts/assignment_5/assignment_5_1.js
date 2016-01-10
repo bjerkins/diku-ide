@@ -109,6 +109,7 @@ function renderScene() {
     renderer.render(scene, camera);
 }
 
+// gladly stolen from here http://stackoverflow.com/a/28459704/1869608
 function cylinderMesh(pointX, pointY, material) {
     var direction = new THREE.Vector3().subVectors(pointY, pointX);
     var orientation = new THREE.Matrix4();
