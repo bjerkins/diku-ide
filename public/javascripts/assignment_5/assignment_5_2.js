@@ -32,20 +32,8 @@ function init() {
     camera.position.set(30, 30, 250);
     scene.add(camera);
 
-    coronal_plane = {mesh:initPlane({x:0, y:0, z:0}), 
-                     axis:"coronal_stack",
-                     normal:{x:0, y:0, z:-1}};
-    updatePlaneImage(coronal_plane, slice_z);
-
-    axial_plane = {mesh:initPlane({x:Math.PI / 2, y:0, z:0}), 
-                   axis:"axial_stack",
-                   normal:{x:0, y:1, z:0}};
-    updatePlaneImage(axial_plane, slice_y);
-
-    sagittal_plane = {mesh:initPlane({x:0, y:Math.PI / 2, z:0}), 
-                      axis:"sagittal_stack",
-                      normal:{x:1, y:0, z:0}};
-    updatePlaneImage(sagittal_plane, slice_x);
+    initPlanes();
+    initEyeArrow();
 
     renderer = new THREE.WebGLRenderer();
     renderer.setSize(SCENE_WIDTH, SCENE_HEIGHT);
@@ -100,6 +88,23 @@ function renderScene() {
     renderer.render(scene, camera);
 }
 
+function initPlanes() {
+    coronal_plane = {mesh:initPlane({x:0, y:0, z:0}), 
+                     axis:"coronal_stack",
+                     normal:{x:0, y:0, z:-1}};
+    updatePlaneImage(coronal_plane, slice_z);
+
+    axial_plane = {mesh:initPlane({x:Math.PI / 2, y:0, z:0}), 
+                   axis:"axial_stack",
+                   normal:{x:0, y:1, z:0}};
+    updatePlaneImage(axial_plane, slice_y);
+
+    sagittal_plane = {mesh:initPlane({x:0, y:Math.PI / 2, z:0}), 
+                      axis:"sagittal_stack",
+                      normal:{x:1, y:0, z:0}};
+    updatePlaneImage(sagittal_plane, slice_x);
+}
+
 function initPlane(rotation) {
     var material = new THREE.MeshBasicMaterial({});
     var plane = new THREE.Mesh(new THREE.PlaneGeometry(IMG_WIDTH, IMG_HEIGHT),material);
@@ -145,13 +150,6 @@ function updatePlaneImage(plane, slice) {
     updateInfoText()
 }
 
-function updateInfoText() {
-    var str = "Coronal slice = " + slice_z + " <br>" +
-              "Axial slice = " + slice_y + " <br>" +
-              "Sagittal slice = " + slice_x + "";
-    $("#info").html(str);
-}
-
 function changeSlice(slice, inc) {
     slice += inc;
     if (slice > MAX_SLICE) {
@@ -160,4 +158,22 @@ function changeSlice(slice, inc) {
         slice = 1;
     }
     return slice;
+}
+
+function initEyeArrow() {
+    var dir = new THREE.Vector3( 0, 0, 1 );
+    var origin = new THREE.Vector3( 0, 0, -IMG_WIDTH / 2 );
+    var length = 256;
+    var color = 0xffffff;
+
+    var arrowHelper = new THREE.ArrowHelper( dir, origin, length, color );
+    arrowHelper.position.y = IMG_WIDTH / 2 + 20;
+    scene.add( arrowHelper );
+}
+
+function updateInfoText() {
+    var str = "Coronal slice = " + slice_z + " <br>" +
+              "Axial slice = " + slice_y + " <br>" +
+              "Sagittal slice = " + slice_x + "";
+    $("#info").html(str);
 }
