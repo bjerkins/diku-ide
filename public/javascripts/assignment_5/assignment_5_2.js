@@ -29,7 +29,7 @@ function init() {
     scene = new THREE.Scene();
 
     camera = new THREE.PerspectiveCamera(100, SCENE_WIDTH / SCENE_HEIGHT, 0.1, 1000);
-    camera.position.set(0, 0, 200);
+    camera.position.set(30, 30, 250);
     scene.add(camera);
 
     coronal_plane = {mesh:initPlane({x:0, y:0, z:0}), 
@@ -51,7 +51,7 @@ function init() {
     renderer.setSize(SCENE_WIDTH, SCENE_HEIGHT);
 
     controls = new THREE.OrbitControls( camera, renderer.domElement );
-    controls.noPan = true;
+    controls.enablePan = false;
     controls.target.set( 0, 0, 0 ); // view direction perpendicular to XY-plane
         
     d3.select("#scene").style("width", SCENE_WIDTH + "px");
@@ -103,8 +103,7 @@ function renderScene() {
 function initPlane(rotation) {
     var material = new THREE.MeshBasicMaterial({});
     var plane = new THREE.Mesh(new THREE.PlaneGeometry(IMG_WIDTH, IMG_HEIGHT),material);
-    //plane.overdraw = true;
-    plane.material.side = THREE.DoubleSide;
+    
     plane.rotation.x = rotation.x;
     plane.rotation.y = rotation.y;
     plane.rotation.z = rotation.z;    
@@ -122,9 +121,23 @@ function updatePlaneImage(plane, slice) {
     }
 
     var slice_nr = ("00" + slice).slice(-3);
-    plane.mesh.material.map = THREE.ImageUtils.loadTexture('/javascripts/assignment_5/data/' + plane.axis + '/slice_' + slice_nr + '.png')
-    plane.mesh.material.map.needsUpdate = true;
+    var loader = new THREE.TextureLoader();
 
+    loader.load(
+        // resource URL
+        '/javascripts/assignment_5/data/' + plane.axis + '/slice_' + slice_nr + '.png',
+        // Function when resource is loaded
+        function ( texture ) {
+            var material = new THREE.MeshBasicMaterial( {
+                map: texture
+            } );
+            material.side = THREE.DoubleSide;
+            material.map.needsUpdate = true;
+            plane.mesh.material = material;
+
+        }
+    );
+    
     plane.mesh.position.x = plane.normal.x * (slice - IMG_WIDTH / 2);
     plane.mesh.position.y = plane.normal.y * (slice - IMG_WIDTH / 2);
     plane.mesh.position.z = plane.normal.z * (slice - IMG_WIDTH / 2);
