@@ -64,7 +64,7 @@ function init() {
 
     var sphere = new THREE.SphereGeometry( 0.1, 16, 8 );
 
-    light = new THREE.PointLight( 0xffffff, 5, 100 );
+    light = new THREE.PointLight( 0xffffff, 5, 10 );
     light.add( new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: 0xff0040 } ) ) );
     scene.add( light );
 
