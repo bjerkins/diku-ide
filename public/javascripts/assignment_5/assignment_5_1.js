@@ -9,8 +9,8 @@ var data,
     bonds = {};
 
 // constants
-var ATOM_RADIUS = 1.8,
-    PADDING = 3;
+var ATOM_RADIUS = 0.5,
+    PADDING = 1;
 
 d3.csv('/javascripts/assignment_5/data/atoms.csv', function(d) {
   return {
@@ -79,20 +79,24 @@ function drawAtoms() {
 }
 
 function drawBonds() {
+    // debugger;
+    var material = new THREE.MeshBasicMaterial({color: 'green'});
     for (var atom_id in bonds) {
         var origin = bonds[atom_id];
         for (var i = 0; i < origin.bonds.length; i++) {
-            var vector = origin.bonds[i].vector;
-            var material = new THREE.MeshBasicMaterial({color: 'green'});
-            var geometry = new THREE.CylinderGeometry( 0.2, 0.2, vector.length() + ATOM_RADIUS);
-            
-            var cylinder = new THREE.Mesh(geometry, material);
-            var axis = new THREE.Vector3(0, 1, 0);
+            var bond_atom = origin.bonds[i];
 
-            cylinder.quaternion.setFromUnitVectors(axis, vector.clone().normalize());
-            cylinder.position.set(origin.atom.x * PADDING, origin.atom.y * PADDING, origin.atom.z * PADDING);
+            var fromPoint = new THREE.Vector3(origin.atom.x, origin.atom.y, origin.atom.z);
+            var toPoint = new THREE.Vector3(bond_atom.x, bond_atom.y, bond_atom.z);
 
-            scene.add(cylinder);    
+            // var geometry = new THREE.Geometry();
+            // geometry.vertices.push(new THREE.Vector3(fromPoint.x, fromPoint.y, fromPoint.z));
+            // geometry.vertices.push(new THREE.Vector3(toPoint.x, toPoint.y, toPoint.z));
+
+            // var line = new THREE.Line(geometry, material, parameters = { linewidth: 400 });
+            var bond = cylinderMesh(fromPoint, toPoint, material);
+
+            scene.add(bond);
         }
     }
 }
@@ -103,6 +107,25 @@ function renderScene() {
     requestAnimationFrame(renderScene);
 
     renderer.render(scene, camera);
+}
+
+// gladly stolen from here http://stackoverflow.com/a/28459704/1869608
+function cylinderMesh(pointX, pointY, material) {
+    var direction = new THREE.Vector3().subVectors(pointY, pointX);
+    var orientation = new THREE.Matrix4();
+    orientation.lookAt(pointX, pointY, new THREE.Object3D().up);
+    orientation.multiply(new THREE.Matrix4().set(1, 0, 0, 0,
+        0, 0, 1, 0,
+        0, -1, 0, 0,
+        0, 0, 0, 1));
+    var edgeGeometry = new THREE.CylinderGeometry(0.1, 0.1, direction.length(), 8, 1);
+    var edge = new THREE.Mesh(edgeGeometry, material);
+    edge.applyMatrix(orientation);
+    // position based on midpoints - there may be a better solution than this
+    edge.position.x = (pointY.x + pointX.x) / 2;
+    edge.position.y = (pointY.y + pointX.y) / 2;
+    edge.position.z = (pointY.z + pointX.z) / 2;
+    return edge;
 }
 
 function atomColor(type) {
@@ -121,13 +144,9 @@ function findBonds() {
         for (var j = i+1; j < data.length; j++) {
             var atom_one = data[i];
             var atom_two = data[j];
-            var vector = vectorBetweenAtoms(atom_one, atom_two);
 
             if (atom_one.id !== atom_two.id && checkBond(atom_one, atom_two)) {
-                bonds[atom_one.id].bonds.push({
-                    atomId: atom_two.id,
-                    vector: vector
-                });
+                bonds[atom_one.id].bonds.push(atom_two);
             }
         }
     }
@@ -149,12 +168,4 @@ function checkBond(atom_one, atom_two) {
         Math.pow((atom_one.z - atom_two.z), 2)
     );
     return distance < 1.9;
-}
-
-function vectorBetweenAtoms(atom_one, atom_two) {
-    return new THREE.Vector3(
-        (atom_one.x - atom_two.x) * PADDING,
-        (atom_one.y - atom_two.y) * PADDING,
-        (atom_one.z - atom_two.z) * PADDING
-    );
 }
