@@ -29,7 +29,7 @@ function init() {
     scene = new THREE.Scene();
 
     camera = new THREE.PerspectiveCamera(100, SCENE_WIDTH / SCENE_HEIGHT, 0.1, 1000);
-    camera.position.set(30, 30, 250);
+    camera.position.set(90, 90, 250);
     scene.add(camera);
 
     initPlanes();
