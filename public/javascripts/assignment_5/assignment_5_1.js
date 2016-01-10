@@ -6,6 +6,7 @@ var data,
     renderer,
     flyControls,
     clock,
+    light,
     bonds = {};
 
 // constants
@@ -16,8 +17,15 @@ var BOND_DISTANCE   = 1.9,
     CAM_POS_X       = -50,
     CAM_POS_Y       = 0,
     CAM_POS_Z       = 30,
-    SCENE_WIDTH     = 1024;
-    SCENE_HEIGHT    = 500;
+    SCENE_WIDTH     = 1024,
+    SCENE_HEIGHT    = 860,
+    FOG_COLOR       = 0xecf0f1,
+    FOG_NEAR        = 5,
+    FOG_FAR         = 70,
+    LIGHT_POS_X     = -50,
+    LIGHT_POS_Y     = -2,
+    LIGHT_POS_Z     = 23;
+
 
 d3.csv('/javascripts/assignment_5/data/atoms.csv', function(d) {
   return {
@@ -54,8 +62,11 @@ function init() {
     flyControls.pitchSpeed    = (Math.PI/2);
     flyControls.dragToLook    = true;
 
-    // setup a fog
-    scene.fog = new THREE.Fog( 0xeeeee, 10, 100);
+    var sphere = new THREE.SphereGeometry( 0.1, 16, 8 );
+
+    light = new THREE.PointLight( 0xff0040, 5, 100 );
+    light.add( new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: 0xff0040 } ) ) );
+    scene.add( light );
 
     renderer = new THREE.WebGLRenderer();
     renderer.setSize(SCENE_WIDTH, SCENE_HEIGHT);
@@ -73,28 +84,32 @@ function drawAtoms() {
 
     // draw atoms
     data.forEach(function (atom) {
-        var material = new THREE.MeshBasicMaterial({ 
+        var material = new THREE.MeshLambertMaterial({ 
             color: atomColor(atom.element),
             map: map
         });
         var mesh = new THREE.Mesh(new THREE.SphereGeometry(ATOM_RADIUS, 8, 8 ), material);
         mesh.position.set(atom.x, atom.y, atom.z);
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
         scene.add(mesh);
     });
 }
 
 function drawBonds() {
-    var material = new THREE.MeshBasicMaterial({color: 'green'});
-
     for (var atom_id in bonds) {
         var origin = bonds[atom_id];
         
         for (var i = 0; i < origin.bonds.length; i++) {
             
+            var material = new THREE.MeshLambertMaterial({ color: 'green' });
             var bond_atom = origin.bonds[i];
             var fromPoint = new THREE.Vector3(origin.atom.x, origin.atom.y, origin.atom.z);
             var toPoint = new THREE.Vector3(bond_atom.x, bond_atom.y, bond_atom.z);
+            
             var cylinderBondMesh = cylinderMesh(fromPoint, toPoint, material);
+            cylinderBondMesh.castShadow = true;
+            cylinderBondMesh.receiveShadow = true;
 
             scene.add(cylinderBondMesh);
         }
@@ -102,7 +117,14 @@ function drawBonds() {
 }
 
 function renderScene() {
+    var time = Date.now() * 0.0005;
+
     flyControls.update(clock.getDelta());
+
+    light.position.x = LIGHT_POS_X + Math.sin( time * 0.7 ) * 3;
+    light.position.y = LIGHT_POS_Y + Math.cos( time * 0.5 ) * 4;
+    light.position.z = LIGHT_POS_Z + Math.cos( time * 0.3 ) * 3;
+
     requestAnimationFrame(renderScene);
     renderer.render(scene, camera);
 }
