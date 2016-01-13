@@ -33,7 +33,11 @@ router.get('/:id/:part?', function(req, res, next) {
     res.render('assignment_5', {
       title: 'Assignment 5'
     });
-  } else {
+  } else if (id == 6) {
+    res.render('assignment_6', {
+      title: 'Final project'
+    });
+  } else  {
     res.render('error', {
       message: 'Coming soon!'
     });
