@@ -1,0 +1,15 @@
+Here are the steps I took to upload the data to Amazon RDS PostgreSQL server
+
+1. Connect to the Database using some postgresql client, I used pgAdmin
+
+2. To import all the data to the table, there needs to be some informaton 
+   about the columns of the table, so there is a script that extracts the column
+   names from the data and packs it in a `CREATE TABLE` script. Run it by doing
+
+   ```sh
+   	./mktable.sh CLIWOC15.csv
+   ```
+
+3. Create the table using the script output
+
+4. Import the data.
