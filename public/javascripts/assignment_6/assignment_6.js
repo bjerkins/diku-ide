@@ -12,14 +12,14 @@
 var world,
     WIDTH = 720,
     HEIGHT = 700,
-    velocity = .01,
+    velocity = .005,
     then = Date.now();
 
 var projection = d3.geo.orthographic()
     .translate([WIDTH / 2, HEIGHT / 2])
     .scale(WIDTH / 2 - 20)
     .clipAngle(90)
-    .precision(0.6);
+    .precision(0);
 
 var canvas = d3
     .select("#map")
@@ -29,9 +29,12 @@ var canvas = d3
 
 var path = d3
     .geo.path()
-    .projection(projection);
+    .projection(projection)
+    .context(canvas);
 
-d3.json("/javascripts/assignment_6/data/world-50m.json", function(countries) {
+var context = canvas.node().getContext('2d');
+
+d3.json("/javascripts/assignment_6/data/world-110m.json", function(countries) {
     world = countries;
     init();
 });
@@ -44,10 +47,11 @@ function init () {
 
     d3.timer(function() {
         var angle = velocity * (Date.now() - then);
-        var context = canvas.node().getContext("2d");
         projection.rotate([angle]);
         context.clearRect(0, 0, WIDTH, HEIGHT);
         context.beginPath(), path.context(context)(land), context.fill();
         context.beginPath(), path(globe), context.stroke();
+        context.strokeStyle = "#fff", context.lineWidth = .5, context.beginPath(), path(borders), context.stroke();
+        context.strokeStyle = "#000", context.lineWidth = 2, context.beginPath(), path(globe), context.stroke();
     });
 }
