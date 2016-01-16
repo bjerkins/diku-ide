@@ -10,10 +10,10 @@
  */
 
 var world,
-    WIDTH = 720,
-    HEIGHT = 700,
-    velocity = .005,
-    then = Date.now();
+    WIDTH       = 720,
+    HEIGHT      = 700,
+    VELOCITY    = .005,
+    THEN        = Date.now();
 
 var projection = d3.geo.orthographic()
     .translate([WIDTH / 2, HEIGHT / 2])
@@ -46,12 +46,12 @@ function init () {
         borders = topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; });
 
     d3.timer(function() {
-        var angle = velocity * (Date.now() - then);
+        var angle = VELOCITY * (Date.now() - THEN);
         projection.rotate([angle]);
         context.clearRect(0, 0, WIDTH, HEIGHT);
-        context.beginPath(), path.context(context)(land), context.fill();
-        context.beginPath(), path(globe), context.stroke();
-        context.strokeStyle = "#fff", context.lineWidth = .5, context.beginPath(), path(borders), context.stroke();
-        context.strokeStyle = "#000", context.lineWidth = 2, context.beginPath(), path(globe), context.stroke();
+        context.beginPath(); path.context(context)(land); context.fill();
+        context.beginPath(); path(globe); context.stroke();
+        context.strokeStyle = "#fff"; context.lineWidth = 0.5; context.beginPath(); path(borders); context.stroke();
+        context.strokeStyle = "#000"; context.lineWidth = 2; context.beginPath(); path(globe); context.stroke();
     });
 }
