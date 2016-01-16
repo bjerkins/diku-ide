@@ -45,13 +45,9 @@ function init () {
     d3.timer(function() {
         var angle = velocity * (Date.now() - then);
         var context = canvas.node().getContext("2d");
-        projection.rotate(angle);
+        projection.rotate([angle]);
         context.clearRect(0, 0, WIDTH, HEIGHT);
-        context.beginPath();
-        path.context(context)(land);
-        context.fill();
-        context.beginPath();
-        path(globe);
-        context.stroke();
+        context.beginPath(), path.context(context)(land), context.fill();
+        context.beginPath(), path(globe), context.stroke();
     });
 }
