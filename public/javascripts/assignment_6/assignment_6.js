@@ -19,7 +19,8 @@ var world,
     WIDTH       = 420,
     HEIGHT      = 400,
     VELOCITY    = 500,
-    THEN        = Date.now();
+    SHIP_SIZE   = 48,
+    CROSS_SIZE  = 12;
 
 var globe_projection = d3.geo.orthographic()
     .translate([WIDTH / 2, HEIGHT / 2])
@@ -146,12 +147,12 @@ function updateGlobe(p) {
     ship.select('svg')
         .transition()
         .duration(VELOCITY)
-        .attr("x", p[0] - 24)
-        .attr("y", p[1] - 24);
+        .attr("x", p[0] - SHIP_SIZE/2)
+        .attr("y", p[1] - SHIP_SIZE/2);
 
     cross.select('svg')
-         .attr("x", end_pos[0] - 6)
-         .attr("y", end_pos[1] - 6);
+         .attr("x", end_pos[0] - CROSS_SIZE/2)
+         .attr("y", end_pos[1] - CROSS_SIZE/2);
 }
 
 function initWelcomeMessage() {
@@ -179,11 +180,11 @@ function initIcons() {
         document.getElementById("cross_icon").appendChild(xml.documentElement);
 
         cross.select('svg')
-            .attr("width", 12)
-            .attr("height", 12)
+            .attr("width", CROSS_SIZE)
+            .attr("height", CROSS_SIZE)
             .attr("fill", "#666666")
-            .attr("x", end_pos[0] - 6)
-            .attr("y", end_pos[1] - 6)
+            .attr("x", end_pos[0] - CROSS_SIZE/2)
+            .attr("y", end_pos[1] - CROSS_SIZE/2)
             // Add rectangle to increase hitbox
             // Position it at outside svg to show tip above cross
             // Note: because the decrease in the size of the svg above,
@@ -208,10 +209,10 @@ function initIcons() {
         document.getElementById("ship_icon").appendChild(xml.documentElement);
 
         ship.select('svg')
-            .attr("width", 48)
-            .attr("height", 48)
-            .attr("x", start_pos[0] - 24)
-            .attr("y", start_pos[1] - 24);
+            .attr("width", SHIP_SIZE)
+            .attr("height", SHIP_SIZE)
+            .attr("x", start_pos[0] - SHIP_SIZE/2)
+            .attr("y", start_pos[1] - SHIP_SIZE/2);
 
         ship.select('svg')
             .select('g')
