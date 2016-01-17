@@ -67,9 +67,9 @@ function init () {
     countries = topojson.feature(world, world.objects.countries).features;
     borders = topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; });
 
+    initVoyage();
     prepareCountries();
     drawGlobe();
-    initVoyage();
     animate();
 }
 
