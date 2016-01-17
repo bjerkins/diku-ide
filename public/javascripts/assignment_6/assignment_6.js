@@ -11,6 +11,7 @@
 
 var world,
     names,
+    logs,
     globe,
     countries,
     borders,
@@ -44,11 +45,13 @@ svg.append('defs')
 queue()
     .defer(d3.json, '/javascripts/assignment_6/data/world-110m.json')
     .defer(d3.tsv, '/javascripts/assignment_6/data/world-country-names.tsv')
+    .defer(d3.csv, '/javascripts/assignment_6/data/james_cook.csv')
     .await(ready);
 
-function ready (error, w, n) {
+function ready (error, w, n, l) {
     world = w;
     names = n;
+    logs = l;
     init();
 }
 
@@ -70,7 +73,28 @@ function animate () {
         var angle = VELOCITY * (Date.now() - THEN);
         moveGlobe([angle]);
         updateGlobe();
+        //testPoints();
     });
+}
+
+function testPoints() {
+    var lineFn = d3.svg.line()
+    .x(function(d) { return globe_projection([l.Lon3, l.Lat3]).;)
+    .y(function(d) { return globe_projection(d[1]); })
+    .interpolate("cardinal");
+
+    svg.selectAll('circle')
+       .data(logs)
+       .enter()
+       .append('circle')
+       .attr('r', 5)
+       .attr("transform", function(l) {
+            return "translate(" + globe_projection([
+              l.Lon3,
+              l.Lat3
+            ]) + ")";
+          })
+       .attr("fill", "black")
 }
 
 function updateGlobe() {
