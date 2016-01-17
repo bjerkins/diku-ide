@@ -1,3 +1,6 @@
+/**
+ * Mostly taken from http://bl.ocks.org/zanarmstrong/ddff7cd0b1220bc68a58
+ */
 
 var Slider = function (element, dateRange) {
 
