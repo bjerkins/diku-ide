@@ -54,8 +54,8 @@ var map = svg.append("g").attr('id', 'map_group');
 var tip = d3
     .tip()
     .attr('class', 'tip')
-    .html(function(d) {
-        return "<span>" + d.name + "</span>";
+    .html(function(t) {
+        return "<span>" + t + "</span>";
     });
 
 svg.call(tip);
@@ -86,7 +86,9 @@ function init () {
     voyage = [];
     logs.forEach(function (l) {
         if (!(isNaN(l.Lat3) || isNaN(l.Lon3))) {
-            voyage.push({ Lon3: l.Lon3, Lat3: l.Lat3});
+            voyage.push({ Lon3: l.Lon3, 
+                          Lat3: l.Lat3,
+                          dest: l.VoyageTo });
         }
     });
 
@@ -150,10 +152,11 @@ function updateGlobe(p) {
 }
 
 function initIcons() {
+    var last_log = voyage[voyage.length - 1];
     var start_pos = globe_projection([voyage[0].Lon3, 
                                       voyage[0].Lat3]);
-    var end_pos = globe_projection([voyage[voyage.length - 1].Lon3, 
-                                    voyage[voyage.length - 1].Lat3]);
+    var end_pos = globe_projection([last_log.Lon3, 
+                                    last_log.Lat3]);
 
     d3.xml("/images/cross.svg", "image/svg+xml", function(error, xml) {
         if (error) throw error;
@@ -164,7 +167,26 @@ function initIcons() {
              .attr("height", 12)   
              .attr("fill", "#666666")
              .attr("x", end_pos[0] - 6)
-             .attr("y", end_pos[1] - 6);
+             .attr("y", end_pos[1] - 6)
+             // Add rectangle to increase hitbox
+             // Position it at outside svg to show tip above cross
+             // Note: because the decrease in the size of the svg above,
+             //       every size below is 0.5 of the value given
+             .append("rect")
+             .attr("width", 24)
+             .attr("height", 56)
+             .attr("y", -16)
+             .attr("fill", "#FFF")
+             .attr("fill-opacity", "0")
+             .attr("style", "cursor:pointer;")
+             .on('mousemove', function () {
+                 tip.show(last_log.dest);
+             })
+             .on('mouseout', function () {
+                 tip.hide(last_log.dest);
+             });
+             
+             
     });
 
     d3.xml("/images/ship.svg", "image/svg+xml", function(error, xml) {
@@ -206,11 +228,11 @@ function drawGlobe() {
         .attr('class', 'countries')
         .on('mouseover', function (d) {
             d3.select(this).attr('fill', '#b000b5');
-            tip.show(d);
+            tip.show(d.name);
         })
         .on('mouseout', function (d) {
             d3.select(this).attr('fill', '#ccc');
-            tip.hide(d);
+            tip.hide(d.name);
         })
         .attr('d', path);
 
