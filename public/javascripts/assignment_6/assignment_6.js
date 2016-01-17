@@ -16,6 +16,7 @@ var world,
     countries,
     voyage,
     slider,
+    counter     = 0,
     paused      = false,
     WIDTH       = 420,
     HEIGHT      = 400,
@@ -166,8 +167,9 @@ function initDropDown() {
 
 function setupVoyage(error, l) {
     var range = [];
-    logs = l;
-    voyage = [];
+    logs      = l;
+    voyage    = [];
+    counter   = 0;
 
     prepareVoyage(voyage);
     range = voyageDateRange(voyage);
@@ -213,7 +215,6 @@ function setupIcons() {
 
 function animate () {
     var num_pos = voyage.length;
-    var counter = 0;
 
     (function transition() {
         d3.transition()
