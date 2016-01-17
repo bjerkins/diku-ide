@@ -70,6 +70,7 @@ svg.call(tip);
 
 var cross = svg.append("g").attr('id', 'cross_icon');
 var ship  = svg.append("g").attr('id', 'ship_icon');
+var circle;
 
 // request files
 
@@ -124,6 +125,14 @@ function initIcons(cross_xml, ship_xml) {
          .attr("style", "cursor:pointer;");
 
     ship.node().appendChild(ship_xml.documentElement);
+
+    circle = map.append('circle')
+        .attr('fill', 'none')
+        .attr("stroke", "#666666")
+        .attr("stroke-width", 2)
+        .attr("cy", -10000)
+        .attr("cx", -10000)
+        .attr('r', 6);
 
     ship.select('svg')
         .attr("width", SHIP_SIZE)
@@ -190,11 +199,9 @@ function setupVoyage(error, l) {
 }
 
 function setupIcons() {
-    var last_log = voyage[voyage.length - 1];
+    var last_log = voyage[voyage.length - 1];    
     var start_pos = globe_projection([voyage[0].lon,
                                       voyage[0].lat]);
-    var end_pos = globe_projection([last_log.lon,
-                                    last_log.lat]);
 
     cross.select("rect")
          .on('mousemove', function () {
@@ -208,9 +215,7 @@ function setupIcons() {
         .attr("x", start_pos[0] - SHIP_SIZE/2)
         .attr("y", start_pos[1] - SHIP_SIZE/2);
 
-    cross.select('svg')
-         .attr("x", end_pos[0] - CROSS_SIZE/2)
-         .attr("y", end_pos[1] - CROSS_SIZE/2);
+    positionIcons(start_pos);
 }
 
 function animate () {
@@ -245,8 +250,6 @@ function animate () {
 }
 
 function updateGlobe(p) {
-    var end_pos = globe_projection([voyage[voyage.length - 1].lon,
-                                    voyage[voyage.length - 1].lat]);
     p = globe_projection(p);
 
     map.select('.voyage')
@@ -254,6 +257,14 @@ function updateGlobe(p) {
 
     map.selectAll('.countries').attr('d', path);
 
+    positionIcons(p);
+}
+
+function positionIcons(p) {
+    var start_pos = globe_projection([voyage[0].lon,
+                                      voyage[0].lat]);
+    var end_pos = globe_projection([voyage[voyage.length - 1].lon,
+                                    voyage[voyage.length - 1].lat]);    
     ship.select('svg')
         .transition()
         .duration(VELOCITY)
@@ -263,6 +274,9 @@ function updateGlobe(p) {
     cross.select('svg')
          .attr("x", end_pos[0] - CROSS_SIZE/2)
          .attr("y", end_pos[1] - CROSS_SIZE/2);
+
+    circle.attr("cx", start_pos[0])
+          .attr("cy", start_pos[1]);
 }
 
 function showWelcomeMessage() {
