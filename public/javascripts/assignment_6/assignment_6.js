@@ -25,18 +25,21 @@ var globe_projection = d3.geo.orthographic()
     .clipAngle(90)
     .precision(0.1);
 
-var canvas = d3
-    .select("#map")
-    .append("canvas")
-    .attr("width", WIDTH)
-    .attr("height", HEIGHT);
-
-var context = canvas.node().getContext('2d');
-
 var path = d3
     .geo.path()
-    .projection(globe_projection)
-    .context(context);
+    .projection(globe_projection);
+
+var svg = d3
+    .select('#map')
+    .append('svg')
+    .attr('width', WIDTH)
+    .attr('height', HEIGHT);
+
+svg.append('defs')
+    .append('path')
+    .datum({ type: 'Sphere' })
+    .attr('id', 'sphere')
+    .attr('d', path);
 
 queue()
     .defer(d3.json, '/javascripts/assignment_6/data/world-110m.json')
@@ -62,28 +65,44 @@ function init () {
 function animate () {
     // find Iceland
     var iceland = findCountry('Iceland');
-
     d3.timer(function() {
         var angle = VELOCITY * (Date.now() - THEN);
-        moveGlobe(angle);
+        moveGlobe([angle]);
         drawCountries();
-        drawCountry(iceland);
     });
 }
 
-function moveGlobe(angle) {
-    globe_projection.rotate([angle]);
+function moveGlobe(position) {
+    globe_projection.rotate(position);
 }
 
 function drawCountries() {
-    // clear what was drawn before
-    context.clearRect(0, 0, WIDTH, HEIGHT);
-    // draw the land
-    context.fillStyle = "#ccc"; context.beginPath(); path(land); context.fill();
-    // draw the globe
-    context.strokeStyle = "#000"; context.lineWidth = 2; context.beginPath(); path(globe); context.stroke();
-    // draw the countries' borders
-    context.strokeStyle = "#fff"; context.lineWidth = 0.5; context.beginPath(); path(borders); context.stroke();
+
+    // todo, remove everything first
+
+    svg.insert('path')
+      .datum(land)
+      .attr('class', 'land')
+      .attr('fill', '#ccc')
+      .attr('d', path);
+
+    svg.insert('path')
+      .datum(borders)
+      .attr('class', 'border')
+      .attr('stroke', '#fff')
+      .attr('fill', 'none')
+      .attr('d', path);
+
+    svg.insert('path')
+        .datum(globe)
+        .attr('class', 'globe')
+        .attr('stroke', '#000')
+        .attr('fill', 'none')
+        .attr('d', path);
+}
+
+function clearSVG () {
+
 }
 
 // use this if you want to draw a country in some special way
