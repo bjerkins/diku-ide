@@ -107,6 +107,8 @@ function initIcons(cross_xml, ship_xml) {
     cross.select('svg')
          .attr("width", CROSS_SIZE)
          .attr("height", CROSS_SIZE)
+         .attr("y", -10000)
+         .attr("x", -10000)
          .attr("fill", "#666666")
          // Add rectangle to increase hitbox
          // Position it at outside svg to show tip above cross
@@ -125,6 +127,8 @@ function initIcons(cross_xml, ship_xml) {
     ship.select('svg')
         .attr("width", SHIP_SIZE)
         .attr("height", SHIP_SIZE)
+        .attr("y", -10000)
+        .attr("x", -10000)
         .select('g')
         .attr("fill", "#333333");
 }
@@ -197,6 +201,14 @@ function setupIcons() {
          .on('mouseout', function () {
              tip.hide(last_log.dest);
          });
+
+    ship.select('svg')
+        .attr("x", start_pos[0] - SHIP_SIZE/2)
+        .attr("y", start_pos[1] - SHIP_SIZE/2);
+
+    cross.select('svg')
+         .attr("x", end_pos[0] - CROSS_SIZE/2)
+         .attr("y", end_pos[1] - CROSS_SIZE/2);
 }
 
 function animate () {
@@ -206,7 +218,7 @@ function animate () {
     (function transition() {
         d3.transition()
             .duration(VELOCITY)
-            .each("start", function() {
+            .each("start", function() {                
             })
             .tween("rotate", function() {
                 var p = [voyage[counter].lon, voyage[counter].lat];
