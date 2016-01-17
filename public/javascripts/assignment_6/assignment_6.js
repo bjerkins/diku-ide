@@ -16,9 +16,9 @@ var world,
     countries,
     voyage,
     slider,
-    WIDTH       = 720,
-    HEIGHT      = 700,
-    VELOCITY    = 200,
+    WIDTH       = 420,
+    HEIGHT      = 400,
+    VELOCITY    = 500,
     THEN        = Date.now();
 
 var globe_projection = d3.geo.orthographic()
