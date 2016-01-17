@@ -4,6 +4,29 @@
     width: 420px;
 }
 
+#message_board {
+  p.welcome {
+    text-align: center;
+    font-size: 32px;
+    color: #666666;
+
+    .captain_txt,
+    .ship_txt {
+      font-weight: bold;
+      color: #333333;
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
 .tip {
   line-height: 1;
   font-weight: bold;
@@ -43,13 +66,13 @@
 .axis .halo {
   stroke: gray;
   stroke-width: 4px;
-  stroke-linecap: round;
+  stroke-linecap: square;
 }
 
 .slider .handle path {
   stroke: #b000b5;
   stroke-width: 3px;
-  stroke-linecap: round;
+  stroke-linecap: square;
   pointer-events: none;
 }
 
