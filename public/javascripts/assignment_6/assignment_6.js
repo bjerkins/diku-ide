@@ -56,7 +56,7 @@ function ready (error, w, n, l) {
 }
 
 function init () {
-    globe = {type: "Sphere"};
+    globe = { type: "Sphere" };
     land = topojson.feature(world, world.objects.land);
     countries = topojson.feature(world, world.objects.countries).features;
     borders = topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; });
@@ -79,7 +79,7 @@ function animate () {
 
 function testPoints() {
     var lineFn = d3.svg.line()
-    .x(function(d) { return globe_projection([l.Lon3, l.Lat3]).;)
+    .x(function(d) { return globe_projection([l.Lon3, l.Lat3]) })
     .y(function(d) { return globe_projection(d[1]); })
     .interpolate("cardinal");
 
