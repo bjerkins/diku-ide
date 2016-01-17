@@ -16,13 +16,15 @@ var world,
     countries,
     borders,
     slider,
+    voyage,
     WIDTH       = 720,
     HEIGHT      = 700,
-    VELOCITY    = 0.005,
+    VELOCITY    = 200,
     THEN        = Date.now();
 
 var globe_projection = d3.geo.orthographic()
     .translate([WIDTH / 2, HEIGHT / 2])
+    .rotate([0,0])
     .scale(WIDTH / 2 - 20)
     .clipAngle(90)
     .precision(0.1);
@@ -30,6 +32,11 @@ var globe_projection = d3.geo.orthographic()
 var path = d3
     .geo.path()
     .projection(globe_projection);
+
+var lineFn = d3.svg.line()
+    .x(function(l) { return globe_projection([l.lon, l.lat, 0])[0]; } )
+    .y(function(l) { return globe_projection([l.lon, l.lat, 0])[1]; })
+    .interpolate("cardinal");
 
 var svg = d3
     .select('#map')
@@ -69,56 +76,82 @@ function ready (error, w, n, l) {
 }
 
 function init () {
+    voyage = [];
     globe = { type: "Sphere" };
     land = topojson.feature(world, world.objects.land);
     countries = topojson.feature(world, world.objects.countries).features;
     borders = topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; });
 
+    logs.forEach(function (l) {
+        if (!(isNaN(l.Lat3) || isNaN(l.Lon3))) {
+            voyage.push({
+                lon: l.Lon3,
+                lat: l.Lat3
+            });
+        }
+    });
+
     slider = Slider('#slider', [new Date('2012-01-02'), new Date('2013-01-01')]);
     slider.setDate(new Date('2012-03-20'));
 
+    globe_projection.rotate([-voyage[0].lon, -voyage[0].lat]);
+
     prepareCountries();
     drawGlobe();
+    initVoyage();
+
     animate();
 }
 
 function animate () {
-    // find Iceland
-    var iceland = findCountry('Iceland');
-    d3.timer(function() {
-        var angle = VELOCITY * (Date.now() - THEN);
-        moveGlobe([angle]);
-        updateGlobe();
-        //testPoints();
-    });
-}
+    var num_pos = voyage.length;
+    var counter = 0;
 
-function testPoints() {
-    var lineFn = d3.svg.line()
-        .x(function(d) { return globe_projection([l.Lon3, l.Lat3]); })
-        .y(function(d) { return globe_projection(d[1]); })
-        .interpolate("cardinal");
-
-    svg.selectAll('circle')
-       .data(logs)
-       .enter()
-       .append('circle')
-       .attr('r', 5)
-       .attr("transform", function(l) {
-            return "translate(" + globe_projection([
-              l.Lon3,
-              l.Lat3
-            ]) + ")";
-          })
-       .attr("fill", "black");
+    (function transition() {
+    d3.transition()
+        .duration(VELOCITY)
+        .each("start", function() {
+        })
+        .tween("rotate", function() {
+            var p = [voyage[counter].lon, voyage[counter].lat];
+            var r = d3.interpolate(globe_projection.rotate(), [-p[0], -p[1]]);
+            return function(t) {
+                globe_projection.rotate(r(t));
+                updateGlobe();
+            };
+        })
+        .transition()
+        .each("end", function () {
+            counter++;
+            if (counter >= num_pos) {
+                counter = 0;
+            }
+            return transition();
+        });
+    })();
 }
 
 function updateGlobe() {
+
+    svg.select('.voyage')
+       .attr('d', lineFn(voyage));
     svg.selectAll('.countries').attr('d', path);
 }
 
-function drawGlobe() {
+function initVoyage() {
+    var voyage_line = lineFn(voyage);
 
+    svg.append("path")
+        .attr("class", "voyage")
+        .attr("stroke", "#000000")
+        .attr("stroke-opacity", 0.5)
+        .attr("stroke-width", 2)
+        .attr("stroke-dasharray", "4,4")
+        .attr("fill", "none")
+        .attr("d", voyage_line);
+}
+
+function drawGlobe() {
     // draw countries
     svg.selectAll('countries')
         .data(countries)
@@ -137,6 +170,7 @@ function drawGlobe() {
         })
         .attr('d', path);
 
+
     // draw the outline of the globe
     svg.insert('path')
         .datum(globe)
@@ -144,11 +178,7 @@ function drawGlobe() {
         .attr('stroke', '#000')
         .attr('fill', 'none')
         .attr('d', path);
-}
 
-function moveGlobe(position) {
-    globe_projection.rotate(position);
-    path = d3.geo.path().projection(globe_projection);
 }
 
 function prepareCountries () {
