@@ -95,6 +95,7 @@ function init () {
 
     globe_projection.rotate([-voyage[0].lon, -voyage[0].lat]);
 
+    initWelcomeMessage();
     initIcons();
     prepareCountries();
     drawGlobe();
@@ -151,6 +152,17 @@ function updateGlobe(p) {
     cross.select('svg')
          .attr("x", end_pos[0] - 6)
          .attr("y", end_pos[1] - 6);
+}
+
+function initWelcomeMessage() {
+    d3.select('#message_board')
+      .append('p')
+      .attr('class', 'welcome')
+      .html('Ahoy Captain <span class="captain_txt">' + 
+            voyage[0].captain + '</span><br />and<br />' +
+            'welcome aboard your ship, <br />the <span class="ship_txt">' +
+            voyage[0].ship_name);
+
 }
 
 function initIcons() {

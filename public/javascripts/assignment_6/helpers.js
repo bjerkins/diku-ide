@@ -18,7 +18,9 @@ function prepareVoyage (voyage) {
                 lon: l.Lon3,
                 lat: l.Lat3,
                 dest: l.VoyageTo,
-                date: extractDate(l.UTC)
+                date: extractDate(l.UTC),
+                captain: l.Name1,
+                ship_name: l.ShipName
             });
         }
     });
