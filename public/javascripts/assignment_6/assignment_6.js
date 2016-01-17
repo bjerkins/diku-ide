@@ -59,6 +59,7 @@ function init () {
     borders = topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; });
 
     prepareCountries();
+    drawGlobe();
     animate();
 }
 
@@ -68,18 +69,19 @@ function animate () {
     d3.timer(function() {
         var angle = VELOCITY * (Date.now() - THEN);
         moveGlobe([angle]);
-        drawCountries();
+        updateGlobe();
     });
 }
 
-function moveGlobe(position) {
-    globe_projection.rotate(position);
+function updateGlobe() {
+    svg.select('.land')
+       .attr('d', path);
+
+    svg.select('.border')
+       .attr('d', path);
 }
 
-function drawCountries() {
-
-    // todo, remove everything first
-
+function drawGlobe() {
     svg.insert('path')
       .datum(land)
       .attr('class', 'land')
@@ -101,8 +103,10 @@ function drawCountries() {
         .attr('d', path);
 }
 
-function clearSVG () {
-
+function moveGlobe(position) {
+    globe_projection.rotate(position);
+    path = d3.geo.path()
+             .projection(globe_projection);
 }
 
 // use this if you want to draw a country in some special way
