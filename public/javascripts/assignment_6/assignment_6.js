@@ -16,6 +16,8 @@ var world,
     countries,
     voyage,
     slider,
+    counter     = 0,
+    paused      = false,
     WIDTH       = 420,
     HEIGHT      = 400,
     VELOCITY    = 500,
@@ -39,7 +41,7 @@ var lineFn = d3.svg.line()
 
 var svg = d3
     .select('#map')
-    .append('svg')
+    .insert('svg', ':first-child')
     .attr('id', 'svg_map')
     .attr('width', WIDTH)
     .attr('height', HEIGHT);
@@ -99,12 +101,12 @@ function init () {
     prepareCountries();
     drawGlobe();
     initVoyage();
+    setupControls();
     animate();
 }
 
 function animate () {
     var num_pos = voyage.length;
-    var counter = 0;
 
     (function transition() {
         d3.transition()
@@ -127,7 +129,9 @@ function animate () {
                 if (counter >= num_pos) {
                     counter = 0;
                 }
-                return transition();
+                if (!paused) {
+                    return transition();
+                }
             });
     })();
 }
@@ -246,4 +250,13 @@ function drawGlobe() {
         .attr('stroke', '#000')
         .attr('fill', 'none')
         .attr('d', path);
+}
+
+function setupControls() {
+    d3.select('#control-toggle')
+        .on('click', function () {
+            paused = !paused;
+            this.className = paused ? 'glyphicon glyphicon-play' : 'glyphicon glyphicon-pause';
+            animate();
+        });
 }
