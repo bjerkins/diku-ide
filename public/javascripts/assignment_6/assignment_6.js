@@ -86,10 +86,12 @@ function init () {
         if (!(isNaN(l.Lat3) || isNaN(l.Lon3))) {
             voyage.push({
                 lon: l.Lon3,
-                lat: l.Lat3
+                lat: l.Lat3,
+                date: new Date(l.)
             });
         }
     });
+    // new Date(year, month, day, hours, minutes, seconds, milliseconds)
 
     slider = Slider('#slider', [new Date('2012-01-02'), new Date('2013-01-01')]);
     slider.setDate(new Date('2012-03-20'));
