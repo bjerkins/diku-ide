@@ -15,6 +15,7 @@ var world,
     globe,
     countries,
     borders,
+    voyage,
     WIDTH       = 720,
     HEIGHT      = 700,
     VELOCITY    = .005,
@@ -29,6 +30,11 @@ var globe_projection = d3.geo.orthographic()
 var path = d3
     .geo.path()
     .projection(globe_projection);
+
+var lineFn = d3.svg.line()
+    .x(function(l) { return globe_projection([l.Lon3, l.Lat3])[0]; } )
+    .y(function(l) { return globe_projection([l.Lon3, l.Lat3])[1]; })
+    .interpolate("cardinal");
 
 var svg = d3
     .select('#map')
@@ -63,6 +69,7 @@ function init () {
 
     prepareCountries();
     drawGlobe();
+    initVoyage();
     animate();
 }
 
@@ -73,28 +80,41 @@ function animate () {
         var angle = VELOCITY * (Date.now() - THEN);
         moveGlobe([angle]);
         updateGlobe();
-        //testPoints();
     });
 }
 
-function testPoints() {
-    var lineFn = d3.svg.line()
-    .x(function(d) { return globe_projection([l.Lon3, l.Lat3]).;)
-    .y(function(d) { return globe_projection(d[1]); })
-    .interpolate("cardinal");
+function initVoyage() {
+    voyage = [];
+    logs.forEach(function (l) {
+        if (!(isNaN(l.Lat3) || isNaN(l.Lon3))) {
+            voyage.push({ Lon3: l.Lon3, Lat3: l.Lat3});
+        }
+    });
 
-    svg.selectAll('circle')
-       .data(logs)
-       .enter()
-       .append('circle')
-       .attr('r', 5)
-       .attr("transform", function(l) {
-            return "translate(" + globe_projection([
-              l.Lon3,
-              l.Lat3
-            ]) + ")";
-          })
-       .attr("fill", "black")
+    svg.append("path")
+        .attr("class", "voyage")        
+        .attr("stroke", "#000000")
+        .attr("stroke-opacity", 0.5)
+        .attr("stroke-width", 2)
+        .attr("stroke-dasharray", "4,4")
+        .attr("fill", "none")
+        .attr("d", lineFn(voyage));
+}
+
+function testPoints() {
+
+    // svg.selectAll('circle')
+    //    .data(logs)
+    //    .enter()
+    //    .append('circle')
+    //    .attr('r', 5)
+    //    .attr("transform", function(l) {
+    //         return "translate(" + globe_projection([
+    //           l.Lon3,
+    //           l.Lat3
+    //         ]) + ")";
+    //       })
+    //    .attr("fill", "black")
 }
 
 function updateGlobe() {
@@ -103,6 +123,9 @@ function updateGlobe() {
 
     svg.select('.border')
        .attr('d', path);
+
+    svg.select('.voyage')
+       .attr('d', lineFn(voyage));
 }
 
 function drawGlobe() {
