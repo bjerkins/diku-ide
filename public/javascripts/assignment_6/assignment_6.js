@@ -161,33 +161,33 @@ function initIcons() {
 
     d3.xml("/images/cross.svg", "image/svg+xml", function(error, xml) {
         if (error) throw error;
+
+        // how about d3.select('#cross_icon') ? (bjarki)
         document.getElementById("cross_icon").appendChild(xml.documentElement);
 
         cross.select('svg')
-             .attr("width", 12)
-             .attr("height", 12)
-             .attr("fill", "#666666")
-             .attr("x", end_pos[0] - 6)
-             .attr("y", end_pos[1] - 6)
-             // Add rectangle to increase hitbox
-             // Position it at outside svg to show tip above cross
-             // Note: because the decrease in the size of the svg above,
-             //       every size below is 0.5 of the value given
-             .append("rect")
-             .attr("width", 24)
-             .attr("height", 56)
-             .attr("y", -16)
-             .attr("fill", "#FFF")
-             .attr("fill-opacity", "0")
-             .attr("style", "cursor:pointer;")
-             .on('mousemove', function () {
-                 tip.show(last_log.dest);
-             })
-             .on('mouseout', function () {
-                 tip.hide(last_log.dest);
-             });
-
-
+            .attr("width", 12)
+            .attr("height", 12)
+            .attr("fill", "#666666")
+            .attr("x", end_pos[0] - 6)
+            .attr("y", end_pos[1] - 6)
+            // Add rectangle to increase hitbox
+            // Position it at outside svg to show tip above cross
+            // Note: because the decrease in the size of the svg above,
+            //       every size below is 0.5 of the value given
+            .append("rect")
+            .attr("width", 24)
+            .attr("height", 56)
+            .attr("y", -16)
+            .attr("fill", "#FFF")
+            .attr("fill-opacity", "0")
+            .attr("style", "cursor:pointer;")
+            .on('mousemove', function () {
+                tip.show(last_log.dest);
+            })
+            .on('mouseout', function () {
+                tip.hide(last_log.dest);
+            });
     });
 
     d3.xml("/images/ship.svg", "image/svg+xml", function(error, xml) {
