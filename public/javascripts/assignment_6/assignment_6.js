@@ -85,7 +85,13 @@ function init () {
     globe       = { type: "Sphere" };
     countries   = topojson.feature(world, world.objects.countries).features;
 
+    var range = [];
+
     prepareVoyage(voyage);
+    range = voyageDateRange(voyage);
+
+    slider = Slider('#slider', range);
+    slider.setDate(voyage[0].date);
 
     globe_projection.rotate([-voyage[0].lon, -voyage[0].lat]);
 
@@ -108,9 +114,11 @@ function animate () {
             .tween("rotate", function() {
                 var p = [voyage[counter].lon, voyage[counter].lat];
                 var r = d3.interpolate(globe_projection.rotate(), [-p[0], -p[1]]);
+                var date = voyage[counter].date;
                 return function(t) {
                     globe_projection.rotate(r(t));
                     updateGlobe(p);
+                    slider.setDate(date);
                 };
             })
             .transition()
