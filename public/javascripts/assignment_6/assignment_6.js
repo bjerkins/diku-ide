@@ -16,13 +16,16 @@ var world,
     countries,
     voyage,
     slider,
-    counter     = 0,
     paused      = false,
     WIDTH       = 420,
     HEIGHT      = 400,
     VELOCITY    = 500,
     SHIP_SIZE   = 48,
     CROSS_SIZE  = 12;
+
+var datasets = new Array();
+datasets.push({text: 'J. Cook. Rio de Janeiro', src:'/javascripts/assignment_6/data/james_cook.csv'});
+datasets.push({text: 'J. Arkenbout. Copenhagen', src:'/javascripts/assignment_6/data/jacobus_arkenbout.csv'});
 
 var globe_projection = d3.geo.orthographic()
     .translate([WIDTH / 2, HEIGHT / 2])
@@ -37,7 +40,7 @@ var path = d3
 
 var lineFn = d3.svg.line()
     .x(function(l) { return globe_projection([l.lon, l.lat])[0]; } )
-    .y(function(l) { return globe_projection([l.lon, l.lat])[1]; })
+    .y(function(l) { return globe_projection([l.lon, l.lat])[1]; } )
     .interpolate("cardinal");
 
 var svg = d3
@@ -72,43 +75,133 @@ var ship  = svg.append("g").attr('id', 'ship_icon');
 queue()
     .defer(d3.json, '/javascripts/assignment_6/data/world-110m.json')
     .defer(d3.tsv, '/javascripts/assignment_6/data/world-country-names.tsv')
-    .defer(d3.csv, '/javascripts/assignment_6/data/james_cook.csv')
+    .defer(d3.xml, '/images/cross.svg', 'image/svg+xml')
+    .defer(d3.xml, '/images/ship.svg', 'image/svg+xml')
     .await(ready);
 
 
-function ready (error, w, n, l) {
+function ready (error, w, n, cross_xml, ship_xml) {
     world = w;
     names = n;
-    logs = l;
+
     init();
+    initIcons(cross_xml, ship_xml);
 }
 
 function init () {
-    voyage      = [];
     globe       = { type: "Sphere" };
     countries   = topojson.feature(world, world.objects.countries).features;
 
+    prepareCountries();
+    drawGlobe();
+    setupControls();
+
+    initDropDown();
+    initVoyage();
+
+    queue().defer(d3.csv, datasets[0].src).await(setupVoyage);
+}
+
+function initIcons(cross_xml, ship_xml) {
+    cross.node().appendChild(cross_xml.documentElement);
+    cross.select('svg')
+         .attr("width", CROSS_SIZE)
+         .attr("height", CROSS_SIZE)
+         .attr("fill", "#666666")
+         // Add rectangle to increase hitbox
+         // Position it at outside svg to show tip above cross
+         // Note: because the decrease in the size of the svg above,
+         //       every size below is 0.5 of the value given
+         .append("rect")
+         .attr("width", 24)
+         .attr("height", 48)
+         .attr("y", -24)
+         .attr("fill", "#FFF")
+         .attr("fill-opacity", "0")
+         .attr("style", "cursor:pointer;");
+
+    ship.node().appendChild(ship_xml.documentElement);
+
+    ship.select('svg')
+        .attr("width", SHIP_SIZE)
+        .attr("height", SHIP_SIZE)
+        .select('g')
+        .attr("fill", "#333333");
+}
+
+function initVoyage() {
+    map.append("path")
+        .attr("class", "voyage")
+        .attr("stroke", "#666666")
+        .attr("stroke-width", 2)
+        .attr("stroke-dasharray", "4,4")
+        .attr("fill", "none");
+}
+
+function initDropDown() {
+    var dropdown = d3.select('#dropdown')
+                     .append('select')
+                     .attr('class', 'form-control')
+                     .on('change', changeVoyage);
+    var test = datasets;
+
+    var options = dropdown.selectAll('option')
+            .data(datasets)
+            .enter()
+            .append('option')
+            .text(function(d) { return d.text; });
+
+    function changeVoyage() {
+        var select_index = dropdown.property('selectedIndex'),
+            select_option = options.filter(function (d, i) { return i === select_index }),
+            data = select_option.datum();
+
+        queue().defer(d3.csv, data.src).await(setupVoyage);
+    }
+}
+
+function setupVoyage(error, l) {
     var range = [];
+    logs = l;
+    voyage = [];
 
     prepareVoyage(voyage);
     range = voyageDateRange(voyage);
 
+    if (slider !== undefined) {
+        d3.select('#slider svg').remove();
+    }
     slider = Slider('#slider', range);
     slider.setDate(voyage[0].date);
 
     globe_projection.rotate([-voyage[0].lon, -voyage[0].lat]);
+    updateGlobe([voyage[0].lon, voyage[0].lat]);
 
-    initWelcomeMessage();
-    initIcons();
-    prepareCountries();
-    drawGlobe();
-    initVoyage();
-    setupControls();
+    showWelcomeMessage();
+    setupIcons();
+
     animate();
+}
+
+function setupIcons() {
+    var last_log = voyage[voyage.length - 1];
+    var start_pos = globe_projection([voyage[0].lon,
+                                      voyage[0].lat]);
+    var end_pos = globe_projection([last_log.lon,
+                                    last_log.lat]);
+
+    cross.select("rect")
+         .on('mousemove', function () {
+             tip.show(last_log.dest);
+         })
+         .on('mouseout', function () {
+             tip.hide(last_log.dest);
+         });
 }
 
 function animate () {
     var num_pos = voyage.length;
+    var counter = 0;
 
     (function transition() {
         d3.transition()
@@ -159,81 +252,12 @@ function updateGlobe(p) {
          .attr("y", end_pos[1] - CROSS_SIZE/2);
 }
 
-function initWelcomeMessage() {
-    d3.select('#message_board')
-      .append('p')
-      .attr('class', 'welcome')
+function showWelcomeMessage() {
+    d3.select('#message_board p.welcome')
       .html('Ahoy Captain <span class="captain_txt">' + 
             voyage[0].captain + '</span><br />and<br />' +
             'welcome aboard your ship, <br />the <span class="ship_txt">' +
             voyage[0].ship_name);
-
-}
-
-function initIcons() {
-    var last_log = voyage[voyage.length - 1];
-    var start_pos = globe_projection([voyage[0].lon,
-                                      voyage[0].lat]);
-    var end_pos = globe_projection([last_log.lon,
-                                    last_log.lat]);
-
-    d3.xml("/images/cross.svg", "image/svg+xml", function(error, xml) {
-        if (error) throw error;
-
-        // how about d3.select('#cross_icon') ? (bjarki)
-        document.getElementById("cross_icon").appendChild(xml.documentElement);
-
-        cross.select('svg')
-            .attr("width", CROSS_SIZE)
-            .attr("height", CROSS_SIZE)
-            .attr("fill", "#666666")
-            .attr("x", end_pos[0] - CROSS_SIZE/2)
-            .attr("y", end_pos[1] - CROSS_SIZE/2)
-            // Add rectangle to increase hitbox
-            // Position it at outside svg to show tip above cross
-            // Note: because the decrease in the size of the svg above,
-            //       every size below is 0.5 of the value given
-            .append("rect")
-            .attr("width", 24)
-            .attr("height", 56)
-            .attr("y", -16)
-            .attr("fill", "#FFF")
-            .attr("fill-opacity", "0")
-            .attr("style", "cursor:pointer;")
-            .on('mousemove', function () {
-                tip.show(last_log.dest);
-            })
-            .on('mouseout', function () {
-                tip.hide(last_log.dest);
-            });
-    });
-
-    d3.xml("/images/ship.svg", "image/svg+xml", function(error, xml) {
-        if (error) throw error;
-        document.getElementById("ship_icon").appendChild(xml.documentElement);
-
-        ship.select('svg')
-            .attr("width", SHIP_SIZE)
-            .attr("height", SHIP_SIZE)
-            .attr("x", start_pos[0] - SHIP_SIZE/2)
-            .attr("y", start_pos[1] - SHIP_SIZE/2);
-
-        ship.select('svg')
-            .select('g')
-            .attr("fill", "#333333")
-    });
-}
-
-function initVoyage() {
-    var voyage_line = lineFn(voyage);
-
-    map.append("path")
-        .attr("class", "voyage")
-        .attr("stroke", "#666666")
-        .attr("stroke-width", 2)
-        .attr("stroke-dasharray", "4,4")
-        .attr("fill", "none")
-        .attr("d", voyage_line);
 }
 
 function drawGlobe() {
