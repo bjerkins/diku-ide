@@ -14,9 +14,11 @@ function prepareVoyage (voyage) {
     // bon voyage!
     logs.forEach(function (l) {
         if (!(isNaN(l.Lat3) || isNaN(l.Lon3))) {
-            voyage.push({ Lon3: l.Lon3,
-                          Lat3: l.Lat3,
-                          dest: l.VoyageTo });
+            voyage.push({
+                lon: l.Lon3,
+                lat: l.Lat3,
+                dest: l.VoyageTo
+            });
         }
     });
 }

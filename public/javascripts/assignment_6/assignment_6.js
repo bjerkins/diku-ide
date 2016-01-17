@@ -33,8 +33,8 @@ var path = d3
     .projection(globe_projection);
 
 var lineFn = d3.svg.line()
-    .x(function(l) { return globe_projection([l.Lon3, l.Lat3])[0]; } )
-    .y(function(l) { return globe_projection([l.Lon3, l.Lat3])[1]; })
+    .x(function(l) { return globe_projection([l.lon, l.lat])[0]; } )
+    .y(function(l) { return globe_projection([l.lon, l.lat])[1]; })
     .interpolate("cardinal");
 
 var svg = d3
@@ -87,7 +87,7 @@ function init () {
 
     prepareVoyage(voyage);
 
-    globe_projection.rotate([-voyage[0].Lon3, -voyage[0].Lat3]);
+    globe_projection.rotate([-voyage[0].lon, -voyage[0].lat]);
 
     initIcons();
     prepareCountries();
@@ -106,7 +106,7 @@ function animate () {
             .each("start", function() {
             })
             .tween("rotate", function() {
-                var p = [voyage[counter].Lon3, voyage[counter].Lat3];
+                var p = [voyage[counter].lon, voyage[counter].lat];
                 var r = d3.interpolate(globe_projection.rotate(), [-p[0], -p[1]]);
                 return function(t) {
                     globe_projection.rotate(r(t));
@@ -125,8 +125,8 @@ function animate () {
 }
 
 function updateGlobe(p) {
-    var end_pos = globe_projection([voyage[voyage.length - 1].Lon3,
-                                    voyage[voyage.length - 1].Lat3]);
+    var end_pos = globe_projection([voyage[voyage.length - 1].lon,
+                                    voyage[voyage.length - 1].lat]);
     p = globe_projection(p);
 
     map.select('.voyage')
@@ -147,10 +147,10 @@ function updateGlobe(p) {
 
 function initIcons() {
     var last_log = voyage[voyage.length - 1];
-    var start_pos = globe_projection([voyage[0].Lon3,
-                                      voyage[0].Lat3]);
-    var end_pos = globe_projection([last_log.Lon3,
-                                    last_log.Lat3]);
+    var start_pos = globe_projection([voyage[0].lon,
+                                      voyage[0].lat]);
+    var end_pos = globe_projection([last_log.lon,
+                                    last_log.lat]);
 
     d3.xml("/images/cross.svg", "image/svg+xml", function(error, xml) {
         if (error) throw error;
