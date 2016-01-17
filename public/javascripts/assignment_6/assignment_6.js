@@ -144,7 +144,7 @@ function updateGlobe(p) {
         .attr("x", p[0] - 24)
         .attr("y", p[1] - 24);
 
-    cross.select('#Layer_1')
+    cross.select('svg')
          .attr("x", end_pos[0] - 6)
          .attr("y", end_pos[1] - 6);
 }
@@ -159,7 +159,7 @@ function initIcons() {
         if (error) throw error;
         document.getElementById("cross_icon").appendChild(xml.documentElement);
 
-        cross.select('#Layer_1')
+        cross.select('svg')
              .attr("width", 12)
              .attr("height", 12)   
              .attr("fill", "#666666")
