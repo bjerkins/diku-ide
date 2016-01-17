@@ -38,14 +38,16 @@ var path = d3
     .projection(globe_projection)
     .context(context);
 
+queue()
+    .defer(d3.json, '/javascripts/assignment_6/data/world-110m.json')
+    .defer(d3.tsv, '/javascripts/assignment_6/data/world-country-names.tsv')
+    .await(ready);
 
-d3.json('/javascripts/assignment_6/data/world-110m.json', function(w) {
+function ready (error, w, n) {
     world = w;
-    d3.tsv('/javascripts/assignment_6/data/world-country-names.tsv', function (n) {
-        names = n;
-        init();
-    });
-});
+    names = n;
+    init();
+}
 
 function init () {
     globe = {type: "Sphere"};

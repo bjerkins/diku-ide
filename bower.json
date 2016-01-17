@@ -9,7 +9,8 @@
     "topojson": "~1.6.19",
     "cartodb.js": "~3.15.8",
     "three.js": "threejs#*",
-    "world.geo.json": "git://github.com/johan/world.geo.json.git"
+    "world.geo.json": "git://github.com/johan/world.geo.json.git",
+    "queue-async": "~1.0.7"
   },
   "resolutions": {
     "d3": "~3.5.9",
