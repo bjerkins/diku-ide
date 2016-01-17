@@ -49,11 +49,23 @@ svg.append('defs')
     .attr('id', 'sphere')
     .attr('d', path);
 
+var tip = d3
+    .tip()
+    .attr('class', 'tip')
+    .html(function(d) {
+        return "<span>" + d.name + "</span>";
+    });
+
+svg.call(tip);
+
+// request files
+
 queue()
     .defer(d3.json, '/javascripts/assignment_6/data/world-110m.json')
     .defer(d3.tsv, '/javascripts/assignment_6/data/world-country-names.tsv')
     .defer(d3.csv, '/javascripts/assignment_6/data/james_cook.csv')
     .await(ready);
+
 
 function ready (error, w, n, l) {
     world = w;
@@ -160,11 +172,13 @@ function drawGlobe() {
         .attr('fill', '#ccc')
         .attr('stroke', '#fff')
         .attr('class', 'countries')
-        .on('mouseover', function () {
+        .on('mouseover', function (d) {
             d3.select(this).attr('fill', '#b000b5');
+            tip.show(d);
         })
-        .on('mouseout', function () {
+        .on('mouseout', function (d) {
             d3.select(this).attr('fill', '#ccc');
+            tip.hide(d);
         })
         .attr('d', path);
 
