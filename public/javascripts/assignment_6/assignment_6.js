@@ -15,6 +15,7 @@ var world,
     globe,
     countries,
     borders,
+    slider,
     WIDTH       = 720,
     HEIGHT      = 700,
     VELOCITY    = 0.005,
@@ -73,6 +74,9 @@ function init () {
     countries = topojson.feature(world, world.objects.countries).features;
     borders = topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; });
 
+    slider = Slider('#slider', [new Date('2012-01-02'), new Date('2013-01-01')]);
+    slider.setDate(new Date('2012-03-20'));
+
     prepareCountries();
     drawGlobe();
     animate();
@@ -91,9 +95,9 @@ function animate () {
 
 function testPoints() {
     var lineFn = d3.svg.line()
-    .x(function(d) { return globe_projection([l.Lon3, l.Lat3]); })
-    .y(function(d) { return globe_projection(d[1]); })
-    .interpolate("cardinal");
+        .x(function(d) { return globe_projection([l.Lon3, l.Lat3]); })
+        .y(function(d) { return globe_projection(d[1]); })
+        .interpolate("cardinal");
 
     svg.selectAll('circle')
        .data(logs)
