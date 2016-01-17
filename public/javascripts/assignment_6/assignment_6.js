@@ -85,13 +85,7 @@ function init () {
     globe       = { type: "Sphere" };
     countries   = topojson.feature(world, world.objects.countries).features;
 
-    logs.forEach(function (l) {
-        if (!(isNaN(l.Lat3) || isNaN(l.Lon3))) {
-            voyage.push({ Lon3: l.Lon3,
-                          Lat3: l.Lat3,
-                          dest: l.VoyageTo });
-        }
-    });
+    prepareVoyage(voyage);
 
     globe_projection.rotate([-voyage[0].Lon3, -voyage[0].Lat3]);
 
