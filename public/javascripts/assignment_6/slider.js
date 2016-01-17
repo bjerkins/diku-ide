@@ -4,10 +4,11 @@
 
 var Slider = function (element, dateRange) {
 
-    var formatDate  = d3.time.format("%b %d"),
-    margin          = { top: 50, right: 50, bottom: 50, left: 50 },
-    width           = 720 - margin.left - margin.right,
-    height          = 300 - margin.bottom - margin.top;
+    var tickDateFormat  = d3.time.format("%d. %b - %H:%M"),
+        axisDateFormat  = d3.time.format("%d. %B %Y"),
+        margin          = { top: 50, right: 50, bottom: 50, left: 50 },
+        width           = 720 - margin.left - margin.right,
+        height          = 300 - margin.bottom - margin.top;
 
     var svg = d3.select(element)
         .append("svg")
@@ -46,7 +47,7 @@ var Slider = function (element, dateRange) {
                     .scale(timeScale)
                     .orient("bottom")
                     .tickFormat(function(d) {
-                        return formatDate(d);
+                        return axisDateFormat(d);
                     })
                     .tickSize(0)
                     .tickPadding(12)
@@ -89,7 +90,7 @@ var Slider = function (element, dateRange) {
                 }
 
                 handle.attr("transform", "translate(" + timeScale(value) + ",0)");
-                handle.select('text').text(formatDate(value));
+                handle.select('text').text(tickDateFormat(value));
             }
         }
     };
