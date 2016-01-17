@@ -154,7 +154,7 @@ function initIcons() {
                                       voyage[0].Lat3]);
     var end_pos = globe_projection([voyage[voyage.length - 1].Lon3, 
                                     voyage[voyage.length - 1].Lat3]);
-    
+
     d3.xml("/images/cross.svg", "image/svg+xml", function(error, xml) {
         if (error) throw error;
         document.getElementById("cross_icon").appendChild(xml.documentElement);
@@ -162,7 +162,7 @@ function initIcons() {
         cross.select('#Layer_1')
              .attr("width", 12)
              .attr("height", 12)   
-             .attr("fill", "#66666")
+             .attr("fill", "#666666")
              .attr("x", end_pos[0] - 6)
              .attr("y", end_pos[1] - 6);
     });
@@ -174,9 +174,12 @@ function initIcons() {
         ship.select('svg')
             .attr("width", 48)
             .attr("height", 48)
-            .attr("fill", "#333333")
             .attr("x", start_pos[0] - 24)
             .attr("y", start_pos[1] - 24);
+
+        ship.select('svg')
+            .select('g')
+            .attr("fill", "#333333")
     });
 }
 
