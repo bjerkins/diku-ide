@@ -81,10 +81,10 @@ function ready (error, w, n, l) {
 }
 
 function init () {
-    globe = { type: "Sphere" };
-    countries = topojson.feature(world, world.objects.countries).features;
+    voyage      = [];
+    globe       = { type: "Sphere" };
+    countries   = topojson.feature(world, world.objects.countries).features;
 
-    voyage = [];
     logs.forEach(function (l) {
         if (!(isNaN(l.Lat3) || isNaN(l.Lon3))) {
             voyage.push({ Lon3: l.Lon3,
@@ -94,41 +94,39 @@ function init () {
     });
 
     globe_projection.rotate([-voyage[0].Lon3, -voyage[0].Lat3]);
+
     initIcons();
     prepareCountries();
     drawGlobe();
     initVoyage();
-
     animate();
 }
 
 function animate () {
-    // find Iceland
-    var iceland = findCountry('Iceland');
     var num_pos = voyage.length;
     var counter = 0;
 
     (function transition() {
-    d3.transition()
-        .duration(VELOCITY)
-        .each("start", function() {
-        })
-        .tween("rotate", function() {
-            var p = [voyage[counter].Lon3, voyage[counter].Lat3];
-            var r = d3.interpolate(globe_projection.rotate(), [-p[0], -p[1]]);
-            return function(t) {
-                globe_projection.rotate(r(t));
-                updateGlobe(p);
-            };
-        })
-        .transition()
-        .each("end", function () {
-            counter++;
-            if (counter >= num_pos) {
-                counter = 0;
-            }
-            return transition();
-        });
+        d3.transition()
+            .duration(VELOCITY)
+            .each("start", function() {
+            })
+            .tween("rotate", function() {
+                var p = [voyage[counter].Lon3, voyage[counter].Lat3];
+                var r = d3.interpolate(globe_projection.rotate(), [-p[0], -p[1]]);
+                return function(t) {
+                    globe_projection.rotate(r(t));
+                    updateGlobe(p);
+                };
+            })
+            .transition()
+            .each("end", function () {
+                counter++;
+                if (counter >= num_pos) {
+                    counter = 0;
+                }
+                return transition();
+            });
     })();
 }
 
@@ -139,6 +137,7 @@ function updateGlobe(p) {
 
     map.select('.voyage')
        .attr('d', lineFn(voyage));
+
     map.selectAll('.countries').attr('d', path);
 
     ship.select('svg')
