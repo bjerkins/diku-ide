@@ -14,7 +14,6 @@ var world,
     logs,
     globe,
     countries,
-    borders,
     voyage,
     WIDTH       = 720,
     HEIGHT      = 700,
@@ -76,9 +75,7 @@ function ready (error, w, n, l) {
 
 function init () {
     globe = { type: "Sphere" };
-    land = topojson.feature(world, world.objects.land);
     countries = topojson.feature(world, world.objects.countries).features;
-    borders = topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; });
 
     voyage = [];
     logs.forEach(function (l) {
@@ -125,26 +122,7 @@ function animate () {
     })();
 }
 
-
-
-function testPoints() {
-
-    // svg.selectAll('circle')
-    //    .data(logs)
-    //    .enter()
-    //    .append('circle')
-    //    .attr('r', 5)
-    //    .attr("transform", function(l) {
-    //         return "translate(" + globe_projection([
-    //           l.Lon3,
-    //           l.Lat3
-    //         ]) + ")";
-    //       })
-    //    .attr("fill", "black")
-}
-
 function updateGlobe() {
-
     svg.select('.voyage')
        .attr('d', lineFn(voyage));
     svg.selectAll('.countries').attr('d', path);
@@ -191,27 +169,6 @@ function drawGlobe() {
         .attr('fill', 'none')
         .attr('d', path);
 
-}
-
-function moveGlobe(position) {
-    var rotate = globe_projection.rotate();
-    globe_projection.rotate(position);
-    //Globe rotating
-
-    // (function transition() {
-    //     debugger;
-    //     d3.transition()
-    //     .duration(2500)
-    //     .tween("rotate", function() {
-    //         var r = d3.interpolate(globe_projection.rotate(), [-position[0], -position[1]]);
-    //         return function(t) {
-    //             globe_projection.rotate(r(t));
-    //         };
-    //     })
-    // })();
-
-
-    path = d3.geo.path().projection(globe_projection);
 }
 
 function prepareCountries () {
