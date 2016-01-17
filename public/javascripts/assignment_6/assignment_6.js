@@ -17,7 +17,7 @@ var world,
     borders,
     WIDTH       = 720,
     HEIGHT      = 700,
-    VELOCITY    = .005,
+    VELOCITY    = 0.005,
     THEN        = Date.now();
 
 var globe_projection = d3.geo.orthographic()
@@ -79,7 +79,7 @@ function animate () {
 
 function testPoints() {
     var lineFn = d3.svg.line()
-    .x(function(d) { return globe_projection([l.Lon3, l.Lat3]) })
+    .x(function(d) { return globe_projection([l.Lon3, l.Lat3]); })
     .y(function(d) { return globe_projection(d[1]); })
     .interpolate("cardinal");
 
@@ -94,7 +94,7 @@ function testPoints() {
               l.Lat3
             ]) + ")";
           })
-       .attr("fill", "black")
+       .attr("fill", "black");
 }
 
 function updateGlobe() {
@@ -129,8 +129,7 @@ function drawGlobe() {
 
 function moveGlobe(position) {
     globe_projection.rotate(position);
-    path = d3.geo.path()
-             .projection(globe_projection);
+    path = d3.geo.path().projection(globe_projection);
 }
 
 // use this if you want to draw a country in some special way
