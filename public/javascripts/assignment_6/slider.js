@@ -7,8 +7,8 @@ var Slider = function (element, dateRange) {
     var tickDateFormat  = d3.time.format("%d. %b - %H:%M"),
         axisDateFormat  = d3.time.format("%d. %B %Y"),
         margin          = { top: 50, right: 50, bottom: 50, left: 50 },
-        width           = 720 - margin.left - margin.right,
-        height          = 300 - margin.bottom - margin.top;
+        width           = 740 - margin.left - margin.right,
+        height          = 50;
 
     var svg = d3.select(element)
         .append("svg")
@@ -72,12 +72,11 @@ var Slider = function (element, dateRange) {
             handle
                 .append("path")
                 .attr("transform", "translate(0," + height / 2 + ")")
-                .attr("d", "M 0 -20 V 20");
+                .attr("d", "M 0 -8 V 8");
 
             handle
                 .append('text')
-                .text(date)
-                .attr("transform", "translate(" + (-18) + " ," + (height / 2 - 25) + ")");
+                .text(date);
 
             slider.call(brush.event);
 
@@ -90,7 +89,14 @@ var Slider = function (element, dateRange) {
                 }
 
                 handle.attr("transform", "translate(" + timeScale(value) + ",0)");
-                handle.select('text').text(tickDateFormat(value));
+
+                handle
+                    .select('text')
+                    .text(tickDateFormat(value))
+                    .attr("transform", function (d) {
+                        var width = this.getBBox().width;
+                        return "translate(" + (-width / 2) + " ," + (height / 2 - 25) + ")";
+                    });
             }
         }
     };

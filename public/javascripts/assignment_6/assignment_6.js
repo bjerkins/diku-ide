@@ -17,7 +17,7 @@ var world,
     voyage,
     slider,
     counter     = 0,
-    paused      = false,
+    paused      = true,
     WIDTH       = 420,
     HEIGHT      = 400,
     VELOCITY    = 500,
@@ -224,7 +224,7 @@ function animate () {
     (function transition() {
         d3.transition()
             .duration(VELOCITY)
-            .each("start", function() {                
+            .each("start", function() {
             })
             .tween("rotate", function() {
                 var p = [voyage[counter].lon, voyage[counter].lat];
@@ -279,9 +279,10 @@ function positionIcons(p) {
           .attr("cy", start_pos[1]);
 }
 
+
 function showWelcomeMessage() {
     d3.select('#message_board p.welcome')
-      .html('Ahoy Captain <span class="captain_txt">' + 
+      .html('Ahoy Captain <span class="captain_txt">' +
             voyage[0].captain + '</span><br />and<br />' +
             'welcome aboard your ship, <br />the <span class="ship_txt">' +
             voyage[0].ship_name);

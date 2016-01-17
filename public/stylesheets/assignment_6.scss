@@ -18,14 +18,10 @@
   }
 }
 
-
-
-
-
-
-
-
-
+.slider-container {
+    margin: auto;
+    width: 720px;
+}
 
 .tip {
   line-height: 1;
@@ -70,16 +66,18 @@
 }
 
 .slider .handle path {
-  stroke: #b000b5;
+  stroke: #333;
   stroke-width: 3px;
   stroke-linecap: square;
   pointer-events: none;
 }
 
 .slider .handle text {
-  fill: #b000b5;
+  fill: #333;
   text-align: center;
-  font-size: 18px;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 12px;
 }
 
 #control-toggle{
