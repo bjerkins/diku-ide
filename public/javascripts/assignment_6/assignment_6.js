@@ -98,27 +98,28 @@ function testPoints() {
 }
 
 function updateGlobe() {
-    svg.select('.land')
-       .attr('d', path);
-
-    svg.select('.border')
-       .attr('d', path);
+    svg.selectAll('.countries').attr('d', path);
 }
 
 function drawGlobe() {
-    svg.insert('path')
-      .datum(land)
-      .attr('class', 'land')
-      .attr('fill', '#ccc')
-      .attr('d', path);
 
-    svg.insert('path')
-      .datum(borders)
-      .attr('class', 'border')
-      .attr('stroke', '#fff')
-      .attr('fill', 'none')
-      .attr('d', path);
+    // draw countries
+    svg.selectAll('countries')
+        .data(countries)
+        .enter()
+        .insert('path')
+        .attr('fill', '#ccc')
+        .attr('stroke', '#fff')
+        .attr('class', 'countries')
+        .on('mouseover', function () {
+            d3.select(this).attr('fill', '#b000b5');
+        })
+        .on('mouseout', function () {
+            d3.select(this).attr('fill', '#ccc');
+        })
+        .attr('d', path);
 
+    // draw the outline of the globe
     svg.insert('path')
         .datum(globe)
         .attr('class', 'globe')
@@ -130,11 +131,6 @@ function drawGlobe() {
 function moveGlobe(position) {
     globe_projection.rotate(position);
     path = d3.geo.path().projection(globe_projection);
-}
-
-// use this if you want to draw a country in some special way
-function drawCountry (country) {
-    context.fillStyle = "#b000b5"; context.beginPath(); path(country); context.fill();
 }
 
 function prepareCountries () {
