@@ -32,13 +32,14 @@ var path = d3
     .projection(globe_projection);
 
 var lineFn = d3.svg.line()
-    .x(function(l) { return globe_projection([l.Lon3, l.Lat3, 0])[0]; } )
-    .y(function(l) { return globe_projection([l.Lon3, l.Lat3, 0])[1]; })
+    .x(function(l) { return globe_projection([l.Lon3, l.Lat3])[0]; } )
+    .y(function(l) { return globe_projection([l.Lon3, l.Lat3])[1]; })
     .interpolate("cardinal");
 
 var svg = d3
     .select('#map')
     .append('svg')
+    .attr('id', 'svg_map')
     .attr('width', WIDTH)
     .attr('height', HEIGHT);
 
@@ -48,6 +49,8 @@ svg.append('defs')
     .attr('id', 'sphere')
     .attr('d', path);
 
+var map = svg.append("g").attr('id', 'map_group');
+
 var tip = d3
     .tip()
     .attr('class', 'tip')
@@ -56,6 +59,9 @@ var tip = d3
     });
 
 svg.call(tip);
+
+var cross = svg.append("g").attr('id', 'cross_icon');
+var ship  = svg.append("g").attr('id', 'ship_icon');
 
 // request files
 
@@ -85,6 +91,7 @@ function init () {
     });
 
     globe_projection.rotate([-voyage[0].Lon3, -voyage[0].Lat3]);
+    initIcons();
     prepareCountries();
     drawGlobe();
     initVoyage();
@@ -108,7 +115,7 @@ function animate () {
             var r = d3.interpolate(globe_projection.rotate(), [-p[0], -p[1]]);
             return function(t) {
                 globe_projection.rotate(r(t));
-                updateGlobe();
+                updateGlobe(p);
             };
         })
         .transition()
@@ -122,28 +129,72 @@ function animate () {
     })();
 }
 
-function updateGlobe() {
-    svg.select('.voyage')
+function updateGlobe(p) {
+    var end_pos = globe_projection([voyage[voyage.length - 1].Lon3, 
+                                    voyage[voyage.length - 1].Lat3]);
+    p = globe_projection(p);
+
+    map.select('.voyage')
        .attr('d', lineFn(voyage));
-    svg.selectAll('.countries').attr('d', path);
+    map.selectAll('.countries').attr('d', path);
+
+    ship.select('svg')
+        .transition()
+        .duration(VELOCITY)
+        .attr("x", p[0] - 24)
+        .attr("y", p[1] - 24);
+
+    cross.select('#Layer_1')
+         .attr("x", end_pos[0] - 6)
+         .attr("y", end_pos[1] - 6);
+}
+
+function initIcons() {
+    var start_pos = globe_projection([voyage[0].Lon3, 
+                                      voyage[0].Lat3]);
+    var end_pos = globe_projection([voyage[voyage.length - 1].Lon3, 
+                                    voyage[voyage.length - 1].Lat3]);
+    
+    d3.xml("/images/cross.svg", "image/svg+xml", function(error, xml) {
+        if (error) throw error;
+        document.getElementById("cross_icon").appendChild(xml.documentElement);
+
+        cross.select('#Layer_1')
+             .attr("width", 12)
+             .attr("height", 12)   
+             .attr("fill", "#66666")
+             .attr("x", end_pos[0] - 6)
+             .attr("y", end_pos[1] - 6);
+    });
+
+    d3.xml("/images/ship.svg", "image/svg+xml", function(error, xml) {
+        if (error) throw error;
+        document.getElementById("ship_icon").appendChild(xml.documentElement);
+
+        ship.select('svg')
+            .attr("width", 48)
+            .attr("height", 48)
+            .attr("fill", "#333333")
+            .attr("x", start_pos[0] - 24)
+            .attr("y", start_pos[1] - 24);
+    });
 }
 
 function initVoyage() {
     var voyage_line = lineFn(voyage);
 
-    svg.append("path")
+    map.append("path")
         .attr("class", "voyage")        
-        .attr("stroke", "#000000")
-        .attr("stroke-opacity", 0.5)
+        .attr("stroke", "#666666")
         .attr("stroke-width", 2)
         .attr("stroke-dasharray", "4,4")
         .attr("fill", "none")
-        .attr("d", voyage_line);
+        .attr("d", voyage_line);    
 }
 
 function drawGlobe() {
     // draw countries
-    svg.selectAll('countries')
+    map.selectAll('countries')
         .data(countries)
         .enter()
         .insert('path')
@@ -162,13 +213,12 @@ function drawGlobe() {
 
 
     // draw the outline of the globe
-    svg.insert('path')
+    map.insert('path')
         .datum(globe)
         .attr('class', 'globe')
         .attr('stroke', '#000')
         .attr('fill', 'none')
         .attr('d', path);
-
 }
 
 function prepareCountries () {
