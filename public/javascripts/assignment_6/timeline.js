@@ -2,7 +2,8 @@ var Timeline = function (element, logs, clicked) {
 
     var timeline        = d3.select(element),
         dateFormat      = d3.time.format("%d. %b"),
-        yearFormat      = d3.time.format("%Y");
+        yearFormat      = d3.time.format("%Y"),
+        offset          = 80 * 6;
 
     var generateHTML = function (d, i) {
         this.className = i === 0 ? 'li complete' : 'li';
@@ -36,11 +37,13 @@ var Timeline = function (element, logs, clicked) {
         .html(generateHTML)
         .on('click', handleClick);
 
+    timeline.style('left', offset + 'px');
+
     return {
         draw: function (index) {
 
             // clear selected
-            var muchLeft = -80 * index;
+            var muchLeft = offset + (-80 * index);
 
             d3.transition()
                 .each(function() {
