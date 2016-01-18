@@ -232,13 +232,14 @@ function animate () {
                     return function(t) {
                         globe_projection.rotate(r(t));
                         updateGlobe(p);
-                        timeline.draw(counter);
                         generateInfoHTML(voyage[counter]);
                         showBattle(voyage[counter]);
                     };
                 })
                 .transition()
                 .each("end", function () {
+                    timeline.draw(counter);
+
                     counter++;
                     if (counter >= num_pos) {
                         counter = 0;

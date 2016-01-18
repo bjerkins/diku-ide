@@ -57,7 +57,8 @@ var Timeline = function (element, logs, clicked) {
                     timeline
                         .transition()
                         .style('left', muchLeft + 'px');
-                });
+                })
+                .transition();
 
         }
     };
