@@ -219,32 +219,34 @@ function setupIcons() {
 function animate () {
     var num_pos = voyage.length;
 
-    (function transition() {
-        d3.transition()
-            .duration(VELOCITY)
-            .each("start", function() {
-            })
-            .tween("rotate", function() {
-                var p = [voyage[counter].lon, voyage[counter].lat];
-                var r = d3.interpolate(globe_projection.rotate(), [-p[0], -p[1]]);
-                var date = voyage[counter].date;
-                return function(t) {
-                    globe_projection.rotate(r(t));
-                    updateGlobe(p);
-                    timeline.draw(counter);
-                };
-            })
-            .transition()
-            .each("end", function () {
-                counter++;
-                if (counter >= num_pos) {
-                    counter = 0;
-                }
-                if (!paused) {
-                    return transition();
-                }
-            });
-    })();
+    if (!paused) {
+        (function transition() {
+            d3.transition()
+                .duration(VELOCITY)
+                .each("start", function() {
+                })
+                .tween("rotate", function() {
+                    var p = [voyage[counter].lon, voyage[counter].lat];
+                    var r = d3.interpolate(globe_projection.rotate(), [-p[0], -p[1]]);
+                    var date = voyage[counter].date;
+                    return function(t) {
+                        globe_projection.rotate(r(t));
+                        updateGlobe(p);
+                        timeline.draw(counter);
+                    };
+                })
+                .transition()
+                .each("end", function () {
+                    counter++;
+                    if (counter >= num_pos) {
+                        counter = 0;
+                    }
+                    if (!paused) {
+                        return transition();
+                    }
+                });
+        })();
+    }
 }
 
 function updateGlobe(p) {
