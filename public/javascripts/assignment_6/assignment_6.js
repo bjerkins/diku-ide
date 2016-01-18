@@ -283,8 +283,8 @@ function positionIcons(p) {
 function showWelcomeMessage() {
     d3.select('#message_board p.welcome')
       .html('Ahoy Captain <span class="captain_txt">' +
-            voyage[0].captain + '</span><br />and<br />' +
-            'welcome aboard your ship, <br />the <span class="ship_txt">' +
+            voyage[0].captain + '</span> and ' +
+            'welcome aboard your ship, the <span class="ship_txt">' +
             voyage[0].ship_name);
 }
 
