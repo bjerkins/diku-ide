@@ -21,7 +21,10 @@ function prepareVoyage (voyage) {
                 dest: l.VoyageTo,
                 date: extractDate(l.UTC),
                 captain: l.Name1,
-                ship_name: l.ShipName
+                ship_name: l.ShipName,
+                weather: l.Weather,
+                battle: l.WarsAndFights === "1" ? true : false,
+                battle_desc: l.WarsAndFightsMemo
             });
         }
     });

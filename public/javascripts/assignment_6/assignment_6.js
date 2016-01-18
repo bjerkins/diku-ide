@@ -168,7 +168,7 @@ function initDropDown() {
 
     function changeVoyage() {
         var select_index = dropdown.property('selectedIndex'),
-            select_option = options.filter(function (d, i) { return i === select_index }),
+            select_option = options.filter(function (d, i) { return i === select_index; }),
             data = select_option.datum();
 
         queue().defer(d3.csv, data.src).await(setupVoyage);
@@ -233,6 +233,8 @@ function animate () {
                         globe_projection.rotate(r(t));
                         updateGlobe(p);
                         timeline.draw(counter);
+                        generateInfoHTML(voyage[counter]);
+                        showBattle(voyage[counter]);
                     };
                 })
                 .transition()
@@ -329,4 +331,21 @@ function setupControls() {
 function handleTimelineClick(d) {
     // todo, find the index of d, move the globe and update timeline
     console.log(d);
+}
+
+function showBattle(log) {
+    if (log.battle) {
+        ship.select('svg').attr('fill', '#FFCC00');
+    } else {
+        ship.select('svg').attr('fill', '#333333');
+    }
+}
+
+function generateInfoHTML (log) {
+    var html =  '<dt>Destination</dt>' +
+                '<dd>' + log.dest + '</dd>' +
+                '<dt>Weather description</dt>' +
+                '<dd>' + log.weather + '</dd>';
+
+    d3.select('#information').html(html);
 }
