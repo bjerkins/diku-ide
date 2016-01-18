@@ -11,14 +11,16 @@ block content
             .col-md-6
                 #map
                     .controls.text-center
-                        #control-toggle.glyphicon.glyphicon-play
+                        .control.glyphicon.glyphicon-backward
+                        #control-toggle.control.glyphicon.glyphicon-play
+                        .control.glyphicon.glyphicon-forward
             .col-md-6
                 #message_board
                     p.welcome
 
-        .slider-container
-            #slider
+                .timeline-container
+                    ul.timeline#timeline
 
-    script(src='/javascripts/assignment_6/slider.js')
-    script(src='/javascripts/assignment_6/assignment_6.js')
+    script(src='/javascripts/assignment_6/timeline.js')
     script(src='/javascripts/assignment_6/helpers.js')
+    script(src='/javascripts/assignment_6/assignment_6.js')

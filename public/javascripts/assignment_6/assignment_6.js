@@ -15,7 +15,7 @@ var world,
     globe,
     countries,
     voyage,
-    slider,
+    timeline,
     counter     = 0,
     paused      = true,
     WIDTH       = 420,
@@ -184,23 +184,20 @@ function setupVoyage(error, l) {
     prepareVoyage(voyage);
     range = voyageDateRange(voyage);
 
-    if (slider !== undefined) {
-        d3.select('#slider svg').remove();
-    }
-    slider = Slider('#slider', range);
-    slider.setDate(voyage[0].date);
-
     globe_projection.rotate([-voyage[0].lon, -voyage[0].lat]);
     updateGlobe([voyage[0].lon, voyage[0].lat]);
 
     showWelcomeMessage();
     setupIcons();
 
+    // create the timeline, and show the first 4 logs
+    timeline = Timeline('#timeline', voyage, handleTimelineClick);
+
     animate();
 }
 
 function setupIcons() {
-    var last_log = voyage[voyage.length - 1];    
+    var last_log = voyage[voyage.length - 1];
     var start_pos = globe_projection([voyage[0].lon,
                                       voyage[0].lat]);
 
@@ -234,7 +231,7 @@ function animate () {
                 return function(t) {
                     globe_projection.rotate(r(t));
                     updateGlobe(p);
-                    slider.setDate(date);
+                    timeline.draw(counter);
                 };
             })
             .transition()
@@ -265,7 +262,7 @@ function positionIcons(p) {
     var start_pos = globe_projection([voyage[0].lon,
                                       voyage[0].lat]);
     var end_pos = globe_projection([voyage[voyage.length - 1].lon,
-                                    voyage[voyage.length - 1].lat]);    
+                                    voyage[voyage.length - 1].lat]);
     ship.select('svg')
         .transition()
         .duration(VELOCITY)
@@ -325,4 +322,9 @@ function setupControls() {
             this.className = paused ? 'glyphicon glyphicon-play' : 'glyphicon glyphicon-pause';
             animate();
         });
+}
+
+function handleTimelineClick(d) {
+    // todo, find the index of d, move the globe and update timeline
+    console.log(d);
 }

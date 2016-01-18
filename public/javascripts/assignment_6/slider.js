@@ -6,7 +6,7 @@ var Slider = function (element, dateRange) {
 
     var tickDateFormat  = d3.time.format("%d. %b - %H:%M"),
         axisDateFormat  = d3.time.format("%d. %B %Y"),
-        margin          = { top: 50, right: 50, bottom: 50, left: 50 },
+        margin          = { top: 20, right: 50, bottom: 20, left: 50 },
         width           = 740 - margin.left - margin.right,
         height          = 50;
 
@@ -17,11 +17,13 @@ var Slider = function (element, dateRange) {
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    // scale function
-    var timeScale = d3.time.scale()
-        .domain(dateRange)
-        .range([0, width])
-        .clamp(true);
+    // // scale function
+    // var timeScale = d3.time.scale()
+    //     .domain(dateRange)
+    //     .range([0, width])
+    //     .clamp(true);
+
+    var range = dateRange;
 
     return {
         /**
@@ -34,7 +36,6 @@ var Slider = function (element, dateRange) {
 
             // defines brush
             var brush = d3.svg.brush()
-                .x(timeScale)
                 .extent([date, date])
                 .on("brush", brushed);
 
@@ -44,14 +45,14 @@ var Slider = function (element, dateRange) {
                 .attr("transform", "translate(0," + height / 2 + ")")
                 // inroduce axis
                 .call(d3.svg.axis()
-                    .scale(timeScale)
                     .orient("bottom")
                     .tickFormat(function(d) {
                         return axisDateFormat(d);
                     })
                     .tickSize(0)
                     .tickPadding(12)
-                    .tickValues([timeScale.domain()[0], timeScale.domain()[1]])
+                    .tickValues(range)
+
                 )
                 .select(".domain")
                 .select(function() {
@@ -84,11 +85,11 @@ var Slider = function (element, dateRange) {
                 var value = brush.extent()[0];
 
                 if (d3.event.sourceEvent) { // not a programmatic event
-                    value = timeScale.invert(d3.mouse(this)[0]);
+                    value = d3.mouse(this)[0];
                     brush.extent([value, value]);
                 }
 
-                handle.attr("transform", "translate(" + timeScale(value) + ",0)");
+                handle.attr("transform", "translate(" + value + ",0)");
 
                 handle
                     .select('text')

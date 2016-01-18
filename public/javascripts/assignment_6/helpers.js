@@ -15,6 +15,7 @@ function prepareVoyage (voyage) {
     logs.forEach(function (l) {
         if (!(isNaN(l.Lat3) || isNaN(l.Lon3))) {
             voyage.push({
+                id: parseInt(l.RecID),
                 lon: l.Lon3,
                 lat: l.Lat3,
                 dest: l.VoyageTo,
@@ -27,7 +28,11 @@ function prepareVoyage (voyage) {
 }
 
 function voyageDateRange(voyage) {
-    return [voyage[0].date, voyage[voyage.length -1].date];
+    var result = [];
+    voyage.forEach(function (v) {
+        result.push(v.date);
+    });
+    return result;
 }
 
 /**
