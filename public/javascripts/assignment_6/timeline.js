@@ -1,8 +1,6 @@
 var Timeline = function (element, logs, clicked) {
 
-    var initialLogs     = logs,
-        showNrOfLogs    = 3,
-        timeline        = d3.select(element),
+    var timeline        = d3.select(element),
         dateFormat      = d3.time.format("%d. %b"),
         yearFormat      = d3.time.format("%Y");
 
@@ -29,26 +27,31 @@ var Timeline = function (element, logs, clicked) {
         clicked(d);
     };
 
+    // render the timeline
+    timeline
+        .selectAll('li')
+        .data(logs, function (d) { return d.id; })
+        .enter()
+        .append('li')
+        .html(generateHTML)
+        .on('click', handleClick);
+
     return {
         draw: function (index) {
-            var newLogs = initialLogs.slice(index, index + showNrOfLogs);
 
-            var set = timeline
+            // clear selected
+            var muchLeft = -80 * index;
+            debugger;
+            timeline
+                .transition()
                 .selectAll('li')
-                .data(newLogs, function (d) { return d.id; });
+                .each(function (d, i) {
+                    this.className = i === index ? 'li complete' : 'li';
+                });
 
-            // first, add the new ones
-            set
-                .enter()
-                .append('li')
-                .html(generateHTML)
-                .on('click', handleClick);
-
-            // update the current ones
-            set.html(generateHTML);
-
-            //  remove the old ones
-            set.exit().remove();
+            // move timeline to left
+            timeline
+                .style('left', muchLeft + 'px');
         }
     };
 };

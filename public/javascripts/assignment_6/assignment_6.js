@@ -344,6 +344,10 @@ function showBattle(log) {
 function generateInfoHTML (log) {
     var html =  '<dt>Destination</dt>' +
                 '<dd>' + log.dest + '</dd>' +
+                '<dt>Departure</dt>' +
+                '<dd>' + formatDate(log.initial_date) + '</dd>' +
+                '<dt>Arrival</dt>' +
+                '<dd>' + formatDate(getLastDate(voyage)) + '</dd>' +
                 '<dt>Weather description</dt>' +
                 '<dd>' + log.weather + '</dd>';
 

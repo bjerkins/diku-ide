@@ -19,6 +19,7 @@ function prepareVoyage (voyage) {
                 lon: l.Lon3,
                 lat: l.Lat3,
                 dest: l.VoyageTo,
+                initial_date: extractDate(l.VoyageIni),
                 date: extractDate(l.UTC),
                 captain: l.Name1,
                 ship_name: l.ShipName,
@@ -49,6 +50,12 @@ function extractDate(utc) {
         utc.slice(8, 10),
         utc.slice(10, 12));
 }
+
+function getLastDate(voyage) {
+    return voyage[voyage.length - 1].date;
+}
+
+var formatDate = d3.time.format("%d. %b %Y");
 
 function findCountry (name) {
     return countries.find(function (country) {
