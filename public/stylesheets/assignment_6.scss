@@ -81,6 +81,11 @@
     height: 109px;
     transition: all 200ms ease-in;
     cursor: pointer;
+    opacity: 0.3;
+}
+
+.li.complete {
+    opacity: 1.0;
 }
 
 .timestamp {
