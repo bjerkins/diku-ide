@@ -192,7 +192,7 @@ function setupVoyage(error, l) {
 
     // create the timeline, and show the first 4 logs
     timeline = Timeline('#timeline', voyage, handleTimelineClick);
-
+    timeline.draw(0);
     animate();
 }
 
