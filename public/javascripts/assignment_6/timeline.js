@@ -41,17 +41,24 @@ var Timeline = function (element, logs, clicked) {
 
             // clear selected
             var muchLeft = -80 * index;
-            debugger;
-            timeline
+
+            d3.transition()
+                .each(function() {
+                    timeline
+                        .transition()
+                        .selectAll('li')
+                        .each(function (d, i) {
+                            this.className = i === index ? 'li complete' : 'li';
+                        });
+                })
                 .transition()
-                .selectAll('li')
-                .each(function (d, i) {
-                    this.className = i === index ? 'li complete' : 'li';
+                .each(function () {
+                    // move timeline to left
+                    timeline
+                        .transition()
+                        .style('left', muchLeft + 'px');
                 });
 
-            // move timeline to left
-            timeline
-                .style('left', muchLeft + 'px');
         }
     };
 };
