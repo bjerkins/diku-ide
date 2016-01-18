@@ -329,8 +329,9 @@ function setupControls() {
         });
 }
 
-function handleTimelineClick(d) {
+function handleTimelineClick(d, i) {
     // todo, find the index of d, move the globe and update timeline
+    timeline.draw(i);
     console.log(d);
 }
 

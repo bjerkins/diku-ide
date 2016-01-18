@@ -6,26 +6,12 @@ var Timeline = function (element, logs, clicked) {
         offset          = 80 * 6;
 
     var generateHTML = function (d, i) {
-        this.className = i === 0 ? 'li complete' : 'li';
+        this.className = 'li complete';
         return  '<div class="timestamp">' +
                 '   <span class="date">' + dateFormat(d.date) + '</span>' +
                 '   <span class="year">' + yearFormat(d.date) + '</span>' +
                 '</div>' +
                 '<div class="status"></div>';
-    };
-
-    var handleClick  = function(d) {
-
-        // remove other classnames
-        timeline
-            .selectAll('li')
-            .attr('class', 'li');
-
-        // set class name complete
-        this.className += ' complete';
-
-        // finally, call callback
-        clicked(d);
     };
 
     // render the timeline
@@ -35,7 +21,7 @@ var Timeline = function (element, logs, clicked) {
         .enter()
         .append('li')
         .html(generateHTML)
-        .on('click', handleClick);
+        .on('click', clicked);
 
     timeline.style('left', offset + 'px');
 
@@ -47,22 +33,12 @@ var Timeline = function (element, logs, clicked) {
 
             d3.transition()
                 .each(function() {
-                    timeline
-                        .transition()
-                        .selectAll('li')
-                        .each(function (d, i) {
-                            this.className = i === index ? 'li complete' : 'li';
-                        });
-                })
-                .transition()
-                .each(function () {
                     // move timeline to left
                     timeline
                         .transition()
                         .style('left', muchLeft + 'px');
                 })
                 .transition();
-
         }
     };
 };
