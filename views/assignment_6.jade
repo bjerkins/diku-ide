@@ -5,6 +5,11 @@ block content
     #assignment_6
         h2 Final Project
 
+        h3 Usage
+
+        p Pick a voyage from the drop down menu below. Click "play" and embark on a journey on board a vessel from the 18th century. You can also click on the timeline to travel to a specific date. 
+
+        label(for='voyage-select') Choose voyage
         #dropdown.form-group
 
         .row
@@ -25,6 +30,14 @@ block content
             .left-overlay
             ul.timeline#timeline
             .right-overlay
+
+        h3 Discussion
+
+        p We were inspired by #[a(href="https://www.kaggle.com/katacs/d/kaggle/climate-data-from-ocean-ships/captain-cook-s-travels") this] visualization on kaggle. Our vision was to make a virtual tour as a captain on board a ship in the 18th century.
+
+        h4 What else?
+
+        p We had <span class='italic'>a lot</span> of ideas for this one. Due to the time constraint, we had to discard some features. An example hereof was the idea to show another panel of a view from the stern out at the sea - it would give a more immersive experience to have a panel with animations of the changing weather, waves, war, etc.
 
     script(src='/javascripts/assignment_6/timeline.js')
     script(src='/javascripts/assignment_6/helpers.js')

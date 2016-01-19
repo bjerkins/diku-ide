@@ -161,6 +161,7 @@ function initDropDown() {
     var dropdown = d3.select('#dropdown')
                      .append('select')
                      .attr('class', 'form-control')
+                     .attr('id', 'voyage-select')
                      .on('change', changeVoyage);
     var test = datasets;
 
