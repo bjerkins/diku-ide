@@ -371,7 +371,7 @@ function generateInfoHTML (log) {
             '<dd>' + log.dest + '</dd>';
   } else {
     html += '<dt>Destination</dt>' +
-            '<dd>' + 'No reported destination' + '</dd>';
+            '<dd class="unimportant">' + 'No reported destination' + '</dd>';
   }
   html += '<dt>Departure</dt>' +
           '<dd>' + formatDate(log.initial_date) + '</dd>' +
@@ -382,7 +382,7 @@ function generateInfoHTML (log) {
             '<dd>' + log.weather + '</dd>' ;
   } else {
     html += '<dt>Weather description</dt>' +
-            '<dd>' + 'No weather description available' + '</dd>' ;
+            '<dd class="unimportant">' + 'No weather description available' + '</dd>' ;
   }
     
   if (log.battle_desc != '') {
@@ -390,7 +390,7 @@ function generateInfoHTML (log) {
               '<dd>' + log.battle_desc + '</dd>';
   } else {
        html += '<dt>Battle Log</dt>' +
-              '<dd>' + 'No reported battles' + '</dd>';
+              '<dd class="unimportant">' + 'No reported battles' + '</dd>';
   }
 
   if (log.shipmemo != '') {
@@ -398,7 +398,7 @@ function generateInfoHTML (log) {
               '<dd>' + log.shipmemo + '</dd>';  
   } else {
       html += '<dt>Ship Log</dt>' +
-              '<dd>' + 'No log available' + '</dd>';  
+              '<dd class="unimportant">' + 'No log available' + '</dd>';  
   }  
   d3.select('#information').html(html);
   
