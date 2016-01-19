@@ -25,10 +25,10 @@ var world,
     CROSS_SIZE  = 12;
 
 var datasets = new Array();
+datasets.push({text: 'J. Hamilton. WAR!', src:'/javascripts/assignment_6/data/sir_john_hamilton.csv'});
 datasets.push({text: 'J. Cook. Rio de Janeiro', src:'/javascripts/assignment_6/data/james_cook.csv'});
 datasets.push({text: 'J. Arkenbout. Copenhagen', src:'/javascripts/assignment_6/data/jacobus_arkenbout.csv'});
 datasets.push({text: 'A. Dams. Bengal', src:'/javascripts/assignment_6/data/arie_dams.csv'});
-datasets.push({text: 'J. Hamilton. WAR!', src:'/javascripts/assignment_6/data/sir_john_hamilton.csv'});
 
 
 var globe_projection = d3.geo.orthographic()

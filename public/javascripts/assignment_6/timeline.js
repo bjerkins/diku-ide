@@ -7,11 +7,18 @@ var Timeline = function (element, logs, clicked) {
 
     var generateHTML = function (d, i) {
         this.className = 'li complete';
+        var events = '';
+        if (d.battle) {
+            var war_src = '/images/war.svg';
+            var war_event = '<img src="' + war_src +'" class="event" /><div></div>';
+            events += war_event
+        }
         return  '<div class="timestamp">' +
                 '   <span class="date">' + dateFormat(d.date) + '</span>' +
                 '   <span class="year">' + yearFormat(d.date) + '</span>' +
                 '</div>' +
-                '<div class="status"></div>';
+                '<div class="status"></div>' +
+                '<div class="events">' + events + '</div>';
     };
 
     // render the timeline

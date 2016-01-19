@@ -1,5 +1,5 @@
 #map {
-	position: relative;
+    position: relative;
     margin: auto;
     width: 420px;
 }
@@ -50,6 +50,10 @@
   margin: -1px 0 0 0;
   top: 100%;
   left: 0;
+}
+
+.controls {
+    margin-bottom: 20px;
 }
 
 .control {
@@ -153,4 +157,26 @@
 
 .li.complete .status h4 {
     color: #666666;
+}
+
+.events {
+    text-align: center;
+    width: 100%;
+
+    img.event {
+        right: unset;
+        margin-top: 8px;
+        width: 16px;
+        height: 16px;
+        margin-left: -8px;
+    }
+
+    div {
+        margin: auto;
+
+        width: 32px;
+        height: 32px;
+        background: url(/images/circle.svg);
+        background-size: 32px 32px;
+    }
 }
