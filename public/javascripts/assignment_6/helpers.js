@@ -33,7 +33,8 @@ function prepareVoyage (voyage) {
                 snow: l.Snow === "1" ? true : false,
                 thunder: l.Thunder === "1" ? true : false,
                 hail: l.Hail === "1" ? true : false,
-                seaice: l.SeaIce === "1" ? true : false
+                seaice: l.SeaIce === "1" ? true : false,
+                shipmemo: l.ShipAndRigMemo
 
             });
         }
