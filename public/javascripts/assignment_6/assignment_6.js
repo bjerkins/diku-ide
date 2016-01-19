@@ -365,57 +365,36 @@ function showBattle(log) {
 }
 
 function generateInfoHTML (log) {
-    if (log.dest == '') {
-        if (log.battle_desc != ''){
-             var html = '<dt>Departure</dt>' +
-                  '<dd>' + formatDate(log.initial_date) + '</dd>' +
-                  '<dt>Arrival</dt>' +
-                  '<dd>' + formatDate(getLastDate(voyage)) + '</dd>' +
-                  '<dt>Weather description</dt>' +
-                  '<dd>' + log.weather + '</dd>' +
-                  '<dt>Battle Log</dt>' +
-                  '<dd>' + log.battle_desc + '</dd>' +
-                  '<dt>Ship Log</dt>' +
-                  '<dd>' + log.shipmemo + '</dd>';
-        } else {
-            var html = '<dt>Departure</dt>' +
-                  '<dd>' + formatDate(log.initial_date) + '</dd>' +
-                  '<dt>Arrival</dt>' +
-                  '<dd>' + formatDate(getLastDate(voyage)) + '</dd>' +
-                  '<dt>Weather description</dt>' +
-                  '<dd>' + log.weather + '</dd>' +
-                  '<dt>Ship Log</dt>' +
-                  '<dd>' + log.shipmemo + '</dd>';
-        }
-       
-    } else {
-        if (log.battle_desc != ''){
-            var html = '<dt>Destination</dt>' +
-                       '<dd>' + log.dest + '</dd>' +
-                       '<dt>Departure</dt>' +
-                       '<dd>' + formatDate(log.initial_date) + '</dd>' +
-                       '<dt>Arrival</dt>' +
-                       '<dd>' + formatDate(getLastDate(voyage)) + '</dd>' +
-                       '<dt>Weather description</dt>' +
-                       '<dd>' + log.weather + '</dd>' +
-                       '<dt>Battle Log</dt>' +
-                       '<dd>' + log.battle_desc + '</dd>' +
-                       '<dt>Ship Log</dt>' +
-                       '<dd>' + log.shipmemo + '</dd>';
-        } else {
-            var html = '<dt>Destination</dt>' +
-                       '<dd>' + log.dest + '</dd>' +
-                       '<dt>Departure</dt>' +
-                       '<dd>' + formatDate(log.initial_date) + '</dd>' +
-                       '<dt>Arrival</dt>' +
-                       '<dd>' + formatDate(getLastDate(voyage)) + '</dd>' +
-                       '<dt>Weather description</dt>' +
-                       '<dd>' + log.weather + '</dd>' +
-                       '<dt>Ship Log</dt>' +
-                       '<dd>' + log.shipmemo + '</dd>';
-        }
-    }
-   
 
-    d3.select('#information').html(html);
+  var html =  '';
+  if (log.dest != '') {
+    html += '<dt>Destination</dt>' +
+            '<dd>' + log.dest + '</dd>';
+  } else {
+    html += '<dt>Destination</dt>' +
+            '<dd>' + 'No reported destination' + '</dd>';
+  }
+  html += '<dt>Departure</dt>' +
+          '<dd>' + formatDate(log.initial_date) + '</dd>' +
+          '<dt>Arrival</dt>' +
+          '<dd>' + formatDate(getLastDate(voyage)) + '</dd>' +
+          '<dt>Weather description</dt>' +
+          '<dd>' + log.weather + '</dd>' ;
+    
+  if (log.battle_desc != '') {
+      html += '<dt>Battle Log</dt>' +
+              '<dd>' + log.battle_desc + '</dd>';
+  } else {
+       html += '<dt>Battle Log</dt>' +
+              '<dd>' + 'No reported battles' + '</dd>';
+  }
+
+  if (log.shipmemo != '') {
+      html += '<dt>Ship Log</dt>' +
+              '<dd>' + log.shipmemo + '</dd>';  
+  } else {
+      html += '<dt>Ship Log</dt>' +
+              '<dd>' + 'No log available' + '</dd>';  
+  }  
+  d3.select('#information').html(html);
 }
