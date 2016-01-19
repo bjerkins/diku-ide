@@ -252,7 +252,7 @@ function draw_step(index) {
     showBattle(voyage[index]);
     generateInfoHTML(voyage[index]);
     timeline.draw(index);
-    rotate_globe(index);   
+    rotate_globe(index);
 }
 
 function rotate_globe(index) {
@@ -323,7 +323,7 @@ function drawGlobe() {
         .attr('stroke', '#fff')
         .attr('class', 'countries')
         .on('mouseover', function (d) {
-            d3.select(this).attr('fill', '#b000b5');
+            d3.select(this).attr('fill', '#666666');
             tip.show(d.name);
         })
         .on('mouseout', function (d) {
@@ -365,7 +365,6 @@ function showBattle(log) {
 }
 
 function generateInfoHTML (log) {
-
   var html =  '';
   if (log.dest != '') {
     html += '<dt>Destination</dt>' +
