@@ -118,13 +118,11 @@ function initIcons(cross_xml, ship_xml) {
          .attr("x", -10000)
          .attr("fill", "#666666")
          // Add rectangle to increase hitbox
-         // Position it at outside svg to show tip above cross
          // Note: because the decrease in the size of the svg above,
          //       every size below is 0.5 of the value given
          .append("rect")
          .attr("width", 24)
-         .attr("height", 48)
-         .attr("y", -24)
+         .attr("height", 24)
          .attr("fill", "#FFF")
          .attr("fill-opacity", "0")
          .attr("style", "cursor:pointer;");
