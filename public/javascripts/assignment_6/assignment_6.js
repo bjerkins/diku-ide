@@ -16,14 +16,15 @@ var world,
     countries,
     voyage,
     timeline,
-    counter     = 1, // Should be 0 if NOT paused on load
-    paused      = true,
-    WIDTH       = 420,
-    HEIGHT      = 400,
-    VELOCITY    = 500,
-    TIME_STEP   = 1500, // This must NOT be smaller than VELOCITY
-    SHIP_SIZE   = 48,
-    CROSS_SIZE  = 12;
+    timer_running = false,
+    counter       = 1, // Should be 0 if NOT paused on load
+    paused        = true,
+    WIDTH         = 420,
+    HEIGHT        = 400,
+    VELOCITY      = 500,
+    TIME_STEP     = 1500, // This must NOT be smaller than VELOCITY
+    SHIP_SIZE     = 48,
+    CROSS_SIZE    = 12;
 
 var datasets = new Array();
 datasets.push({text: 'J. Cook. Rio de Janeiro', src:'/javascripts/assignment_6/data/james_cook.csv'});
@@ -236,6 +237,8 @@ function setupIcons() {
 }
 
 function animate() {
+    timer_running = false;
+
     if (!paused) {
         draw_step(counter);
 
@@ -245,6 +248,7 @@ function animate() {
         }
 
         setTimeout(animate, TIME_STEP);
+        timer_running = true;
     }
 }
 
@@ -347,7 +351,7 @@ function setupControls() {
         .on('click', function () {
             paused = !paused;
             this.className = paused ? 'glyphicon glyphicon-play' : 'glyphicon glyphicon-pause';
-            if (!paused) { animate() };
+            if (!paused && !timer_running) { animate() };
         });
 }
 
