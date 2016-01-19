@@ -128,7 +128,8 @@ function initIcons(cross_xml, ship_xml) {
     ship.node().appendChild(ship_xml.documentElement);
 
     circle = map.append('circle')
-        .attr('fill', 'none')
+        .attr('fill', '#FFF')
+        .attr('fill-opacity', '0')
         .attr("stroke", "#666666")
         .attr("stroke-width", 2)
         .attr("cy", -10000)
@@ -208,6 +209,13 @@ function setupIcons() {
          .on('mouseout', function () {
              tip.hide(last_log.dest);
          });
+
+    circle.on('mousemove', function () {
+            tip.show(last_log.orig);
+          })
+          .on('mouseout', function () {
+              tip.hide();
+          });
 
     ship.select('svg')
         .attr("x", start_pos[0] - SHIP_SIZE/2)

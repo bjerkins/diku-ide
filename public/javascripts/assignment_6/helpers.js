@@ -19,6 +19,7 @@ function prepareVoyage (voyage) {
                 lon: l.Lon3,
                 lat: l.Lat3,
                 dest: l.VoyageTo,
+                orig: l.VoyageFrom,
                 initial_date: extractDate(l.VoyageIni),
                 date: extractDate(l.UTC),
                 captain: l.Name1,
