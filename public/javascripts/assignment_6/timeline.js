@@ -25,7 +25,7 @@ var Timeline = function (element, logs, clicked) {
         if (d.fog) {events += icon(fog_src);}
         if (d.snow) {events += icon(snow_src);}
         if (d.thunder) {events += icon(thunder_src);}
-        if (d.rain) {events += icon(rain_src); alert('hej');}
+        if (d.rain) {events += icon(rain_src);}
 
         return  '<div class="timestamp">' +
                 '   <span class="date">' + dateFormat(d.date) + '</span>' +
