@@ -25,7 +25,15 @@ function prepareVoyage (voyage) {
                 ship_name: l.ShipName,
                 weather: l.Weather,
                 battle: l.WarsAndFights === "1" ? true : false,
-                battle_desc: l.WarsAndFightsMemo
+                battle_desc: l.WarsAndFightsMemo,
+                gusts: l.Gusts === "1" ? true : false,
+                rain: l.Rain === "1" ? true : false,
+                fog: l.Fog === "1" ? true : false,
+                snow: l.Snow === "1" ? true : false,
+                thunder: l.Thunder === "1" ? true : false,
+                hail: l.Hail === "1" ? true : false,
+                seaice: l.SeaIce === "1" ? true : false
+
             });
         }
     });
