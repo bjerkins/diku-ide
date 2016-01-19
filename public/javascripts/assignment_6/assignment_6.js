@@ -31,7 +31,12 @@ datasets.push({text: 'J. Cook. Rio de Janeiro', src:'/javascripts/assignment_6/d
 datasets.push({text: 'J. Hamilton. WAR!', src:'/javascripts/assignment_6/data/sir_john_hamilton.csv'});
 datasets.push({text: 'J. Arkenbout. Copenhagen', src:'/javascripts/assignment_6/data/jacobus_arkenbout.csv'});
 datasets.push({text: 'A. Dams. Bengal', src:'/javascripts/assignment_6/data/arie_dams.csv'});
-
+datasets.push({text: 'J. Cook. Easter Island', src:'/javascripts/assignment_6/data/james_cook_easter.csv'});
+datasets.push({text: 'J. Cook. UK', src:'/javascripts/assignment_6/data/james_cook_good_hope.csv'});
+datasets.push({text: 'G. Vandeput. Madagascar', src:'/javascripts/assignment_6/data/george_vandeput.csv'});
+datasets.push({text: 'J. King. Newfoundland', src:'/javascripts/assignment_6/data/james_king.csv'});
+datasets.push({text: 'G. Dixon. Prince William\'s Sound', src:'/javascripts/assignment_6/data/g_dixon.csv'});
+datasets.push({text: 'J. Alms. Barbados', src:'/javascripts/assignment_6/data/james_alms.csv'});
 
 var globe_projection = d3.geo.orthographic()
     .translate([WIDTH / 2, HEIGHT / 2])
@@ -372,6 +377,10 @@ function generateInfoHTML (log) {
         return '<dt>' + title + '</dt>' +
                '<dd class="' + css_class + '">' + text + '</dd>';        
     }
+
+    if (log.orig != '') { html += row('Origin', log.orig, ''); } 
+    else { html += row('Origin', 'No reported origin', 'unimportant'); }
+
     if (log.dest != '') { html += row('Destination', log.dest, ''); } 
     else { html += row('Destination', 'No reported destination', 'unimportant'); }
 
