@@ -1,4 +1,3 @@
-
 /**
  *  inspiration drawn from:
  *      http://bl.ocks.org/mbostock/4183330
@@ -12,15 +11,17 @@
 var world,
     names,
     logs,
+    num_logs,
     globe,
     countries,
     voyage,
     timeline,
-    counter     = 0,
+    counter     = 1, // Should be 0 if NOT paused on load
     paused      = true,
     WIDTH       = 420,
     HEIGHT      = 400,
     VELOCITY    = 500,
+    TIME_STEP   = 1500, // This must NOT be smaller than VELOCITY
     SHIP_SIZE   = 48,
     CROSS_SIZE  = 12;
 
@@ -185,6 +186,7 @@ function setupVoyage(error, l) {
     counter   = 0;
 
     prepareVoyage(voyage);
+    num_logs  = voyage.length;
     range = voyageDateRange(voyage);
 
     globe_projection.rotate([-voyage[0].lon, -voyage[0].lat]);
@@ -196,7 +198,8 @@ function setupVoyage(error, l) {
     // create the timeline, and show the first 4 logs
     timeline = Timeline('#timeline', voyage, handleTimelineClick);
     timeline.draw(0);
-    animate();
+
+    draw_step(0);
 }
 
 function setupIcons() {
@@ -231,40 +234,43 @@ function setupIcons() {
     showBattle(voyage[0]);
 }
 
-function animate () {
-    var num_pos = voyage.length;
-
+function animate() {
     if (!paused) {
-        (function transition() {
-            d3.transition()
-                .duration(VELOCITY)
-                .each("start", function() {
-                    showBattle(voyage[counter]);
-                })
-                .tween("rotate", function() {
-                    var p = [voyage[counter].lon, voyage[counter].lat];
-                    var r = d3.interpolate(globe_projection.rotate(), [-p[0], -p[1]]);
-                    var date = voyage[counter].date;
-                    return function(t) {
-                        globe_projection.rotate(r(t));
-                        updateGlobe(p);
-                        generateInfoHTML(voyage[counter]);
-                    };
-                })
-                .transition()
-                .each("end", function () {
-                    timeline.draw(counter);
+        draw_step(counter);
 
-                    counter++;
-                    if (counter >= num_pos) {
-                        counter = 0;
-                    }
-                    if (!paused) {
-                        return transition();
-                    }
-                });
-        })();
+        counter++;
+        if (counter >= num_logs) {
+          counter = 0;
+        }
+
+        setTimeout(animate, TIME_STEP);
     }
+}
+
+function draw_step(index) {
+    showBattle(voyage[index]);
+    generateInfoHTML(voyage[index]);
+    timeline.draw(index);
+    rotate_globe(index);   
+}
+
+function rotate_globe(index) {
+    (function transition() {
+        d3.transition()
+            .duration(VELOCITY)
+            .each("start", function() {})
+            .tween("rotate", function() {
+                var p = [voyage[index].lon, voyage[index].lat];
+                var r = d3.interpolate(globe_projection.rotate(), [-p[0], -p[1]]);
+                var date = voyage[index].date;
+                return function(t) {
+                    globe_projection.rotate(r(t));
+                    updateGlobe(p);
+                };
+            })
+            .transition()
+            .each("end", function () {});
+    })();
 }
 
 function updateGlobe(p) {
@@ -340,14 +346,13 @@ function setupControls() {
         .on('click', function () {
             paused = !paused;
             this.className = paused ? 'glyphicon glyphicon-play' : 'glyphicon glyphicon-pause';
-            animate();
+            if (!paused) { animate() };
         });
 }
 
 function handleTimelineClick(d, i) {
-    // todo, find the index of d, move the globe and update timeline
-    timeline.draw(i);
-    console.log(d);
+    counter = i;
+    draw_step(i);
 }
 
 function showBattle(log) {
