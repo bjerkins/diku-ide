@@ -1,3 +1,10 @@
+var war_src     = '/images/war.svg';
+var fog_src     = '/images/fog.svg';
+var rain_src    = '/images/rain.svg';
+var snow_src    = '/images/snow.svg';
+var thunder_src = '/images/thunder.svg';
+var gust_src    = '/images/gust.svg';
+
 var Timeline = function (element, logs, clicked) {
 
     var timeline        = d3.select(element),
@@ -5,14 +12,21 @@ var Timeline = function (element, logs, clicked) {
         yearFormat      = d3.time.format("%Y"),
         offset          = 80 * 6;
 
+    var icon = function (src) {
+        return '<img src="' + src +'" class="event" /><div></div>';
+    }
+
     var generateHTML = function (d, i) {
         this.className = 'li complete';
         var events = '';
-        if (d.battle) {
-            var war_src = '/images/war.svg';
-            var war_event = '<img src="' + war_src +'" class="event" /><div></div>';
-            events += war_event
-        }
+
+        if (d.battle) {events += icon(war_src);}
+        if (d.gusts) {events += icon(gust_src);}
+        if (d.fog) {events += icon(fog_src);}
+        if (d.snow) {events += icon(snow_src);}
+        if (d.thunder) {events += icon(thunder_src);}
+        if (d.rain) {events += icon(rain_src); alert('hej');}
+
         return  '<div class="timestamp">' +
                 '   <span class="date">' + dateFormat(d.date) + '</span>' +
                 '   <span class="year">' + yearFormat(d.date) + '</span>' +
