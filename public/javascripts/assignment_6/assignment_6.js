@@ -28,6 +28,8 @@ var datasets = new Array();
 datasets.push({text: 'J. Cook. Rio de Janeiro', src:'/javascripts/assignment_6/data/james_cook.csv'});
 datasets.push({text: 'J. Arkenbout. Copenhagen', src:'/javascripts/assignment_6/data/jacobus_arkenbout.csv'});
 datasets.push({text: 'A. Dams. Bengal', src:'/javascripts/assignment_6/data/arie_dams.csv'});
+datasets.push({text: 'J. Hamilton. WAR!', src:'/javascripts/assignment_6/data/sir_john_hamilton.csv'});
+
 
 var globe_projection = d3.geo.orthographic()
     .translate([WIDTH / 2, HEIGHT / 2])
@@ -64,7 +66,7 @@ var tip = d3
     .tip()
     .attr('class', 'tip')
     .html(function(t) {
-        return "<span>" + t + "</span>";
+        return "" + t + "";
     });
 
 svg.call(tip);
@@ -128,7 +130,8 @@ function initIcons(cross_xml, ship_xml) {
     ship.node().appendChild(ship_xml.documentElement);
 
     circle = map.append('circle')
-        .attr('fill', 'none')
+        .attr('fill', '#FFF')
+        .attr('fill-opacity', '0')
         .attr("stroke", "#666666")
         .attr("stroke-width", 2)
         .attr("cy", -10000)
@@ -203,17 +206,29 @@ function setupIcons() {
 
     cross.select("rect")
          .on('mousemove', function () {
-             tip.show(last_log.dest);
+            if (last_log.dest !== '')
+                tip.show(last_log.dest);
          })
          .on('mouseout', function () {
-             tip.hide(last_log.dest);
+            if (last_log.dest !== '')
+                tip.hide();
          });
+
+    circle.on('mousemove', function () {
+            if (last_log.orig !== '')
+                tip.show(last_log.orig);
+          })
+          .on('mouseout', function () {
+            if (last_log.orig !== '')
+                tip.hide();
+          });
 
     ship.select('svg')
         .attr("x", start_pos[0] - SHIP_SIZE/2)
         .attr("y", start_pos[1] - SHIP_SIZE/2);
 
     positionIcons(start_pos);
+    showBattle(voyage[0]);
 }
 
 function animate () {
@@ -224,6 +239,7 @@ function animate () {
             d3.transition()
                 .duration(VELOCITY)
                 .each("start", function() {
+                    showBattle(voyage[counter]);
                 })
                 .tween("rotate", function() {
                     var p = [voyage[counter].lon, voyage[counter].lat];
@@ -233,7 +249,6 @@ function animate () {
                         globe_projection.rotate(r(t));
                         updateGlobe(p);
                         generateInfoHTML(voyage[counter]);
-                        showBattle(voyage[counter]);
                     };
                 })
                 .transition()
@@ -306,7 +321,7 @@ function drawGlobe() {
         })
         .on('mouseout', function (d) {
             d3.select(this).attr('fill', '#ccc');
-            tip.hide(d.name);
+            tip.hide();
         })
         .attr('d', path);
 
@@ -337,9 +352,9 @@ function handleTimelineClick(d, i) {
 
 function showBattle(log) {
     if (log.battle) {
-        ship.select('svg').attr('fill', '#FFCC00');
+        ship.select('svg').select('g').attr('fill', '#801515');
     } else {
-        ship.select('svg').attr('fill', '#333333');
+        ship.select('svg').select('g').attr('fill', '#333333');
     }
 }
 
