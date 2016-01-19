@@ -376,9 +376,14 @@ function generateInfoHTML (log) {
   html += '<dt>Departure</dt>' +
           '<dd>' + formatDate(log.initial_date) + '</dd>' +
           '<dt>Arrival</dt>' +
-          '<dd>' + formatDate(getLastDate(voyage)) + '</dd>' +
-          '<dt>Weather description</dt>' +
-          '<dd>' + log.weather + '</dd>' ;
+          '<dd>' + formatDate(getLastDate(voyage)) + '</dd>';
+  if (log.weather != '') {
+    html += '<dt>Weather description</dt>' +
+            '<dd>' + log.weather + '</dd>' ;
+  } else {
+    html += '<dt>Weather description</dt>' +
+            '<dd>' + 'No weather description available' + '</dd>' ;
+  }
     
   if (log.battle_desc != '') {
       html += '<dt>Battle Log</dt>' +
@@ -396,4 +401,5 @@ function generateInfoHTML (log) {
               '<dd>' + 'No log available' + '</dd>';  
   }  
   d3.select('#information').html(html);
+  
 }
