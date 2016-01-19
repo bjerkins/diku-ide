@@ -6,6 +6,13 @@ var thunder_src = '/images/thunder.svg';
 var gust_src    = '/images/gust.svg';
 var book_src    = '/images/book.svg';
 
+// 'regen', 'buijig' and 'buien' means 'rain' in Dutch
+var rainwords     = /regen|buien|buijig|buien|rain/
+var snowwords     = /snow/
+var fogwords      = /fog|hazy|haze/
+var gustwords     = /gust|wind|squally/
+var thunderwords  = /thunder|lightning/
+
 var Timeline = function (element, logs, clicked) {
 
     var timeline        = d3.select(element),
@@ -25,14 +32,16 @@ var Timeline = function (element, logs, clicked) {
 
         if (d.shipmemo) {events += icon(book_src, 'Memo');   }
         if (d.battle)   {events += icon(war_src, 'Battle');    }
-        if (d.gusts)    {events += icon(gust_src, 'Gust');   }
-        if (d.fog)      {events += icon(fog_src, 'Fog');    }
-        if (d.snow)     {events += icon(snow_src, 'Snow');   }
-        if (d.thunder)  {events += icon(thunder_src, 'Thunder');}
-        // 'regen', 'buijig' and 'buien' means 'rain' in Dutch
-        if (d.rain || d.weather.indexOf('regen') > -1 || d.weather.indexOf('buien') > -1 ||
-            d.rain || d.weather.indexOf('buijig') > -1)    
-            {events += icon(rain_src, 'Rain');   }
+        if (d.gusts || gustwords.test(d.weather))    
+            {events += icon(gust_src, 'Gust');   }
+        if (d.fog || fogwords.test(d.weather))      
+            {events += icon(fog_src, 'Fog');    }
+        if (d.snow || snowwords.test(d.weather))     
+            {events += icon(snow_src, 'Snow');   }
+        if (d.thunder || thunderwords.test(d.weather))  
+            {events += icon(thunder_src, 'Thunder');}
+        if (d.rain || rainwords.test(d.weather))
+            { events += icon(rain_src, 'Rain'); }
 
         return  '<div class="timestamp">' +
                 '   <span class="date">' + dateFormat(d.date) + '</span>' +
