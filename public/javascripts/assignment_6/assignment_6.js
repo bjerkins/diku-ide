@@ -359,14 +359,24 @@ function showBattle(log) {
 }
 
 function generateInfoHTML (log) {
-    var html =  '<dt>Destination</dt>' +
-                '<dd>' + log.dest + '</dd>' +
-                '<dt>Departure</dt>' +
-                '<dd>' + formatDate(log.initial_date) + '</dd>' +
-                '<dt>Arrival</dt>' +
-                '<dd>' + formatDate(getLastDate(voyage)) + '</dd>' +
-                '<dt>Weather description</dt>' +
-                '<dd>' + log.weather + '</dd>';
+    if (log.dest == '') {
+       var html = '<dt>Departure</dt>' +
+                  '<dd>' + formatDate(log.initial_date) + '</dd>' +
+                  '<dt>Arrival</dt>' +
+                  '<dd>' + formatDate(getLastDate(voyage)) + '</dd>' +
+                  '<dt>Weather description</dt>' +
+                  '<dd>' + log.weather + '</dd>';
+    } else {
+         var html = '<dt>Destination</dt>' +
+                    '<dd>' + log.dest + '</dd>' +
+                    '<dt>Departure</dt>' +
+                    '<dd>' + formatDate(log.initial_date) + '</dd>' +
+                    '<dt>Arrival</dt>' +
+                    '<dd>' + formatDate(getLastDate(voyage)) + '</dd>' +
+                    '<dt>Weather description</dt>' +
+                    '<dd>' + log.weather + '</dd>';
+    }
+   
 
     d3.select('#information').html(html);
 }
