@@ -13,24 +13,26 @@ var Timeline = function (element, logs, clicked) {
         yearFormat      = d3.time.format("%Y"),
         offset          = 80 * 6;
 
-    var icon = function (src) {
-        return '<img src="' + src +'" class="event" /><div></div>';
+    var icon = function (src, tooltip_txt) {
+        return '<img src="' + src +'" class="event"/>' +
+               '<div class="event_div"><p>' +
+                tooltip_txt + '</p></div>';
     }
 
     var generateHTML = function (d, i) {
         this.className = 'li complete';
         var events = '';
 
-        if (d.shipmemo) {events += icon(book_src);   }
-        if (d.battle)   {events += icon(war_src);    }
-        if (d.gusts)    {events += icon(gust_src);   }
-        if (d.fog)      {events += icon(fog_src);    }
-        if (d.snow)     {events += icon(snow_src);   }
-        if (d.thunder)  {events += icon(thunder_src);}
+        if (d.shipmemo) {events += icon(book_src, 'Memo');   }
+        if (d.battle)   {events += icon(war_src, 'Battle');    }
+        if (d.gusts)    {events += icon(gust_src, 'Gust');   }
+        if (d.fog)      {events += icon(fog_src, 'Fog');    }
+        if (d.snow)     {events += icon(snow_src, 'Snow');   }
+        if (d.thunder)  {events += icon(thunder_src, 'Thunder');}
         // 'regen', 'buijig' and 'buien' means 'rain' in Dutch
         if (d.rain || d.weather.indexOf('regen') > -1 || d.weather.indexOf('buien') > -1 ||
             d.rain || d.weather.indexOf('buijig') > -1)    
-            {events += icon(rain_src);   }
+            {events += icon(rain_src, 'Rain');   }
 
         return  '<div class="timestamp">' +
                 '   <span class="date">' + dateFormat(d.date) + '</span>' +
@@ -49,6 +51,14 @@ var Timeline = function (element, logs, clicked) {
         .on('click', clicked);
 
     data.exit().remove();
+
+    d3.selectAll("div.event_div")
+      .on('mousemove', function () {
+         d3.select(this).attr('class', 'event_div active');
+      })
+      .on('mouseout', function () {
+         d3.select(this).attr('class', 'event_div');
+      });
 
     timeline.style('left', offset + 'px');
 
