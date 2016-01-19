@@ -1,5 +1,3 @@
-
-
 function prepareCountries () {
     countries = countries.filter(function(d) {
         return names.some(function(n) {

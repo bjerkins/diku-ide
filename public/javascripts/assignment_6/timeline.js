@@ -4,6 +4,7 @@ var rain_src    = '/images/rain.svg';
 var snow_src    = '/images/snow.svg';
 var thunder_src = '/images/thunder.svg';
 var gust_src    = '/images/gust.svg';
+var book_src    = '/images/book.svg';
 
 var Timeline = function (element, logs, clicked) {
 
@@ -20,11 +21,12 @@ var Timeline = function (element, logs, clicked) {
         this.className = 'li complete';
         var events = '';
 
-        if (d.battle)  {events += icon(war_src);    }
-        if (d.gusts)   {events += icon(gust_src);   }
-        if (d.fog)     {events += icon(fog_src);    }
-        if (d.snow)    {events += icon(snow_src);   }
-        if (d.thunder) {events += icon(thunder_src);}
+        if (d.shipmemo) {events += icon(book_src);   }
+        if (d.battle)   {events += icon(war_src);    }
+        if (d.gusts)    {events += icon(gust_src);   }
+        if (d.fog)      {events += icon(fog_src);    }
+        if (d.snow)     {events += icon(snow_src);   }
+        if (d.thunder)  {events += icon(thunder_src);}
         // 'regen', 'buijig' and 'buien' means 'rain' in Dutch
         if (d.rain || d.weather.indexOf('regen') > -1 || d.weather.indexOf('buien') > -1 ||
             d.rain || d.weather.indexOf('buijig') > -1)    
