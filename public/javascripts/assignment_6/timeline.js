@@ -20,12 +20,12 @@ var Timeline = function (element, logs, clicked) {
         this.className = 'li complete';
         var events = '';
 
-        if (d.battle) {events += icon(war_src);}
-        if (d.gusts) {events += icon(gust_src);}
-        if (d.fog) {events += icon(fog_src);}
-        if (d.snow) {events += icon(snow_src);}
+        if (d.battle)  {events += icon(war_src);    }
+        if (d.gusts)   {events += icon(gust_src);   }
+        if (d.fog)     {events += icon(fog_src);    }
+        if (d.snow)    {events += icon(snow_src);   }
         if (d.thunder) {events += icon(thunder_src);}
-        if (d.rain) {events += icon(rain_src);}
+        if (d.rain)    {events += icon(rain_src);   }
 
         return  '<div class="timestamp">' +
                 '   <span class="date">' + dateFormat(d.date) + '</span>' +
