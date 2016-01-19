@@ -367,41 +367,25 @@ function showBattle(log) {
 }
 
 function generateInfoHTML (log) {
-  var html =  '';
-  if (log.dest != '') {
-    html += '<dt>Destination</dt>' +
-            '<dd>' + log.dest + '</dd>';
-  } else {
-    html += '<dt>Destination</dt>' +
-            '<dd class="unimportant">' + 'No reported destination' + '</dd>';
-  }
-  html += '<dt>Departure</dt>' +
-          '<dd>' + formatDate(log.initial_date) + '</dd>' +
-          '<dt>Arrival</dt>' +
-          '<dd>' + formatDate(getLastDate(voyage)) + '</dd>';
-  if (log.weather != '') {
-    html += '<dt>Weather description</dt>' +
-            '<dd>' + log.weather + '</dd>' ;
-  } else {
-    html += '<dt>Weather description</dt>' +
-            '<dd class="unimportant">' + 'No weather description available' + '</dd>' ;
-  }
-    
-  if (log.battle_desc != '') {
-      html += '<dt>Battle Log</dt>' +
-              '<dd>' + log.battle_desc + '</dd>';
-  } else {
-       html += '<dt>Battle Log</dt>' +
-              '<dd class="unimportant">' + 'No reported battles' + '</dd>';
-  }
+    var html =  '';
+    var row = function (title, text, css_class) {
+        return '<dt>' + title + '</dt>' +
+               '<dd class="' + css_class + '">' + text + '</dd>';        
+    }
+    if (log.dest != '') { html += row('Destination', log.dest, ''); } 
+    else { html += row('Destination', 'No reported destination', 'unimportant'); }
 
-  if (log.shipmemo != '') {
-      html += '<dt>Ship Log</dt>' +
-              '<dd>' + log.shipmemo + '</dd>';  
-  } else {
-      html += '<dt>Ship Log</dt>' +
-              '<dd class="unimportant">' + 'No log available' + '</dd>';  
-  }  
-  d3.select('#information').html(html);
+    html += row('Departure', formatDate(log.initial_date), '');
+    html += row('Arrival', formatDate(getLastDate(voyage)), '');
+
+    if (log.weather !== '') { html += row('Weather description', log.weather, ''); } 
+    else { html += row('Weather description', 'No weather description available', 'unimportant'); }
+      
+    if (log.battle_desc !== '') { html += row('Battle log', log.battle_desc, ''); } 
+    else { html += row('Battle log', 'No reported battles', 'unimportant'); }
   
+    if (log.shipmemo !== '') { html += row('Ship log', log.shipmemo, ''); } 
+    else { html += row('Ship log', 'No log available', 'unimportant'); }  
+
+    d3.select('#information').html(html);  
 }
