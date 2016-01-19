@@ -15,13 +15,14 @@ var Timeline = function (element, logs, clicked) {
     };
 
     // render the timeline
-    timeline
-        .selectAll('li')
-        .data(logs, function (d) { return d.id; })
-        .enter()
+    var data = timeline.selectAll('li')
+                       .data(logs, function (d) { return d.id; })
+    data.enter()
         .append('li')
         .html(generateHTML)
         .on('click', clicked);
+
+    data.exit().remove();
 
     timeline.style('left', offset + 'px');
 
